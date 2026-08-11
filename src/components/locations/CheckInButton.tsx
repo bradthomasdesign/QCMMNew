@@ -53,7 +53,8 @@ export default function CheckInButton({ locationId, locationName }: Props) {
       return;
     }
 
-    await supabase.rpc('award_xp', {
+    // Fire XP award without awaiting — don't block the success state
+    supabase.rpc('award_xp', {
       p_user_id: userId,
       p_action: 'checkin',
       p_xp_amount: XP_PER_CHECKIN,
