@@ -40,7 +40,7 @@ export default config({
         imageAlt: fields.text({ label: 'Image Alt Text' }),
         tags: fields.array(fields.text({ label: 'Tag' }), {
           label: 'Tags',
-          itemLabel: (props) => props.fields.value.value || 'Tag',
+          itemLabel: (props) => props.value || 'Tag',
         }),
         featured: fields.checkbox({ label: 'Featured', defaultValue: false }),
         draft: fields.checkbox({ label: 'Draft', defaultValue: false }),
