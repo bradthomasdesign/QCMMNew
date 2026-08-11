@@ -2,12 +2,8 @@ import { config, collection, fields } from '@keystatic/core';
 
 export default config({
   storage: {
-    // Use 'local' for development. Switch to 'github' for production
-    // once a QCMM-specific GitHub OAuth app is created.
-    kind: 'local',
-    // Production config (requires KEYSTATIC_GITHUB_CLIENT_ID etc. in .env):
-    // kind: 'github',
-    // repo: { owner: 'bradthomasdesign', name: 'markur-pin-quest' },
+    kind: 'github',
+    repo: { owner: 'bradthomasdesign', name: 'QCMMNew' },
   },
 
   ui: {

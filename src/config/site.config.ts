@@ -145,15 +145,13 @@ const siteConfig: SiteConfig = {
       enabled: false,
     },
     comments: {
-      // Giscus needs a QCMM-specific repo configured at https://giscus.app
-      // Once set up, enable this and fill in repo/repoId/categoryId below.
-      enabled: false,
+      enabled: true,
       provider: 'giscus',
       giscus: {
-        repo: 'bradthomasdesign/markur-pin-quest',
-        repoId: '',
+        repo: 'bradthomasdesign/QCMMNew',
+        repoId: 'R_kgDOT1TyMw',
         category: 'General',
-        categoryId: '',
+        categoryId: 'DIC_kwDOT1TyM84DDKPM',
         mapping: 'pathname',
         strict: false,
         reactionsEnabled: true,
