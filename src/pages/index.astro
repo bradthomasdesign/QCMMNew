@@ -56,18 +56,16 @@ import LetterGlitchBand from '@/components/patterns/LetterGlitchBand.astro';
         </div>
 
         <!-- Title -->
-        <div class="hero-title-slot hero-lcp-title mb-[var(--space-heading-gap)] [&>h1]:font-display [&>h1]:text-5xl [&>h1]:leading-[1.1] [&>h1]:font-bold [&>h1]:tracking-tight [&>h1]:text-balance [&>h1]:text-foreground md:[&>h1]:text-6xl lg:[&>h1]:text-7xl">
-          <h1 class="!text-[clamp(2rem,11.2vw,3rem)] sm:!text-5xl md:!text-6xl lg:!text-7xl">
-            <span class="text-foreground [-webkit-text-fill-color:currentColor]">Explore Staunton.</span><br />
-            <span class="text-foreground [-webkit-text-fill-color:currentColor]">Collect Pins.</span><br />
-            <span class="text-foreground [-webkit-text-fill-color:currentColor]">Earn Your Place.</span>
+        <div class="hero-title-slot hero-lcp-title mb-[var(--space-heading-gap)]">
+          <h1 class="font-display font-black tracking-[-0.045em] leading-[1.05] text-balance text-foreground !text-[clamp(2.4rem,10vw,5.5rem)]">
+            Make the most of QCMM.
           </h1>
         </div>
 
         <!-- Description -->
         <div class="mb-[var(--space-stack-lg)] max-w-xl mx-auto">
           <p class="text-lg leading-relaxed font-medium" style="color: rgba(255,255,255,0.90)">
-            Scan QR codes hidden across downtown Staunton, rack up XP, and climb the leaderboard at Staunton's free, volunteer-run festival celebrating magic across all forms and fandoms.
+            Explore downtown Staunton, collect pins at iconic locations, earn XP, and connect with the community at Virginia's most magical free festival.
           </p>
         </div>
 
@@ -314,6 +312,72 @@ import LetterGlitchBand from '@/components/patterns/LetterGlitchBand.astro';
             <Icon name="arrow-right" size="sm" />
           </Button>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Powered by Markur -->
+  <section class="relative z-10 py-[var(--space-section-md)] border-t border-border" style="background: #0b0d12;">
+    <div class="mx-auto max-w-5xl px-6 text-center" data-reveal>
+      <!-- Badge -->
+      <span class="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-widest mb-8" style="background: rgba(249,115,22,0.15); color: #f97316; border: 1px solid rgba(249,115,22,0.3);">
+        Powered by Markur
+      </span>
+
+      <h2 class="font-display font-black text-4xl md:text-5xl text-white mb-5 text-balance" style="letter-spacing: -0.04em;">
+        Gamification for the real world.
+      </h2>
+      <p class="text-lg text-white/60 mb-12 max-w-2xl mx-auto leading-relaxed text-balance">
+        QCMM's pin-collecting experience is powered by Markur — a platform built to turn real-world spaces into interactive adventures that keep people coming back.
+      </p>
+
+      <!-- Feature cards -->
+      <div class="grid gap-4 sm:grid-cols-3 mb-12">
+        {[
+          {
+            icon: '⚡',
+            title: 'Instant Engagement',
+            desc: 'QR-powered check-ins that require zero app downloads and work on any device.',
+          },
+          {
+            icon: '🌐',
+            title: 'Built for Any Venue',
+            desc: 'Festivals, tourism trails, brand activations, scavenger hunts — fully customisable.',
+          },
+          {
+            icon: '🎮',
+            title: 'Real Gamification',
+            desc: 'Leaderboards, rewards, and community features that keep people coming back.',
+          },
+        ].map(({ icon, title, desc }) => (
+          <div class="rounded-2xl p-6 text-left" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);">
+            <div class="text-2xl mb-4">{icon}</div>
+            <h3 class="font-semibold text-white mb-2">{title}</h3>
+            <p class="text-sm text-white/50 leading-relaxed">{desc}</p>
+          </div>
+        ))}
+      </div>
+
+      <!-- CTA -->
+      <div class="flex flex-col items-center gap-4">
+        <a
+          href="https://markur.app"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 rounded-xl px-6 py-3 font-semibold text-white transition-opacity hover:opacity-90"
+          style="background: #f97316;"
+        >
+          Learn More →
+        </a>
+        <a
+          href="mailto:hello@markur.io"
+          class="text-sm transition-colors"
+          style="color: rgba(255,255,255,0.40);"
+          onmouseover="this.style.color='rgba(255,255,255,0.70)'"
+          onmouseout="this.style.color='rgba(255,255,255,0.40)'"
+        >
+          hello@markur.io
+        </a>
       </div>
     </div>
   </section>
