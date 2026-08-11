@@ -7,6 +7,7 @@ import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import Button from '@/components/ui/form/Button/Button.astro';
 import LocationDiscussion from '@/components/locations/LocationDiscussion';
 import MiniMap from '@/components/locations/MiniMap';
+import CheckInButton from '@/components/locations/CheckInButton';
 
 export async function getStaticPaths() {
   const supabase = createClient(
@@ -91,10 +92,6 @@ const locationLine = [location.state, location.country].filter(Boolean).join(', 
         )}
 
         <div class="flex flex-wrap gap-3 mt-2">
-          <Button href="/auth" size="sm">
-            <Icon name="qr-code" size="sm" />
-            Check In Here
-          </Button>
           <a
             href={mapsUrl}
             target="_blank"
@@ -171,14 +168,7 @@ const locationLine = [location.state, location.country].filter(Boolean).join(', 
           </Card>
         )}
 
-        <Card padding="sm" class="bg-background">
-          <p class="text-xs text-foreground-muted text-center">
-            Scan the QR code at this location to earn your pin and XP.
-          </p>
-          <a href="/auth" class="mt-3 block text-center rounded-lg bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-white hover:bg-[var(--accent-hover)] transition-colors">
-            Sign In to Check In
-          </a>
-        </Card>
+        <CheckInButton locationId={location.id} client:load />
       </div>
     </div>
   </section>
