@@ -69,9 +69,9 @@ export default function LocationsMap() {
       const dot = (secret: boolean) =>
         L.divIcon({
           className: '',
-          html: `<div style="width:10px;height:10px;border-radius:50%;background:${secret ? '#64748b' : '#f97316'};border:2px solid white;box-shadow:0 1px 4px rgba(0,0,0,0.35)"></div>`,
-          iconSize: [10, 10],
-          iconAnchor: [5, 5],
+          html: `<div style="width:16px;height:16px;border-radius:50%;background:${secret ? '#64748b' : '#f97316'};border:2px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.4)"></div>`,
+          iconSize: [16, 16],
+          iconAnchor: [8, 8],
         });
 
       locations.forEach((loc) => {
