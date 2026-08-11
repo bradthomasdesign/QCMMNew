@@ -1,6 +1,4 @@
 ---
-import LetterGlitch from '@/components/effects/LetterGlitch';
-
 interface Props {
   maxWidth?: '6xl' | '7xl';
 }
@@ -13,14 +11,40 @@ const maxWidthClass = maxWidth === '7xl' ? 'max-w-7xl' : 'max-w-6xl';
 <div class:list={['hidden glitch:block mx-auto px-6', maxWidthClass]}>
   <div class="relative isolate">
     <div class="invert-section relative overflow-hidden rounded-3xl border border-white/10">
-      <div class="absolute inset-0" aria-hidden="true">
-        <LetterGlitch client:visible outerVignette />
-      </div>
+      <!-- Aurora gradient background -->
+      <div class="aurora-bg absolute inset-0" aria-hidden="true"></div>
+      <!-- Subtle radial vignette -->
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(0,0,0,0.55)_100%)]" aria-hidden="true"></div>
       <div class="relative z-10 px-6 py-16 sm:py-24" data-reveal>
-        <div class="mx-auto max-w-2xl rounded-2xl border border-white/10 bg-brand-900/85 px-6 py-10 sm:px-10 text-center shadow-xl backdrop-blur-md">
+        <div class="mx-auto max-w-2xl rounded-2xl border border-white/10 bg-black/40 px-6 py-10 sm:px-10 text-center shadow-xl backdrop-blur-md">
           <slot />
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<style>
+  .aurora-bg {
+    background: linear-gradient(
+      -45deg,
+      oklch(15% 0.06 292),
+      oklch(28% 0.18 292),
+      oklch(22% 0.14 310),
+      oklch(18% 0.10 270),
+      oklch(12% 0.08 292)
+    );
+    background-size: 400% 400%;
+    animation: aurora 10s ease infinite;
+  }
+
+  @keyframes aurora {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .aurora-bg { animation: none; }
+  }
+</style>

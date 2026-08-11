@@ -1,0 +1,35 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import { Hero } from '@/components/hero';
+import Badge from '@/components/ui/data-display/Badge/Badge.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+---
+<PageLayout title="Privacy Policy — QCMM" description="How Queen City Mischief & Magic collects and uses your information.">
+  <Hero layout="centered" size="sm" class="isolate">
+    <Badge slot="badge" variant="brand" pill>
+      <Icon name="shield" size="sm" />
+      Privacy
+    </Badge>
+    <h1 slot="title">Privacy Policy</h1>
+    <p slot="description">Last updated August 2026</p>
+  </Hero>
+
+  <section class="py-16 bg-background border-t border-border">
+    <div class="mx-auto max-w-3xl px-6 prose prose-sm prose-neutral dark:prose-invert max-w-none">
+      <h2>What we collect</h2>
+      <p>When you create a QCMM account we collect your email address and the username you choose. When you check in at a location we record which location and when. We do not collect your device's precise GPS coordinates — check-ins are triggered by you scanning a QR code, not by passive location tracking.</p>
+
+      <h2>How we use it</h2>
+      <p>We use your information to power the pin-quest leaderboard, track your XP, and let you see your own check-in history. We don't sell your data or share it with third parties for advertising.</p>
+
+      <h2>Data storage</h2>
+      <p>All data is stored in Supabase (hosted on AWS). You can delete your account and all associated data at any time by contacting us at <a href="mailto:hello@qcmm.app">hello@qcmm.app</a>.</p>
+
+      <h2>Cookies</h2>
+      <p>We use a single authentication cookie to keep you signed in. We use Umami for privacy-respecting analytics (no personal data, no cross-site tracking).</p>
+
+      <h2>Contact</h2>
+      <p>Questions? Email <a href="mailto:hello@qcmm.app">hello@qcmm.app</a>.</p>
+    </div>
+  </section>
+</PageLayout>

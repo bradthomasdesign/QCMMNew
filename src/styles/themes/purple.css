@@ -96,12 +96,12 @@ html[data-theme="purple"] {
     -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
     Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
     'Segoe UI Symbol', 'Noto Color Emoji';
-  --theme-font-display: 'Outfit Variable', 'Outfit', 'Outfit Fallback', var(--theme-font-sans);
+  --theme-font-display: 'Inter Variable', 'Inter', var(--theme-font-sans);
   --theme-font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace,
     SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
     monospace;
-  --theme-heading-weight: 700;
-  --theme-heading-tracking: -0.02em;
+  --theme-heading-weight: 900;
+  --theme-heading-tracking: -0.045em;
   --theme-body-leading: 1.6;
 
   /* -------------------------------------------------------------------------

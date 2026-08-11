@@ -1,0 +1,33 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import { Hero } from '@/components/hero';
+import Badge from '@/components/ui/data-display/Badge/Badge.astro';
+import Button from '@/components/ui/form/Button/Button.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import MembersLeaderboard from '@/components/members/MembersLeaderboard';
+---
+<PageLayout title="Members — QCMM" description="The QCMM leaderboard — see who has collected the most pins and earned the most XP at Queen City Mischief & Magic.">
+  <Hero layout="centered" size="sm" class="isolate">
+    <Badge slot="badge" variant="brand" pill>
+      <Icon name="trophy" size="sm" />
+      Members
+    </Badge>
+    <h1 slot="title">
+      <span class="text-foreground [-webkit-text-fill-color:currentColor]">Who's leading</span><br />
+      <span class="text-brand-500 [-webkit-text-fill-color:var(--color-brand-500)]">the quest?</span>
+    </h1>
+    <p slot="description">A leaderboard of the top pin collectors. See how many XP fellow adventurers have earned — and how you stack up.</p>
+    <Fragment slot="actions">
+      <Button href="/auth">
+        Sign in to join
+        <Icon name="arrow-right" size="sm" />
+      </Button>
+    </Fragment>
+  </Hero>
+
+  <section class="py-16 bg-background border-t border-border">
+    <div class="mx-auto max-w-2xl px-6">
+      <MembersLeaderboard client:load />
+    </div>
+  </section>
+</PageLayout>

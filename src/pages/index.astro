@@ -5,256 +5,256 @@ import Button from '@/components/ui/form/Button/Button.astro';
 import Badge from '@/components/ui/data-display/Badge/Badge.astro';
 import Card from '@/components/ui/data-display/Card/Card.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
-import BlogCard from '@/components/blog/BlogCard.astro';
-import LighthouseScores from '@/components/landing/LighthouseScores.astro';
 import LetterGlitchBand from '@/components/patterns/LetterGlitchBand.astro';
-import { getCollection } from 'astro:content';
-import siteConfig from '@/config/site.config';
-
-const projectItems = await getCollection('projects');
-const featuredProjects = projectItems
-  .filter((p) => p.data.featured)
-  .sort((a, b) => a.data.order - b.data.order)
-  .slice(0, 4);
-
-const posts = (await getCollection('blog', ({ data }) => !data.draft))
-  .sort((a, b) => {
-    if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
-    return b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf();
-  })
-  .slice(0, 4);
 ---
 
 <LandingLayout
-  title="Bradley Thomas Information Architect & UX Principal"
-  description="UX Principal and Information Architect. I leverage decades of design strategy and visual storytelling to create clear, intuitive digital experiences."
+  title="Queen City Mischief & Magic — Staunton's Pin Quest"
+  description="Discover downtown Staunton through a location-based adventure. Find QR codes, collect pins, earn XP, and connect with fellow explorers at Queen City Mischief & Magic."
   image="/og-default.svg"
-  includePersonSchema={true}
-  includeProfessionalServiceSchema={true}
+  includeOrgSchema={true}
 >
-  <!-- Hero -->
-  <Hero layout="centered" size="xl" class="hero-dark-gradient" showScrollIndicator fullHeight>
-    <Badge slot="badge" variant="brand" pill pulse class="dark:text-brand-200">Information Architect & UX Principal</Badge>
+  <!-- Hero with video background -->
+  <section
+    class="hero-dark-gradient relative overflow-hidden isolate min-h-[100dvh] pt-[calc(var(--space-page-top)_+_var(--space-16))] pb-[var(--space-section-xl)]"
+    style="background: transparent"
+  >
+    <!-- Video background — fixed for parallax scroll effect -->
+    <video
+      autoplay
+      muted
+      loop
+      playsinline
+      aria-hidden="true"
+      class="hero-video fixed inset-0 w-full h-full object-cover"
+    >
+      <source src="/video/hero.mp4" type="video/mp4" />
+    </video>
 
-    <h1 slot="title" class="!text-[clamp(2rem,11.2vw,3rem)] sm:!text-5xl md:!text-6xl lg:!text-7xl">
-      <span class="text-brand-600 dark:text-foreground [-webkit-text-fill-color:currentColor] whitespace-nowrap">Brad Thomas</span><br />
-      <span class="text-brand-600 dark:text-foreground [-webkit-text-fill-color:currentColor]">UX, UI and Visual Design</span><br class="md:hidden" /><span class="text-brand-600 dark:text-foreground [-webkit-text-fill-color:currentColor]"> for  Web, Print & AI</span></h1>
-   
-    <p slot="description">
-      Visual storyteller with a career built on foundational design strategy. Translating complexity into clarity, from enterprise UX to AI-native interfaces.
-    </p>
+    <!-- Theme-aware overlay -->
+    <div class="hero-video-overlay absolute inset-0" aria-hidden="true"></div>
 
-   <Fragment slot="actions">
-      <Button size="lg" href="/about">
-        About me
-        <Icon name="arrow-right" size="sm" />
-      </Button>
-      <Button size="lg" variant="outline" href="/blog">
-        <Icon name="book-open" size="sm" />
-        Read the blog
-        <Icon name="arrow-right" size="sm" />
-      </Button>
-    </Fragment>
-  </Hero>
-
-  <!-- Services Section -->
-  <section class="relative z-10 py-[var(--space-section-md)] bg-background-secondary border-t border-border">
-    <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
-      <div class="flex flex-col items-center gap-4 text-center" data-reveal>
-        <div class="flex flex-col items-center gap-6">
-          <Badge variant="brand" pill>Services</Badge>
-          <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
-            What I do
-          </h2>
-        </div>
-        <p class="text-lg text-foreground-muted max-w-2xl mx-auto">
-          From concept to launch.
-        </p>
+    <!-- Scroll indicator -->
+    <div class="scroll-indicator-wrapper absolute bottom-14 left-1/2 -translate-x-1/2 z-10" aria-hidden="true">
+      <div class="scroll-indicator flex flex-col items-center gap-0.5">
+        <svg class="scroll-indicator-chevron w-7 h-7 text-brand-300/70" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+        <svg class="scroll-indicator-chevron-2 w-7 h-7 text-brand-300/35" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
       </div>
+    </div>
 
-      <div class="grid gap-6 sm:grid-cols-3">
-        <!-- Web Design -->
-        <Card hover href="/services" class="group flex flex-col" data-reveal>
-          <div class="flex items-start gap-4 sm:flex-col sm:items-center sm:gap-3 sm:text-center lg:flex-row lg:items-start lg:gap-4 lg:text-left">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
-              <Icon name="layout" size="sm" />
-            </div>
-            <div class="flex-1 min-w-0">
-              <h3 class="text-base font-semibold text-foreground">Web Design</h3>
-              <p class="text-sm text-foreground-muted leading-relaxed mt-1.5">
-                Thoughtful layouts that put your content first. Designed for clarity, balance, and the way people actually read on the web.
-              </p>
-              <span class="inline-flex items-center gap-1 text-sm font-medium text-brand-500 mt-3 group-hover:gap-2 transition-all">
-                Learn more
-                <Icon name="arrow-right" size="sm" />
-              </span>
-            </div>
-          </div>
-        </Card>
+    <!-- Content -->
+    <div class="relative z-10 mx-auto grid max-w-6xl grid-cols-1 items-center gap-[var(--space-section-gap)] px-6">
+      <div class="flex flex-col text-center items-center animate-hero-stagger">
 
-        <!-- Web Development -->
-        <Card hover href="/services" class="group flex flex-col" data-reveal data-reveal-delay="1">
-          <div class="flex items-start gap-4 sm:flex-col sm:items-center sm:gap-3 sm:text-center lg:flex-row lg:items-start lg:gap-4 lg:text-left">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
-              <Icon name="code" size="sm" />
-            </div>
-            <div class="flex-1 min-w-0">
-              <h3 class="text-base font-semibold text-foreground">Web Development</h3>
-              <p class="text-sm text-foreground-muted leading-relaxed mt-1.5">
-                Translating complex design systems and layouts into clean, modern, and functional web realities.
-              </p>
-              <span class="inline-flex items-center gap-1 text-sm font-medium text-brand-500 mt-3 group-hover:gap-2 transition-all">
-                Learn more
-                <Icon name="arrow-right" size="sm" />
-              </span>
-            </div>
-          </div>
-        </Card>
+        <!-- Badge -->
+        <div class="mb-[var(--space-heading-gap)]">
+          <Badge variant="brand" pill pulse class="dark:text-brand-200">Queen City Mischief &amp; Magic</Badge>
+        </div>
 
-        <!-- SEO & Performance -->
-        <Card hover href="/services" class="group flex flex-col" data-reveal data-reveal-delay="2">
-          <div class="flex items-start gap-4 sm:flex-col sm:items-center sm:gap-3 sm:text-center lg:flex-row lg:items-start lg:gap-4 lg:text-left">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
-              <Icon name="zap" size="sm" />
-            </div>
-            <div class="flex-1 min-w-0">
-              <h3 class="text-base font-semibold text-foreground">SEO & Performance</h3>
-              <p class="text-sm text-foreground-muted leading-relaxed mt-1.5">
-                Pages that load instantly and rank well from launch. Core Web Vitals, metadata, and structured data, done properly.
-              </p>
-              <span class="inline-flex items-center gap-1 text-sm font-medium text-brand-500 mt-3 group-hover:gap-2 transition-all">
-                Learn more
-                <Icon name="arrow-right" size="sm" />
-              </span>
-            </div>
-          </div>
-        </Card>
+        <!-- Title -->
+        <div class="hero-title-slot hero-lcp-title mb-[var(--space-heading-gap)] [&>h1]:font-display [&>h1]:text-5xl [&>h1]:leading-[1.1] [&>h1]:font-bold [&>h1]:tracking-tight [&>h1]:text-balance [&>h1]:text-foreground md:[&>h1]:text-6xl lg:[&>h1]:text-7xl">
+          <h1 class="!text-[clamp(2rem,11.2vw,3rem)] sm:!text-5xl md:!text-6xl lg:!text-7xl">
+            <span class="text-foreground [-webkit-text-fill-color:currentColor]">Explore Staunton.</span><br />
+            <span class="text-foreground [-webkit-text-fill-color:currentColor]">Collect Pins.</span><br />
+            <span class="text-foreground [-webkit-text-fill-color:currentColor]">Earn Your Place.</span>
+          </h1>
+        </div>
+
+        <!-- Description -->
+        <div class="mb-[var(--space-stack-lg)] max-w-xl mx-auto">
+          <p class="text-lg leading-relaxed font-medium" style="color: rgba(255,255,255,0.90)">
+            Scan QR codes hidden across downtown Staunton, rack up XP, and climb the leaderboard at Staunton's free, volunteer-run festival celebrating magic across all forms and fandoms.
+          </p>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex w-full flex-col gap-4 sm:w-auto sm:flex-row justify-center">
+          <Button size="lg" href="/auth">
+            Start your adventure
+            <Icon name="arrow-right" size="sm" />
+          </Button>
+          <Button size="lg" variant="outline" href="/locations">
+            <Icon name="map-pin" size="sm" />
+            View locations
+          </Button>
+        </div>
+
       </div>
     </div>
   </section>
 
-  <!-- Portfolio -->
-  <section id="work" class="relative z-10 py-[var(--space-section-md)] bg-background border-t border-border">
+  <!-- Stats bar -->
+  <section class="relative z-10 py-10 bg-background-secondary border-t border-border">
+    <div class="mx-auto max-w-6xl px-6">
+      <div class="grid grid-cols-3 gap-4 text-center">
+        <div data-reveal>
+          <p class="font-display text-3xl md:text-4xl font-black text-brand-500" data-countup="20000" data-suffix="k+">0k+</p>
+          <p class="text-sm text-foreground-muted mt-1">Annual visitors</p>
+        </div>
+        <div data-reveal data-reveal-delay="1">
+          <p class="font-display text-3xl md:text-4xl font-black text-brand-500">100%</p>
+          <p class="text-sm text-foreground-muted mt-1">Volunteer-run</p>
+        </div>
+        <div data-reveal data-reveal-delay="2">
+          <p class="font-display text-3xl md:text-4xl font-black text-brand-500">Free</p>
+          <p class="text-sm text-foreground-muted mt-1">Always free admission</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="relative z-10 py-[var(--space-section-md)] bg-background border-t border-border">
     <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
       <div class="flex flex-col items-center gap-4 text-center" data-reveal>
-        <div class="flex flex-col items-center gap-6">
-          <Badge variant="brand" pill>Selected work</Badge>
-          <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
-            Projects I've built
-          </h2>
-        </div>
-        <p class="text-lg text-foreground-muted max-w-2xl mx-auto">
-          A selection of recent work.
+        <Badge variant="brand" pill>How It Works</Badge>
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
+          Three simple steps
+        </h2>
+        <p class="text-lg text-foreground-muted max-w-2xl">
+          No app download required. Just your phone camera and a sense of adventure.
         </p>
       </div>
 
-      <div class="grid gap-6 md:grid-cols-2">
-        {featuredProjects.map((project) => (
-          <Card
-            variant="elevated"
-            hover
-            padding="none"
-            href={project.data.placeholder ? undefined : `/projects/${project.id.replace(/\.mdx?$/, '')}`}
-            class="group flex flex-col"
-            data-reveal
-          >
-            <div class="flex flex-1 flex-col p-6">
-              <div class="mb-3 flex items-start justify-between gap-4">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
-                  <Icon name="layers" size="sm" />
-                </div>
-                <Icon name="arrow-up-right" size="sm" class="text-foreground-muted group-hover:text-brand-500 transition-colors shrink-0 ml-auto" />
-              </div>
-              <div class="mb-2 flex items-baseline gap-2">
-                <h3 class="font-display text-lg font-bold text-foreground">{project.data.title}</h3>
-                {project.data.year && (
-                  <span class="text-xs text-foreground-muted">{project.data.year}</span>
-                )}
-              </div>
-              <p class="text-sm text-foreground-muted leading-relaxed mb-4 flex-1">{project.data.description}</p>
-              {project.data.tags && project.data.tags.length > 0 && (
-                <div class="flex flex-wrap gap-1.5">
-                  {project.data.tags.map((tag) => (
-                    <Badge variant="brand">{tag}</Badge>
-                  ))}
-                </div>
-              )}
+      <div class="grid gap-6 sm:grid-cols-3">
+        <Card hover class="group flex flex-col" data-reveal>
+          <div class="flex items-start gap-4 sm:flex-col sm:gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 font-bold shrink-0">
+              1
             </div>
-          </Card>
-        ))}
+            <div class="flex-1">
+              <h3 class="text-base font-semibold text-foreground">Create a free account</h3>
+              <p class="text-sm text-foreground-muted leading-relaxed mt-1.5">
+                Sign up at qcmm.app — all you need is an email address. Already have one? Just sign in.
+              </p>
+            </div>
+          </div>
+        </Card>
+
+        <Card hover class="group flex flex-col" data-reveal data-reveal-delay="1">
+          <div class="flex items-start gap-4 sm:flex-col sm:gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 font-bold shrink-0">
+              2
+            </div>
+            <div class="flex-1">
+              <h3 class="text-base font-semibold text-foreground">Find QR codes at locations</h3>
+              <p class="text-sm text-foreground-muted leading-relaxed mt-1.5">
+                QR codes are posted at spots across downtown Staunton. Explore the area, keep your eyes open.
+              </p>
+            </div>
+          </div>
+        </Card>
+
+        <Card hover class="group flex flex-col" data-reveal data-reveal-delay="2">
+          <div class="flex items-start gap-4 sm:flex-col sm:gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 font-bold shrink-0">
+              3
+            </div>
+            <div class="flex-1">
+              <h3 class="text-base font-semibold text-foreground">Scan, check in, earn your pin</h3>
+              <p class="text-sm text-foreground-muted leading-relaxed mt-1.5">
+                Open your camera, point it at the code, tap the link. Your pin is recorded instantly.
+              </p>
+            </div>
+          </div>
+        </Card>
       </div>
 
-      <div class="text-center mt-4">
-        <Button variant="outline" href="/projects">
-          View all projects
+      <div class="text-center">
+        <Button variant="outline" href="/how-it-works">
+          Full guide
           <Icon name="arrow-right" size="sm" />
         </Button>
       </div>
     </div>
   </section>
 
-  <!-- Testimonials -->
+  <!-- Features -->
   <section class="relative z-10 py-[var(--space-section-md)] bg-background-secondary border-t border-border">
     <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
       <div class="flex flex-col items-center gap-4 text-center" data-reveal>
-        <div class="flex flex-col items-center gap-6">
-          <Badge variant="brand" pill>Testimonials</Badge>
-          <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
-            What clients say
-          </h2>
-        </div>
-        <p class="text-lg text-foreground-muted">
-          Replace these with your own client quotes.
+        <Badge variant="brand" pill>What's Inside</Badge>
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
+          More than just a map
+        </h2>
+        <p class="text-lg text-foreground-muted max-w-2xl">
+          QCMM is a full adventure platform — explore, connect, and discover the stories behind Staunton.
         </p>
       </div>
 
-      <div class="grid gap-6 md:grid-cols-2">
-        <!-- Testimonial 1 -->
-        <Card variant="elevated" padding="lg" hover data-reveal>
-          <div class="flex flex-col h-full gap-4">
-            <div class="flex gap-1 text-brand-500" role="img" aria-label="5 out of 5 stars">
-              {[...Array(5)].map(() => (
-                <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20" aria-hidden="true">
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-              ))}
+      <div class="grid gap-6 sm:grid-cols-2">
+        <Card hover href="/locations" class="group flex flex-col" data-reveal>
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
+              <Icon name="map-pin" size="sm" />
             </div>
-            <blockquote class="flex-1 text-foreground-muted leading-relaxed">
-              "The new site launched on time and hit every goal we set. Performance improved dramatically — load times dropped and the feedback from our customers has been overwhelmingly positive."
-            </blockquote>
-            <div class="flex items-center gap-3 pt-4 border-t border-border">
-              <div class="w-9 h-9 rounded-full bg-gradient-to-br from-brand-500/30 to-brand-500/10 flex items-center justify-center text-brand-500 font-bold text-sm shrink-0">
-                A
-              </div>
-              <div>
-                <p class="text-sm font-semibold text-foreground">Alex Morgan</p>
-                <p class="text-xs text-foreground-muted">Founder, Bright Studio</p>
-              </div>
+            <div class="flex-1 min-w-0">
+              <h3 class="text-base font-semibold text-foreground">Locations</h3>
+              <p class="text-sm text-foreground-muted leading-relaxed mt-1.5">
+                An interactive map and full list of every spot with a QR code. Plan your route before the festival, or discover as you go.
+              </p>
+              <span class="inline-flex items-center gap-1 text-sm font-medium text-brand-500 mt-3 group-hover:gap-2 transition-all">
+                Explore the map
+                <Icon name="arrow-right" size="sm" />
+              </span>
             </div>
           </div>
         </Card>
 
-        <!-- Testimonial 2 -->
-        <Card variant="elevated" padding="lg" hover data-reveal data-reveal-delay="1">
-          <div class="flex flex-col h-full gap-4">
-            <div class="flex gap-1 text-brand-500" role="img" aria-label="5 out of 5 stars">
-              {[...Array(5)].map(() => (
-                <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20" aria-hidden="true">
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-              ))}
+        <Card hover href="/community" class="group flex flex-col" data-reveal data-reveal-delay="1">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
+              <Icon name="message-square" size="sm" />
             </div>
-            <blockquote class="flex-1 text-foreground-muted leading-relaxed">
-              "Straightforward from first conversation to final handover. The right questions were asked, we were kept in the loop throughout, and the end result exceeded what we imagined. Would recommend without hesitation."
-            </blockquote>
-            <div class="flex items-center gap-3 pt-4 border-t border-border">
-              <div class="w-9 h-9 rounded-full bg-gradient-to-br from-brand-500/30 to-brand-500/10 flex items-center justify-center text-brand-500 font-bold text-sm shrink-0">
-                S
-              </div>
-              <div>
-                <p class="text-sm font-semibold text-foreground">Sarah Chen</p>
-                <p class="text-xs text-foreground-muted">CEO, Luma Agency</p>
-              </div>
+            <div class="flex-1 min-w-0">
+              <h3 class="text-base font-semibold text-foreground">Community</h3>
+              <p class="text-sm text-foreground-muted leading-relaxed mt-1.5">
+                A message board for festival attendees. Ask questions, share what you found, or say hello to fellow explorers.
+              </p>
+              <span class="inline-flex items-center gap-1 text-sm font-medium text-brand-500 mt-3 group-hover:gap-2 transition-all">
+                Join the conversation
+                <Icon name="arrow-right" size="sm" />
+              </span>
+            </div>
+          </div>
+        </Card>
+
+        <Card hover href="/blog" class="group flex flex-col" data-reveal data-reveal-delay="2">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
+              <Icon name="book-open" size="sm" />
+            </div>
+            <div class="flex-1 min-w-0">
+              <h3 class="text-base font-semibold text-foreground">QCMM News</h3>
+              <p class="text-sm text-foreground-muted leading-relaxed mt-1.5">
+                Festival news, event updates, and community stories from the team and attendees of Queen City Mischief & Magic.
+              </p>
+              <span class="inline-flex items-center gap-1 text-sm font-medium text-brand-500 mt-3 group-hover:gap-2 transition-all">
+                Read the news
+                <Icon name="arrow-right" size="sm" />
+              </span>
+            </div>
+          </div>
+        </Card>
+
+        <Card hover href="/members" class="group flex flex-col" data-reveal data-reveal-delay="3">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
+              <Icon name="trophy" size="sm" />
+            </div>
+            <div class="flex-1 min-w-0">
+              <h3 class="text-base font-semibold text-foreground">Members</h3>
+              <p class="text-sm text-foreground-muted leading-relaxed mt-1.5">
+                A leaderboard of who has collected the most pins and earned the most XP. See how you stack up against other adventurers.
+              </p>
+              <span class="inline-flex items-center gap-1 text-sm font-medium text-brand-500 mt-3 group-hover:gap-2 transition-all">
+                See the leaderboard
+                <Icon name="arrow-right" size="sm" />
+              </span>
             </div>
           </div>
         </Card>
@@ -262,56 +262,55 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
     </div>
   </section>
 
-  <!-- Lighthouse scores -->
-  <LighthouseScores />
-
-  <!-- About Teaser -->
-  <section class="relative z-10 py-[var(--space-section-md)] bg-background-secondary border-t border-border">
+  <!-- About QCMM -->
+  <section class="relative z-10 py-[var(--space-section-md)] bg-background border-t border-border">
     <div class="mx-auto max-w-6xl px-6">
       <div class="grid gap-10 glitch:grid-cols-2 glitch:gap-12">
         <div class="flex flex-col justify-center sm:items-center sm:text-center glitch:items-start glitch:text-left" data-reveal="right" data-reveal-ease="smooth">
           <div class="flex flex-col gap-6 mb-6 sm:items-center glitch:items-start">
-            <Badge variant="brand" pill class="self-start sm:self-center glitch:self-start">About me</Badge>
+            <Badge variant="brand" pill class="self-start sm:self-center glitch:self-start">About QCMM</Badge>
             <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
-              Designer, writer,<br />
-              <span class="text-brand-500">and AI thinker.</span>
+              A festival built on<br />
+              <span class="text-brand-500">magic &amp; community.</span>
             </h2>
           </div>
-          <p class="text-lg text-foreground-muted leading-relaxed text-pretty mb-4 sm:mb-0 sm:max-w-xl glitch:mb-4 glitch:max-w-none">
-            20+ years of design experience — from print and identity to enterprise UX and AI-native interfaces. Currently Information Architect & UX Principal at EPRI, based in Staunton, VA.
+          <p class="text-lg text-foreground-muted leading-relaxed text-pretty mb-4 sm:max-w-xl glitch:max-w-none">
+            Queen City Mischief &amp; Magic is a free, volunteer-run festival celebrating magic across all forms and fandoms — held every fall in the heart of historic downtown Staunton, Virginia.
           </p>
           <p class="text-lg text-foreground-muted leading-relaxed text-pretty mb-8 sm:max-w-xl glitch:max-w-none sm:hidden glitch:block">
-            On the blog I write about design, AI, and the future of creative work — including my book <em>Future Work</em>.
+            QCMM turns the whole city into the venue. Every alley, storefront, and plaza becomes part of the adventure.
           </p>
-           <Button variant="outline" href="/about" class="self-start sm:self-center glitch:self-start sm:hidden glitch:inline-flex">
-            More about me
+          <Button variant="outline" href="/about" class="self-start sm:self-center glitch:self-start sm:hidden glitch:inline-flex">
+            About the festival
             <Icon name="arrow-right" size="sm" />
           </Button>
         </div>
+
         <Card variant="elevated" padding="lg" class="h-full flex flex-col" data-reveal="left" data-reveal-delay="1" data-reveal-ease="smooth">
-          <p class="text-sm text-foreground mb-5 text-center sm:hidden glitch:block">A few things about me.</p>
+          <p class="text-sm text-foreground mb-5 text-center sm:hidden glitch:block">A few things about the festival.</p>
           <div class="grid grid-cols-2 sm:grid-cols-4 glitch:grid-cols-2 gap-3 flex-1 auto-rows-fr">
             <div class="bg-background-tertiary rounded-xl p-5 flex flex-col items-center justify-center text-center gap-2 border-t-2 border-brand-500/40 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-brand-500 cursor-default h-full">
-              <Icon name="history" class="w-10 h-10 text-brand-500" />
-              <p class="text-sm font-semibold text-foreground">20+ Years Experience</p>
+              <Icon name="users" class="w-10 h-10 text-brand-500" />
+              <p class="text-sm font-semibold text-foreground">20k+ Visitors</p>
             </div>
             <div class="bg-background-tertiary rounded-xl p-5 flex flex-col items-center justify-center text-center gap-2 border-t-2 border-brand-500/40 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-brand-500 cursor-default h-full">
-              <Icon name="building-2" class="w-10 h-10 text-brand-500" />
-              <p class="text-sm font-semibold text-foreground">UX Principal at EPRI</p>
+              <Icon name="heart" class="w-10 h-10 text-brand-500" />
+              <p class="text-sm font-semibold text-foreground">100% Volunteer</p>
             </div>
-            <a href="https://bradthomas.io" target="_blank" rel="noopener noreferrer" class="bg-background-tertiary rounded-xl p-5 flex flex-col items-center justify-center text-center gap-2 border-t-2 border-brand-500/40 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-brand-500 h-full">
-              <Icon name="pen-line" class="w-10 h-10 text-brand-500" />
-              <p class="text-sm font-semibold text-foreground">Author of Future Work</p>
-            </a>
+            <div class="bg-background-tertiary rounded-xl p-5 flex flex-col items-center justify-center text-center gap-2 border-t-2 border-brand-500/40 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-brand-500 cursor-default h-full">
+              <Icon name="ticket" class="w-10 h-10 text-brand-500" />
+              <p class="text-sm font-semibold text-foreground">Always Free</p>
+            </div>
             <div class="bg-background-tertiary rounded-xl p-5 flex flex-col items-center justify-center text-center gap-2 border-t-2 border-brand-500/40 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-brand-500 cursor-default h-full">
               <Icon name="map-pin" class="w-10 h-10 text-brand-500" />
               <p class="text-sm font-semibold text-foreground">Staunton, VA</p>
             </div>
           </div>
         </Card>
+
         <div class="hidden sm:flex justify-center glitch:hidden" data-reveal data-reveal-delay="2">
           <Button variant="outline" href="/about">
-            More about me
+            About the festival
             <Icon name="arrow-right" size="sm" />
           </Button>
         </div>
@@ -319,84 +318,108 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
     </div>
   </section>
 
-  <!-- Blog -->
-  <section class="relative z-10 py-[var(--space-section-md)] bg-background border-t border-border">
-    <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
-      <div class="flex flex-col items-center gap-6 text-center" data-reveal>
-        <Badge variant="brand" pill>From the blog</Badge>
-        <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
-          Featured
-        </h2>
-      </div>
-
-      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {posts.map((post, index) => (
-          <BlogCard
-            title={post.data.title}
-            description={post.data.description}
-            href={`/blog/${post.id.replace('en/', '')}`}
-            publishedAt={post.data.publishedAt}
-            tags={post.data.tags}
-            author={post.data.author}
-            image={post.data.image}
-            svgSlug={post.data.svgSlug}
-            class={index === 3 ? 'hidden sm:block lg:hidden' : undefined}
-          />
-        ))}
-      </div>
-
-      <div class="flex justify-center">
-        <Button variant="outline" href="/blog">
-          View all posts
-          <Icon name="arrow-right" size="sm" />
-        </Button>
-      </div>
-    </div>
-  </section>
-
- <!-- CTA -->
+  <!-- CTA -->
   <section class="relative z-10 py-[var(--space-section-md)] bg-background-secondary border-t border-border">
-    <!-- Mobile: flat section, no card -->
     <div class="glitch:hidden mx-auto max-w-2xl px-6 text-center" data-reveal>
-      <Badge variant="brand" pill class="mb-6">Let's talk</Badge>
+      <Badge variant="brand" pill class="mb-6">Ready to play?</Badge>
       <h2 class="font-display text-4xl font-bold text-foreground mb-4 text-balance">
-        Starting something new?
+        Your adventure starts now.
       </h2>
       <p class="text-lg text-foreground-muted mb-8 text-balance">
-        I design and build new websites from scratch — every project, start to finish, by me. Tell me what you have in mind.
+        Create a free account and start collecting pins at Queen City Mischief &amp; Magic.
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <Button size="lg" href="/contact" class="cta-btn-brand">
-          Start a project
+        <Button size="lg" href="/auth" class="cta-btn-brand">
+          Create free account
           <Icon name="arrow-right" size="sm" />
         </Button>
-        <Button size="lg" variant="outline" href="/about">
-          More about me
-          <Icon name="arrow-right" size="sm" />
+        <Button size="lg" variant="outline" href="/how-it-works">
+          How it works
         </Button>
       </div>
     </div>
 
-    <!-- Desktop: contained LetterGlitch band with glass card -->
     <LetterGlitchBand>
       <h2 class="font-display text-4xl font-bold text-foreground mb-4 text-balance">
-        Starting something new?
+        Your adventure starts now.
       </h2>
       <p class="text-lg text-foreground-muted mb-8 text-balance">
-        I design and build new websites from scratch — every project, start to finish, by me. Tell me what you have in mind.
+        Create a free account and start collecting pins at Queen City Mischief &amp; Magic.
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <Button size="lg" href="/contact" class="hero-btn-brand">
-          Start a project
+        <Button size="lg" href="/auth" class="hero-btn-brand">
+          Create free account
           <Icon name="arrow-right" size="sm" />
         </Button>
-        <Button size="lg" variant="outline" href="/about">
-          More about me
-          <Icon name="arrow-right" size="sm" />
+        <Button size="lg" variant="outline" href="/how-it-works">
+          How it works
         </Button>
       </div>
     </LetterGlitchBand>
   </section>
+
+</LandingLayout>
+
+<style>
+  /* Video sits behind everything in the hero stacking context */
+  .hero-video {
+    z-index: -2;
+  }
+
+  /* Purple-to-dark overlay — semi-transparent so video shows through */
+  .hero-video-overlay {
+    z-index: -1;
+    background: linear-gradient(
+      to bottom,
+      color-mix(in oklch, var(--color-brand-600) 48%, transparent) 0%,
+      rgba(0, 0, 0, 0.62) 100%
+    );
+  }
+
+  /* Light mode gets same dark treatment (hero-dark-gradient remaps vars) */
+  html:not(.dark) .hero-video-overlay {
+    background: linear-gradient(
+      to bottom,
+      color-mix(in oklch, var(--color-brand-700) 54%, transparent) 0%,
+      rgba(0, 0, 0, 0.68) 100%
+    );
+  }
+
+  /* Scroll indicator — desktop only */
+  .scroll-indicator-wrapper {
+    display: none;
+  }
+  @media (min-width: 1024px) and (min-height: 500px) {
+    .scroll-indicator-wrapper { display: block; }
+  }
+
+  .scroll-indicator {
+    animation: si-fade-in 0.6s ease-out 1.4s backwards;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .scroll-indicator.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(4px);
+  }
+  @keyframes si-fade-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .scroll-indicator-chevron   { animation: si-bounce 2s ease-in-out 2s infinite; }
+  .scroll-indicator-chevron-2 { animation: si-bounce 2s ease-in-out 2.15s infinite; }
+  @keyframes si-bounce {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(5px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-indicator,
+    .scroll-indicator-chevron,
+    .scroll-indicator-chevron-2 { animation: none; opacity: 1; }
+  }
+</style>
 
 <script>
   function initCountup() {
@@ -415,7 +438,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
           const elapsed = now - start;
           const progress = Math.min(elapsed / duration, 1);
           const eased = 1 - Math.pow(1 - progress, 3);
-          el.textContent = Math.round(eased * target) + suffix;
+          el.textContent = Math.round((eased * target) / 1000) + suffix;
           if (progress < 1) requestAnimationFrame(tick);
         };
         requestAnimationFrame(tick);
@@ -428,19 +451,17 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
   }
 
   initCountup();
-</script>
 
-<style is:global>
-  /* Widen the homepage hero description from md upward so the paragraph
-     reads on two lines instead of three on landscape phones, tablets,
-     and all laptop/desktop sizes. Scoped via the unique
-     .hero-dark-gradient class so other heroes keep the default
-     max-w-xl reading measure. */
-  @media (min-width: 768px) {
-    .hero-dark-gradient .hero-title-slot + div {
-      max-width: 48rem;
+  // Scroll indicator: hide on scroll
+  (function () {
+    const indicator = document.querySelector<HTMLElement>('.scroll-indicator');
+    if (!indicator) return;
+    function onScroll() {
+      if (window.scrollY > 50) {
+        indicator?.classList.add('is-hidden');
+        window.removeEventListener('scroll', onScroll);
+      }
     }
-  }
-</style>
-
-</LandingLayout>
+    window.addEventListener('scroll', onScroll, { passive: true });
+  })();
+</script>

@@ -32,7 +32,7 @@ const astroI18nOptions = i18nEnabled
 export default defineConfig({
   output: 'static',
   adapter: isNetlify ? netlify() : vercel(),
-  site: process.env.SITE_URL || 'https://bradleyt.com',
+  site: process.env.SITE_URL || 'https://qcmm.app',
   ...(astroI18nOptions ? { i18n: astroI18nOptions } : {}),
 
   build: {
@@ -53,6 +53,8 @@ export default defineConfig({
       PUBLIC_GOOGLE_MAPS_API_KEY: envField.string({ context: 'client', access: 'public', optional: true, default: '' }),
       PUBLIC_CONSENT_ENABLED: envField.boolean({ context: 'client', access: 'public', optional: true, default: false }),
       PUBLIC_PRIVACY_POLICY_URL: envField.string({ context: 'client', access: 'public', optional: true, default: '' }),
+      PUBLIC_SUPABASE_URL: envField.string({ context: 'client', access: 'public', optional: true }),
+      PUBLIC_SUPABASE_ANON_KEY: envField.string({ context: 'client', access: 'public', optional: true }),
     },
   },
 

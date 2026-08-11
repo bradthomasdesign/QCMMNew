@@ -37,16 +37,16 @@ const regularPosts = regularPostsAll.slice(0, BLOG_POSTS_PER_PAGE);
 const topTags = collectTopTags(posts, TAG_CLOUD_LIMIT);
 ---
 
-<PageLayout title="Blog — Brad Thomas" description="Articles on design, UX, AI, and the future of creative work by Brad Thomas." showScrollProgress eagerReveal>
-  <Hero layout="centered" size="sm" class="isolate" showHeroHalo>
+<PageLayout title="QCMM News — QCMM" description="Festival news, event updates, and stories from the community at Queen City Mischief & Magic in Staunton, VA." showScrollProgress eagerReveal>
+  <Hero layout="centered" size="sm" class="isolate">
     <Badge slot="badge" variant="brand" pill>
-      <Icon name="book" size="sm" />
-      All posts
+      <Icon name="book-open" size="sm" />
+      QCMM News
     </Badge>
 
-    <h1 slot="title">Blog</h1>
+    <h1 slot="title">QCMM News</h1>
 
-    <p slot="description">Articles on design, UX, AI, and the future of creative work.</p>
+    <p slot="description">Festival news, event updates, and stories from the community at Queen City Mischief & Magic.</p>
   </Hero>
 
   <!-- Featured Posts Section -->
@@ -55,7 +55,7 @@ const topTags = collectTopTags(posts, TAG_CLOUD_LIMIT);
       <section id="featured-section" class="bg-background-secondary py-[var(--space-section-md)] border-t border-border">
         <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
           <h2 class="font-display text-foreground text-3xl md:text-4xl font-bold text-center" data-reveal>
-            Featured
+            Featured News
           </h2>
 
           <div class="grid gap-6 sm:grid-cols-2">
@@ -83,7 +83,7 @@ const topTags = collectTopTags(posts, TAG_CLOUD_LIMIT);
       <div class="flex flex-col items-center gap-4" data-reveal>
         {
           featuredPosts.length > 0 && nonFeaturedPosts.length > 0 && (
-            <h2 class="font-display text-foreground text-3xl md:text-4xl font-bold text-center">All posts</h2>
+            <h2 class="font-display text-foreground text-3xl md:text-4xl font-bold text-center">All Posts</h2>
           )
         }
 
@@ -129,8 +129,8 @@ const topTags = collectTopTags(posts, TAG_CLOUD_LIMIT);
   <!-- Follow CTA Section -->
   <!-- Mobile: standard CTA, no LetterGlitch -->
   <CTA variant="default" size="md" maxWidth="lg" glow={false} data-reveal class:list={['glitch:hidden', featuredPosts.length > 0 && '!bg-background-secondary']}>
-    <h2 slot="heading" class="!text-4xl">Follow along</h2>
-    <p slot="description" class="!text-lg text-balance">Stay in the loop — new articles, thoughts, and updates.</p>
+    <h2 slot="heading" class="!text-4xl">Join the adventure</h2>
+    <p slot="description" class="!text-lg text-balance">Stay in the loop — new lore, festival news, and community updates.</p>
 
     <div class="flex flex-wrap items-center justify-center gap-3">
       <a
@@ -164,8 +164,8 @@ const topTags = collectTopTags(posts, TAG_CLOUD_LIMIT);
   <!-- Desktop: contained LetterGlitch band with glass card -->
   <section class:list={['hidden glitch:block relative z-10 py-[var(--space-section-md)]', featuredPosts.length > 0 ? 'bg-background-secondary' : 'bg-background']}>
     <LetterGlitchBand>
-      <h2 class="font-display text-4xl font-bold text-foreground mb-4 text-balance">Follow along</h2>
-      <p class="text-lg text-foreground-muted mb-8 text-balance">Stay in the loop — new articles, thoughts, and updates.</p>
+      <h2 class="font-display text-4xl font-bold text-foreground mb-4 text-balance">Join the adventure</h2>
+      <p class="text-lg text-foreground-muted mb-8 text-balance">Stay in the loop — new lore, festival news, and community updates.</p>
 
       <div class="flex flex-wrap items-center justify-center gap-3">
         <a

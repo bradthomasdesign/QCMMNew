@@ -1,29 +1,24 @@
 {
-  "name": "btd",
+  "name": "qcmm",
   "version": "1.0.0",
-  "description": "Brad Thomas Design — personal site built on Astro Rocket",
+  "description": "QCMM — Markur Pin Quest, a location-based adventure app for Staunton, VA",
   "type": "module",
   "author": "Brad Thomas",
   "license": "MIT",
   "keywords": [
     "astro",
-    "astro-theme",
-    "theme",
-    "tailwind",
-    "tailwindcss",
-    "typescript",
-    "blog",
-    "starter",
-    "boilerplate",
-    "seo"
+    "qcmm",
+    "location",
+    "check-in",
+    "staunton"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/bradthomasdesign/btd"
+    "url": "https://github.com/bradthomasdesign/markur-pin-quest"
   },
-  "homepage": "https://github.com/bradthomasdesign/btd",
+  "homepage": "https://qcmm.app",
   "bugs": {
-    "url": "https://github.com/bradthomasdesign/btd/issues"
+    "url": "https://github.com/bradthomasdesign/markur-pin-quest/issues"
   },
   "scripts": {
     "dev": "astro dev",
@@ -44,6 +39,7 @@
     "@astrojs/react": "5.0.0",
     "@astrojs/sitemap": "^3.7.1",
     "@astrojs/vercel": "^10.0.0",
+    "@fontsource-variable/inter": "^5.3.0",
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
     "@fontsource-variable/manrope": "^5.2.8",
     "@fontsource-variable/outfit": "^5.2.8",
@@ -52,11 +48,14 @@
     "@iconify/react": "^6.0.2",
     "@keystatic/astro": "^5.1.0",
     "@keystatic/core": "^0.5.50",
+    "@supabase/supabase-js": "^2.112.2",
+    "@types/leaflet": "^1.9.22",
     "astro": "6.0.0",
     "astro-icon": "^1.1.5",
     "astro-mastodon": "^0.3.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "leaflet": "^1.9.4",
     "lucide-react": "^0.563.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

@@ -1,0 +1,162 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import { Hero } from '@/components/hero';
+import Badge from '@/components/ui/data-display/Badge/Badge.astro';
+import Card from '@/components/ui/data-display/Card/Card.astro';
+import Button from '@/components/ui/form/Button/Button.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+---
+<PageLayout
+  title="How It Works — QCMM"
+  description="Learn how to collect pins at Queen City Mischief & Magic. Create a free account, find QR codes, scan with your phone, and earn your place on the leaderboard."
+>
+  <Hero layout="centered" size="sm" class="isolate">
+    <Badge slot="badge" variant="brand" pill>
+      <Icon name="info" size="sm" />
+      How It Works
+    </Badge>
+    <h1 slot="title">
+      <span class="text-foreground [-webkit-text-fill-color:currentColor]">Simple to start.</span><br />
+      <span class="text-brand-500 [-webkit-text-fill-color:var(--color-brand-500)]">Fun to master.</span>
+    </h1>
+    <p slot="description">
+      No app download required. Just your phone camera, a free account, and a sense of adventure.
+    </p>
+  </Hero>
+
+  <!-- 3 Steps -->
+  <section class="py-16 bg-background-secondary border-t border-border">
+    <div class="mx-auto max-w-4xl px-6 flex flex-col gap-10">
+      <div class="flex flex-col items-center gap-4 text-center" data-reveal>
+        <Badge variant="brand" pill>The process</Badge>
+        <h2 class="font-display text-3xl font-bold text-foreground">Three simple steps</h2>
+      </div>
+
+      <div class="flex flex-col gap-6">
+        <Card variant="elevated" padding="lg" data-reveal>
+          <div class="flex items-start gap-6">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 font-black text-lg shrink-0">1</div>
+            <div>
+              <h3 class="text-lg font-semibold text-foreground mb-2">Create a free account</h3>
+              <p class="text-foreground-muted leading-relaxed">
+                Sign up at qcmm.app — all you need is an email address. Already have an account? Just sign in. Your profile tracks every pin you collect and your XP total.
+              </p>
+            </div>
+          </div>
+        </Card>
+
+        <Card variant="elevated" padding="lg" data-reveal data-reveal-delay="1">
+          <div class="flex items-start gap-6">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 font-black text-lg shrink-0">2</div>
+            <div>
+              <h3 class="text-lg font-semibold text-foreground mb-2">Find QR codes at locations</h3>
+              <p class="text-foreground-muted leading-relaxed">
+                QR codes are posted at festival spots across downtown Staunton. Check the <a href="/locations" class="text-brand-500 hover:underline">Locations map</a> to plan your route, or discover them as you wander. Keep your eyes open — some are hidden in plain sight.
+              </p>
+            </div>
+          </div>
+        </Card>
+
+        <Card variant="elevated" padding="lg" data-reveal data-reveal-delay="2">
+          <div class="flex items-start gap-6">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 font-black text-lg shrink-0">3</div>
+            <div>
+              <h3 class="text-lg font-semibold text-foreground mb-2">Scan, check in, earn your pin</h3>
+              <p class="text-foreground-muted leading-relaxed">
+                Open your phone's native camera app, point it at the QR code, and tap the link that appears. Your pin is recorded instantly and XP is added to your profile. No separate app needed — it works entirely in your browser.
+              </p>
+            </div>
+          </div>
+        </Card>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tips -->
+  <section class="py-16 bg-background border-t border-border">
+    <div class="mx-auto max-w-4xl px-6 flex flex-col gap-8">
+      <div class="flex flex-col items-center gap-4 text-center" data-reveal>
+        <Badge variant="brand" pill>Tips</Badge>
+        <h2 class="font-display text-3xl font-bold text-foreground">Scanning tips</h2>
+      </div>
+
+      <div class="grid gap-4 sm:grid-cols-2">
+        {[
+          { icon: 'smartphone', text: "Use your phone's native camera app — no extra app to download." },
+          { icon: 'camera', text: 'Hold steady and point at the center of the QR code until a link pops up.' },
+          { icon: 'log-in', text: "If you're not signed in, you'll be redirected to login first. After signing in you'll bounce right back to complete the check-in." },
+          { icon: 'repeat', text: "Scanning the same code twice is safe — you'll just see a friendly \"already checked in\" message." },
+        ].map(({ icon, text }, i) => (
+          <Card class="flex items-start gap-4" data-reveal data-reveal-delay={i}>
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0 mt-0.5">
+              <Icon name={icon} size="sm" />
+            </div>
+            <p class="text-sm text-foreground-muted leading-relaxed">{text}</p>
+          </Card>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="py-16 bg-background-secondary border-t border-border">
+    <div class="mx-auto max-w-4xl px-6 flex flex-col gap-8">
+      <div class="flex flex-col items-center gap-4 text-center" data-reveal>
+        <Badge variant="brand" pill>FAQ</Badge>
+        <h2 class="font-display text-3xl font-bold text-foreground">Common questions</h2>
+      </div>
+
+      <div class="flex flex-col gap-4">
+        {[
+          {
+            q: 'Do I need to download an app?',
+            a: 'Nope. QCMM.app runs entirely in your mobile browser. No App Store, no Google Play — just scan and go.',
+          },
+          {
+            q: 'What exactly is a "pin"?',
+            a: 'A pin is a verified digital check-in at a physical festival location. Think of it like a digital stamp in a passport.',
+          },
+          {
+            q: 'Can I check in to the same location twice?',
+            a: "Each location records one pin per account. Double-scanning the same code is harmless — it just won't add another pin.",
+          },
+          {
+            q: 'Is it free to sign up?',
+            a: 'Yes, completely. Creating an account and collecting pins costs nothing.',
+          },
+          {
+            q: 'What do I win?',
+            a: 'Your pins are displayed on your profile and the Members leaderboard. Organizers may announce prizes — keep an eye on the Community board for announcements.',
+          },
+          {
+            q: 'I scanned the code but nothing happened. What do I do?',
+            a: 'Make sure you have a data connection, try a different browser (Chrome or Safari work best), or manually type the URL shown below the QR code into your browser.',
+          },
+        ].map(({ q, a }, i) => (
+          <Card variant="elevated" padding="lg" data-reveal data-reveal-delay={i % 3}>
+            <h3 class="text-base font-semibold text-foreground mb-2">{q}</h3>
+            <p class="text-sm text-foreground-muted leading-relaxed">{a}</p>
+          </Card>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-16 bg-background border-t border-border">
+    <div class="mx-auto max-w-2xl px-6 text-center" data-reveal>
+      <h2 class="font-display text-3xl font-bold text-foreground mb-4">Ready to start?</h2>
+      <p class="text-foreground-muted mb-8">Create your free account and join the quest.</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <Button size="lg" href="/auth">
+          Create free account
+          <Icon name="arrow-right" size="sm" />
+        </Button>
+        <Button size="lg" variant="outline" href="/locations">
+          <Icon name="map-pin" size="sm" />
+          View locations
+        </Button>
+      </div>
+    </div>
+  </section>
+</PageLayout>

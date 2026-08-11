@@ -1,238 +1,139 @@
 ---
-/**
- * About page
- * URL: /about
- */
 import PageLayout from '@/layouts/PageLayout.astro';
-import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import { Hero } from '@/components/hero';
 import Badge from '@/components/ui/data-display/Badge/Badge.astro';
 import Card from '@/components/ui/data-display/Card/Card.astro';
 import Button from '@/components/ui/form/Button/Button.astro';
-import { Hero } from '@/components/hero';
-import TypingEffect from '@/components/ui/TypingEffect.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import LetterGlitchBand from '@/components/patterns/LetterGlitchBand.astro';
 ---
 <PageLayout
-  title="About Brad Thomas — Information Architect & UX Principal"
-  description="Visual storyteller with 20+ years of design experience. Information Architect & UX Principal at EPRI. Writing about design and AI at bradthomas.io."
+  title="About — Queen City Mischief & Magic"
+  description="Queen City Mischief & Magic is a free, volunteer-run festival celebrating magic across all forms and fandoms, held every fall in downtown Staunton, Virginia."
 >
-  <Hero layout="centered" size="sm" class="isolate" showHeroHalo>
+  <Hero layout="centered" size="sm" class="isolate">
     <Badge slot="badge" variant="brand" pill>
-      <Icon name="user" size="sm" />
-      About
+      <Icon name="sparkles" size="sm" />
+      About QCMM
     </Badge>
     <h1 slot="title">
-      <span class="text-foreground [-webkit-text-fill-color:currentColor]">Brad Thomas</span><br />
-      <span class="text-brand-500 [-webkit-text-fill-color:var(--color-brand-500)]">
-        <TypingEffect words={["Information Architect", "UX Principal", "Visual Storyteller", "Design & AI Writer"]} />
-      </span>
+      <span class="text-foreground [-webkit-text-fill-color:currentColor]">Queen City</span><br />
+      <span class="text-brand-500 [-webkit-text-fill-color:var(--color-brand-500)]">Mischief &amp; Magic</span>
     </h1>
-
     <p slot="description">
-      20+ years of design experience. Translating complexity into clarity across enterprise products, mobile applications, and digital ecosystems.
+      A free, volunteer-run festival celebrating magic across all forms and fandoms — held every fall in the heart of historic downtown Staunton, Virginia.
     </p>
   </Hero>
 
-  <!-- Bio -->
-  <section class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
+  <!-- Stats -->
+  <section class="py-16 bg-background-secondary border-t border-border">
     <div class="mx-auto max-w-6xl px-6">
-      <div class="grid gap-10 glitch:grid-cols-2 glitch:gap-12">
-        <div class="flex flex-col justify-center gap-4 sm:items-center sm:text-center glitch:items-start glitch:text-left" data-reveal="right" data-reveal-ease="smooth">
-          <div class="flex flex-col gap-6 sm:items-center glitch:items-start">
-            <Badge variant="brand" pill class="self-start sm:self-center glitch:self-start">Background</Badge>
-            <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground text-balance">
-              Designing with purpose for two decades
-            </h2>
-          </div>
-          <p class="text-lg text-foreground-muted leading-relaxed text-pretty sm:max-w-xl sm:mx-auto glitch:max-w-none glitch:mx-0">
-            I'm a visual storyteller with 20+ years of design experience spanning print, identity, web, and digital experience design. My work has taken me from newspaper front pages to enterprise design systems to AI-native interfaces.
-          </p>
-          <p class="text-lg text-foreground-muted leading-relaxed text-pretty sm:max-w-xl sm:mx-auto glitch:max-w-none glitch:mx-0">
-            Currently I serve as Information Architect & UX Principal at EPRI, where I lead UX and UI design across web and mobile applications, build design systems in Figma, and champion accessibility standards across digital products.
-          </p>
-          <p class="text-lg text-foreground-muted leading-relaxed text-pretty sm:max-w-xl sm:mx-auto glitch:max-w-none glitch:mx-0">
-            Outside of work, I write about design, AI, and the future of creative work at <a href="https://bradthomas.io" target="_blank" rel="noopener noreferrer" class="underline underline-offset-2 decoration-brand-500 hover:text-brand-400 transition-colors">bradthomas.io</a> — exploring how designers can thrive as AI becomes integrated into the creative process.
-          </p>
+      <div class="grid grid-cols-3 gap-6 text-center">
+        <div data-reveal>
+          <p class="font-display text-4xl font-black text-brand-500">20k+</p>
+          <p class="text-sm text-foreground-muted mt-1">Annual visitors</p>
         </div>
-
-        <div class="flex flex-col h-full" data-reveal="left" data-reveal-delay="1" data-reveal-ease="smooth">
-          <Card variant="elevated" padding="lg" class="flex-1 flex flex-col justify-center gap-6">
-            <div class="flex flex-col gap-2">
-              <h3 class="text-sm font-semibold text-foreground-muted uppercase tracking-wider">Current Role</h3>
-              <p class="text-base font-semibold text-foreground">Information Architect & UX Principal</p>
-              <p class="text-sm text-foreground-muted">EPRI · Jul 2022 – Present</p>
-            </div>
-            <div class="border-t border-border"></div>
-            <div class="flex flex-col gap-2">
-              <h3 class="text-sm font-semibold text-foreground-muted uppercase tracking-wider">Location</h3>
-              <p class="text-base text-foreground">Staunton, VA</p>
-            </div>
-            <div class="border-t border-border"></div>
-            <div class="flex flex-col gap-2">
-              <h3 class="text-sm font-semibold text-foreground-muted uppercase tracking-wider">Education</h3>
-              <p class="text-base text-foreground">University of North Carolina at Charlotte</p>
-              <p class="text-sm text-foreground-muted">1994 – 1998</p>
-            </div>
-            <div class="border-t border-border"></div>
-            <div class="flex flex-col gap-3">
-              <h3 class="text-sm font-semibold text-foreground-muted uppercase tracking-wider">Links</h3>
-              <a href="https://linkedin.com/in/bradthomasnc" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-sm text-foreground hover:text-brand-500 transition-colors">
-                <Icon name="linkedin" size="sm" />
-                linkedin.com/in/bradthomasnc
-              </a>
-              <a href="https://bradthomas.io" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-sm text-foreground hover:text-brand-500 transition-colors">
-                <Icon name="pen-line" size="sm" />
-                bradthomas.io
-              </a>
-              <a href="https://bradthomasdesign.com" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-sm text-foreground hover:text-brand-500 transition-colors">
-                <Icon name="globe" size="sm" />
-                bradthomasdesign.com
-              </a>
-            </div>
-          </Card>
+        <div data-reveal data-reveal-delay="1">
+          <p class="font-display text-4xl font-black text-brand-500">100%</p>
+          <p class="text-sm text-foreground-muted mt-1">Volunteer-run</p>
+        </div>
+        <div data-reveal data-reveal-delay="2">
+          <p class="font-display text-4xl font-black text-brand-500">Free</p>
+          <p class="text-sm text-foreground-muted mt-1">Always free admission</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Experience -->
-  <section class="py-[var(--space-section-md)] bg-background border-t border-border">
-    <div class="mx-auto max-w-6xl px-6">
-      <div class="mb-8 text-center flex flex-col items-center gap-4" data-reveal>
-        <div class="flex flex-col items-center gap-6">
-          <Badge variant="brand" pill>Experience</Badge>
-          <h2 class="font-display text-4xl font-bold text-foreground">
-            Where I've worked
-          </h2>
-        </div>
-        <p class="text-lg text-foreground-muted max-w-2xl mx-auto text-balance">
-          Two decades of design across enterprise, fintech, media, and startup environments.
+  <!-- About the platform -->
+  <section class="py-16 bg-background border-t border-border">
+    <div class="mx-auto max-w-4xl px-6 flex flex-col gap-12">
+      <div class="flex flex-col items-center gap-4 text-center" data-reveal>
+        <Badge variant="brand" pill>The Pin Quest Platform</Badge>
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
+          Built for exploration
+        </h2>
+        <p class="text-lg text-foreground-muted max-w-2xl">
+          QCMM turns downtown Staunton into the venue. Every alley, storefront, and plaza becomes part of the adventure.
         </p>
       </div>
-      <div class="grid gap-6 md:grid-cols-2">
-        <Card hover data-reveal>
-          <div class="flex items-start gap-4">
-            <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
-              <Icon name="building-2" size="md" />
-            </div>
-            <div class="flex-1 min-w-0">
-              <h3 class="text-base font-semibold text-foreground">Information Architect & UX Principal</h3>
-              <p class="text-sm text-brand-500 font-medium mt-0.5">EPRI · 2016 – Present</p>
-              <p class="text-sm text-foreground-muted leading-relaxed mt-2">
-                Leading UX and UI design across web and mobile applications. Built enterprise-wide Figma design system, established visual web standards, and championed ADA compliance.
-              </p>
-            </div>
+
+      <div class="grid gap-6 sm:grid-cols-3">
+        <Card hover class="flex flex-col text-center items-center" data-reveal>
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 mb-4">
+            <Icon name="qr-code" size="md" />
           </div>
+          <h3 class="text-base font-semibold text-foreground">QR Check-Ins</h3>
+          <p class="text-sm text-foreground-muted leading-relaxed mt-2">
+            Organizers place QR codes at physical locations. Scan with your phone camera — no app required — and your pin is recorded instantly.
+          </p>
         </Card>
-        <Card hover data-reveal data-reveal-delay="1">
-          <div class="flex items-start gap-4">
-            <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
-              <Icon name="building-2" size="md" />
-            </div>
-            <div class="flex-1 min-w-0">
-              <h3 class="text-base font-semibold text-foreground">Sr. UX Architect – AVP</h3>
-              <p class="text-sm text-brand-500 font-medium mt-0.5">U.S. Bank · 2022</p>
-              <p class="text-sm text-foreground-muted leading-relaxed mt-2">
-                Applied human-centered design methodologies — personas, user flows, wireframes, and interactive prototypes — to deliver accessible, world-class customer experiences.
-              </p>
-            </div>
+
+        <Card hover class="flex flex-col text-center items-center" data-reveal data-reveal-delay="1">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 mb-4">
+            <Icon name="trophy" size="md" />
           </div>
+          <h3 class="text-base font-semibold text-foreground">Collect &amp; Earn</h3>
+          <p class="text-sm text-foreground-muted leading-relaxed mt-2">
+            Every location adds a verified pin to your collection and earns XP. Climb the leaderboard and unlock rewards as you explore.
+          </p>
         </Card>
-        <Card hover data-reveal data-reveal-delay="2">
-          <div class="flex items-start gap-4">
-            <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
-              <Icon name="building-2" size="md" />
-            </div>
-            <div class="flex-1 min-w-0">
-              <h3 class="text-base font-semibold text-foreground">Sr. UX Designer / Lead Visual Designer</h3>
-              <p class="text-sm text-brand-500 font-medium mt-0.5">LPL Financial · 2014–2015</p>
-              <p class="text-sm text-foreground-muted leading-relaxed mt-2">
-                Designed a visual system for diverse audiences and built a customizable reporting suite, setting a high standard for design excellence across all online products.
-              </p>
-            </div>
+
+        <Card hover class="flex flex-col text-center items-center" data-reveal data-reveal-delay="2">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 mb-4">
+            <Icon name="users" size="md" />
           </div>
-        </Card>
-        <Card hover data-reveal data-reveal-delay="3">
-          <div class="flex items-start gap-4">
-            <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
-              <Icon name="building-2" size="md" />
-            </div>
-            <div class="flex-1 min-w-0">
-              <h3 class="text-base font-semibold text-foreground">Designer / Developer</h3>
-              <p class="text-sm text-brand-500 font-medium mt-0.5">LendingTree · 2010–2011</p>
-              <p class="text-sm text-foreground-muted leading-relaxed mt-2">
-                Designed and built products for LendingTree.com including the "Canopy" client-facing interface and Loan Explorer — with visual integration into Yahoo and AOL.
-              </p>
-            </div>
-          </div>
+          <h3 class="text-base font-semibold text-foreground">Community Driven</h3>
+          <p class="text-sm text-foreground-muted leading-relaxed mt-2">
+            Share stories, post to the community board, and connect with fellow explorers discovering the same places you are.
+          </p>
         </Card>
       </div>
     </div>
   </section>
 
-  <!-- Skills -->
-  <section class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
-    <div class="mx-auto max-w-6xl px-6">
-      <div class="mb-8 text-center flex flex-col items-center gap-4" data-reveal>
-        <div class="flex flex-col items-center gap-6">
-          <Badge variant="brand" pill>Skills</Badge>
-          <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
-            What I bring to the table
-          </h2>
+  <!-- About the festival -->
+  <section class="py-16 bg-background-secondary border-t border-border">
+    <div class="mx-auto max-w-4xl px-6 flex flex-col gap-8">
+      <div class="flex flex-col items-center gap-4 text-center" data-reveal>
+        <Badge variant="brand" pill>The Festival</Badge>
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
+          Magic lives in Staunton
+        </h2>
+      </div>
+
+      <Card variant="elevated" padding="lg" data-reveal>
+        <div class="prose prose-invert max-w-none text-foreground-muted leading-relaxed space-y-4">
+          <p>
+            Queen City Mischief &amp; Magic is Staunton's annual celebration of magic, mystery, and imagination. Named for Queen City — one of Staunton's many historical nicknames — the festival transforms downtown into a living playground for fans of all things magical, from wizarding worlds to stage magic to folklore and beyond.
+          </p>
+          <p>
+            The festival is free to attend, free to explore, and entirely volunteer-run. It has grown year over year to welcome more than 20,000 visitors, all drawn to the charm of a historic Virginia city that feels like it was made for magic.
+          </p>
+          <p>
+            QCMM.app is the official pin quest platform for the festival — a digital adventure layer built on top of the real-world event. Collect pins at festival locations, connect with fellow attendees, and discover the hidden histories of the places you visit.
+          </p>
         </div>
-      </div>
-      <div class="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
-        {[
-          { icon: 'layout', title: 'UX & Information Architecture', desc: 'User flows, wireframes, IA, research, and experience strategy.' },
-          { icon: 'pen-tool', title: 'UI & Visual Design', desc: 'Design systems, component libraries, and polished visual execution in Figma.' },
-          { icon: 'smartphone', title: 'Mobile Design', desc: 'Mobile-first UX with a focus on usability, accessibility, and platform conventions.' },
-          { icon: 'brain', title: 'AI-Native Design', desc: 'Designing for generative AI interfaces and AI-powered UX workflows.' },
-          { icon: 'accessibility', title: 'Accessibility', desc: 'ADA compliance, inclusive design, and WCAG standards across digital products.' },
-          { icon: 'layers', title: 'Design Systems', desc: 'Enterprise-scale Figma libraries, visual standards, and design governance.' },
-        ].map((skill, i) => (
-          <Card hover data-reveal data-reveal-delay={String(i % 3)}>
-            <div class="flex items-start gap-4 sm:flex-col sm:items-center sm:gap-3 sm:text-center lg:flex-row lg:items-start lg:gap-4 lg:text-left">
-              <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
-                <Icon name={skill.icon} size="md" />
-              </div>
-              <div class="flex-1 min-w-0">
-                <h3 class="text-base font-semibold text-foreground">{skill.title}</h3>
-                <p class="text-sm text-foreground-muted leading-relaxed mt-1.5">{skill.desc}</p>
-              </div>
-            </div>
-          </Card>
-        ))}
-      </div>
+      </Card>
     </div>
   </section>
 
   <!-- CTA -->
-  <section class="relative z-10 py-[var(--space-section-md)] bg-background border-t border-border">
-    <div class="glitch:hidden mx-auto max-w-2xl px-6 text-center" data-reveal>
-      <Badge variant="brand" pill class="mb-6">Get in touch</Badge>
-      <h2 class="font-display text-4xl font-bold text-foreground mb-4 text-balance">
-        Let's work together
-      </h2>
-      <p class="text-lg text-foreground-muted mb-8 text-balance">
-        Have a project in mind? I'd love to hear about it.
-      </p>
-      <Button size="lg" href="/contact" class="cta-btn-brand">
-        Contact me
+  <LetterGlitchBand>
+    <h2 class="font-display text-4xl font-bold text-foreground mb-4 text-balance">
+      Ready to start your quest?
+    </h2>
+    <p class="text-lg text-foreground-muted mb-8 text-balance">
+      Create a free account and join the adventure.
+    </p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <Button size="lg" href="/auth" class="hero-btn-brand">
+        Create free account
         <Icon name="arrow-right" size="sm" />
+      </Button>
+      <Button size="lg" variant="outline" href="/how-it-works">
+        How it works
       </Button>
     </div>
-
-    <LetterGlitchBand>
-      <h2 class="font-display text-4xl font-bold text-foreground mb-4 text-balance">
-        Let's work together
-      </h2>
-      <p class="text-lg text-foreground-muted mb-8 text-balance">
-        Have a project in mind? I'd love to hear about it.
-      </p>
-      <Button size="lg" href="/contact" class="hero-btn-brand">
-        Contact me
-        <Icon name="arrow-right" size="sm" />
-      </Button>
-    </LetterGlitchBand>
-  </section>
+  </LetterGlitchBand>
 </PageLayout>

@@ -1,0 +1,14 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import ProfileDashboard from '@/components/profile/ProfileDashboard';
+---
+<PageLayout
+  title="My Profile — QCMM"
+  description="Your QCMM profile — pins collected, XP earned, and your adventure history."
+>
+  <section class="py-16 bg-background border-t border-border">
+    <div class="mx-auto max-w-2xl px-6">
+      <ProfileDashboard client:load />
+    </div>
+  </section>
+</PageLayout>

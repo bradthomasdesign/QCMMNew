@@ -26,23 +26,27 @@ export interface LegalLink {
 }
 
 export const navItems: NavItem[] = [
-  { label: 'Services', href: '/services', order: 1 },
-  { label: 'Projects', href: '/projects', order: 2 },
-  { label: 'Blog', href: '/blog', order: 3 },
-  { label: 'About', href: '/about', order: 4 },
-  { label: 'Contact', href: '/contact', order: 5 },
-  { label: 'Search', href: '/search', order: 6 },
+  { label: 'Locations', href: '/locations', order: 1 },
+  { label: 'Community', href: '/community', order: 2 },
+  { label: 'QCMM News', href: '/blog', order: 3 },
+  { label: 'Members', href: '/members', order: 4 },
+  { label: 'About', href: '/about', order: 5 },
 ];
 
 export const footerNavItems: NavItem[] = [
-  { label: 'Services', href: '/services', order: 1 },
-  { label: 'Projects', href: '/projects', order: 2 },
-  { label: 'Blog', href: '/blog', order: 3 },
+  { label: 'Locations', href: '/locations', order: 1 },
+  { label: 'Community', href: '/community', order: 2 },
+  { label: 'QCMM News', href: '/blog', order: 3 },
   { label: 'About', href: '/about', order: 4 },
-  { label: 'Contact', href: '/contact', order: 5 },
+  { label: 'How It Works', href: '/how-it-works', order: 5 },
+  { label: 'Contact', href: '/contact', order: 6 },
+  { label: 'Search', href: '/search', order: 7 },
 ];
 
-export const legalLinks: LegalLink[] = [];
+export const legalLinks: LegalLink[] = [
+  { label: 'Privacy Policy', href: '/privacy' },
+  { label: 'Terms of Service', href: '/terms' },
+];
 
 /**
  * Get header navigation items sorted by order

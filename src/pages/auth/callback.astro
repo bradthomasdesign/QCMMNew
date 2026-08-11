@@ -1,0 +1,80 @@
+---
+/**
+ * Supabase email confirmation callback.
+ * Supabase redirects here after the user clicks the confirmation link.
+ * The client-side script exchanges the token for a session, then redirects.
+ */
+import PageLayout from '@/layouts/PageLayout.astro';
+---
+<PageLayout
+  title="Confirming your account — QCMM"
+  description="Completing email verification for your QCMM account."
+>
+  <section class="py-24 flex flex-col items-center justify-center min-h-[60vh] px-6">
+    <div class="w-full max-w-sm text-center flex flex-col gap-4">
+      <div id="status-icon" class="mx-auto w-14 h-14 rounded-full bg-brand-500/10 flex items-center justify-center">
+        <!-- spinner -->
+        <svg class="animate-spin w-7 h-7 text-brand-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+        </svg>
+      </div>
+      <h1 id="status-heading" class="font-display text-2xl font-bold text-foreground">Verifying your account…</h1>
+      <p id="status-message" class="text-foreground-muted text-sm">Hang tight while we confirm your email.</p>
+    </div>
+  </section>
+</PageLayout>
+
+<script>
+  import { createClient } from '@supabase/supabase-js';
+
+  const supabase = createClient(
+    import.meta.env.PUBLIC_SUPABASE_URL,
+    import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
+  );
+
+  const heading = document.getElementById('status-heading')!;
+  const message = document.getElementById('status-message')!;
+  const icon = document.getElementById('status-icon')!;
+
+  function showSuccess() {
+    icon.innerHTML = `<svg class="w-7 h-7 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>`;
+    icon.className = 'mx-auto w-14 h-14 rounded-full bg-green-500/10 flex items-center justify-center';
+    heading.textContent = 'Account confirmed!';
+    message.textContent = 'Redirecting you to the members page…';
+    setTimeout(() => { window.location.href = '/members'; }, 1500);
+  }
+
+  function showError(msg: string) {
+    icon.innerHTML = `<svg class="w-7 h-7 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>`;
+    icon.className = 'mx-auto w-14 h-14 rounded-full bg-red-500/10 flex items-center justify-center';
+    heading.textContent = 'Verification failed';
+    message.innerHTML = `${msg} <a href="/auth" class="text-brand-500 hover:underline">Try signing in</a>.`;
+  }
+
+  // Supabase appends #access_token=...&type=signup or ?code=... depending on flow
+  const { data: { session }, error } = await supabase.auth.getSession();
+  if (session) {
+    showSuccess();
+  } else {
+    // Handle PKCE flow: exchange the code in the URL
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code');
+    if (code) {
+      const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
+      if (exchangeError) {
+        showError(exchangeError.message);
+      } else {
+        showSuccess();
+      }
+    } else if (error) {
+      showError(error.message);
+    } else {
+      // Fragment-based token (older Supabase flow) — Supabase JS auto-handles on load
+      setTimeout(async () => {
+        const { data: { session: s2 } } = await supabase.auth.getSession();
+        if (s2) { showSuccess(); } else { showError('No session found.'); }
+      }, 800);
+    }
+  }
+</script>

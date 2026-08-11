@@ -1,0 +1,36 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import { Hero } from '@/components/hero';
+import Badge from '@/components/ui/data-display/Badge/Badge.astro';
+import Button from '@/components/ui/form/Button/Button.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import LocationsMap from '@/components/locations/LocationsMap';
+---
+<PageLayout title="Locations — QCMM" description="Browse and map every festival location with a QR code at Queen City Mischief & Magic in Staunton, VA.">
+  <Hero layout="centered" size="sm" class="isolate">
+    <Badge slot="badge" variant="brand" pill>
+      <Icon name="map-pin" size="sm" />
+      Locations
+    </Badge>
+    <h1 slot="title">
+      <span class="text-foreground [-webkit-text-fill-color:currentColor]">Find your</span><br />
+      <span class="text-brand-500 [-webkit-text-fill-color:var(--color-brand-500)]">next pin.</span>
+    </h1>
+    <p slot="description">Every festival spot with a QR code, mapped across downtown Staunton.</p>
+    <Fragment slot="actions">
+      <Button href="/auth">
+        Sign in to check in
+        <Icon name="arrow-right" size="sm" />
+      </Button>
+    </Fragment>
+  </Hero>
+
+  <section class="py-16 bg-background border-t border-border">
+    <div class="mx-auto max-w-6xl px-6">
+      <LocationsMap client:load />
+    </div>
+  </section>
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+</PageLayout>

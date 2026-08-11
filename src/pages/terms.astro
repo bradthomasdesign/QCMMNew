@@ -1,0 +1,41 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import { Hero } from '@/components/hero';
+import Badge from '@/components/ui/data-display/Badge/Badge.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+---
+<PageLayout title="Terms of Service — QCMM" description="Terms and conditions for using the Queen City Mischief & Magic pin quest platform.">
+  <Hero layout="centered" size="sm" class="isolate">
+    <Badge slot="badge" variant="brand" pill>
+      <Icon name="file-text" size="sm" />
+      Terms
+    </Badge>
+    <h1 slot="title">Terms of Service</h1>
+    <p slot="description">Last updated August 2026</p>
+  </Hero>
+
+  <section class="py-16 bg-background border-t border-border">
+    <div class="mx-auto max-w-3xl px-6 prose prose-sm prose-neutral dark:prose-invert max-w-none">
+      <h2>Use of the platform</h2>
+      <p>The QCMM pin quest platform is free to use for festival attendees. You must be 13 or older to create an account. You agree not to attempt to abuse, cheat, or exploit the check-in system.</p>
+
+      <h2>User content</h2>
+      <p>Content you post in the community board must comply with our community guidelines: no harassment, hate speech, spam, or illegal content. We reserve the right to remove content and suspend accounts that violate these guidelines.</p>
+
+      <h2>QR codes</h2>
+      <p>QR codes are the property of QCMM. Do not reproduce, move, or damage them. Each code may only be scanned once per account per event.</p>
+
+      <h2>Leaderboard and XP</h2>
+      <p>XP and leaderboard rankings are for fun — they have no monetary value and may be reset between festival years.</p>
+
+      <h2>Liability</h2>
+      <p>QCMM provides the platform as-is. We are not responsible for loss of data, account access issues, or events beyond our control. The festival itself is a separate entity from the pin quest platform.</p>
+
+      <h2>Changes</h2>
+      <p>We may update these terms. Continued use of the platform after changes constitutes acceptance.</p>
+
+      <h2>Contact</h2>
+      <p>Questions? Email <a href="mailto:hello@qcmm.app">hello@qcmm.app</a>.</p>
+    </div>
+  </section>
+</PageLayout>

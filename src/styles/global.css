@@ -10,6 +10,7 @@
 @import './tokens/spacing.css';
 
 /* Self-hosted fonts via Fontsource (CSP-safe, no external requests) */
+@import '@fontsource-variable/inter';
 @import '@fontsource-variable/manrope';
 @import '@fontsource-variable/outfit';
 @import '@fontsource-variable/jetbrains-mono';
@@ -166,6 +167,8 @@
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    font-variation-settings: normal;
     overflow-x: clip;
   }
 
@@ -188,8 +191,9 @@
     -webkit-text-fill-color: currentColor;
   }
 
-  h1, h2 { font-weight: 700; }
-  h3      { font-weight: 600; }
+  h1          { font-weight: 800; }
+  h2          { font-weight: 700; }
+  h3          { font-weight: 600; }
   h4, h5, h6 { font-weight: 500; }
 
   /* Paragraphs inherit color for flexibility in dark sections */

@@ -1,0 +1,111 @@
+---
+/**
+ * Password reset landing page.
+ * Supabase redirects here after the user clicks the reset-password email link.
+ */
+import PageLayout from '@/layouts/PageLayout.astro';
+import Badge from '@/components/ui/data-display/Badge/Badge.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+---
+<PageLayout
+  title="Reset your password — QCMM"
+  description="Set a new password for your QCMM account."
+>
+  <section class="py-24 flex flex-col items-center justify-center min-h-[60vh] px-6">
+    <div class="w-full max-w-sm flex flex-col gap-6">
+      <div class="text-center">
+        <Badge variant="brand" pill class="mb-4">
+          <Icon name="lock" size="sm" />
+          New Password
+        </Badge>
+        <h1 class="font-display text-3xl font-bold text-foreground mb-2">Reset your password</h1>
+        <p class="text-foreground-muted text-sm">Enter a new password for your QCMM account.</p>
+      </div>
+
+      <div class="bg-[var(--background)] border border-[var(--border)] rounded-2xl p-6 shadow-[var(--theme-shadow-md)]">
+        <form id="reset-form" class="flex flex-col gap-4">
+          <div class="space-y-1.5">
+            <label for="password" class="block text-sm font-medium text-foreground">New Password</label>
+            <input
+              id="password"
+              type="password"
+              required
+              minlength="8"
+              placeholder="Min. 8 characters"
+              autocomplete="new-password"
+              class="w-full rounded-xl border border-[var(--input-border)] bg-[var(--input-bg)] py-2.5 px-4 text-sm text-foreground placeholder:text-[var(--foreground-subtle)] focus:border-[var(--input-focus)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)]/20 transition-colors"
+            />
+          </div>
+          <div class="space-y-1.5">
+            <label for="confirm" class="block text-sm font-medium text-foreground">Confirm Password</label>
+            <input
+              id="confirm"
+              type="password"
+              required
+              minlength="8"
+              placeholder="Repeat password"
+              autocomplete="new-password"
+              class="w-full rounded-xl border border-[var(--input-border)] bg-[var(--input-bg)] py-2.5 px-4 text-sm text-foreground placeholder:text-[var(--foreground-subtle)] focus:border-[var(--input-focus)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)]/20 transition-colors"
+            />
+          </div>
+
+          <div id="error-msg" class="hidden rounded-xl bg-[var(--error-light)] px-4 py-2.5 text-sm text-[var(--destructive)]"></div>
+          <div id="success-msg" class="hidden rounded-xl bg-[var(--success-light)] px-4 py-2.5 text-sm text-foreground"></div>
+
+          <button
+            type="submit"
+            id="submit-btn"
+            class="w-full flex items-center justify-center gap-2 rounded-xl bg-[var(--accent)] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[var(--accent-hover)] transition-colors disabled:opacity-60"
+          >
+            Set New Password
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+</PageLayout>
+
+<script>
+  import { createClient } from '@supabase/supabase-js';
+
+  const supabase = createClient(
+    import.meta.env.PUBLIC_SUPABASE_URL,
+    import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
+  );
+
+  const form = document.getElementById('reset-form') as HTMLFormElement;
+  const errorMsg = document.getElementById('error-msg')!;
+  const successMsg = document.getElementById('success-msg')!;
+  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errorMsg.classList.add('hidden');
+    successMsg.classList.add('hidden');
+
+    const password = (document.getElementById('password') as HTMLInputElement).value;
+    const confirm = (document.getElementById('confirm') as HTMLInputElement).value;
+
+    if (password !== confirm) {
+      errorMsg.textContent = 'Passwords do not match.';
+      errorMsg.classList.remove('hidden');
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Saving…';
+
+    const { error } = await supabase.auth.updateUser({ password });
+    if (error) {
+      errorMsg.textContent = error.message;
+      errorMsg.classList.remove('hidden');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Set New Password';
+    } else {
+      successMsg.textContent = 'Password updated! Redirecting to your profile…';
+      successMsg.classList.remove('hidden');
+      form.reset();
+      setTimeout(() => { window.location.href = '/profile'; }, 1500);
+    }
+  });
+</script>

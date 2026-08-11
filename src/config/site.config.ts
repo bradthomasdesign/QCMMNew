@@ -120,14 +120,13 @@ export interface SiteConfig {
 }
 
 const siteConfig: SiteConfig = {
-  name: 'Brad Thomas',
+  name: 'QCMM',
   description:
-    'Information Architect & UX Principal with 20+ years of design experience. Visual storyteller translating complexity into clarity — from print and identity to web and digital experience design.',
-  url: SITE_URL || 'https://bradleyt.com',
+    'Discover Staunton, VA through a location-based adventure. Check in at local landmarks, earn XP, explore local lore, and connect with your community.',
+  url: SITE_URL || 'https://qcmm.app',
   ogImage: '/og-default.svg',
-  author: 'Brad Thomas',
-  email: 'brad@bradthomas.io',
-  phone: '704.738.3481',
+  author: 'QCMM Team',
+  email: 'hello@qcmm.app',
   address: {
     street: '',
     city: 'Staunton',
@@ -135,36 +134,26 @@ const siteConfig: SiteConfig = {
     zip: '',
     country: 'USA',
   },
-  socialLinks: [
-    'https://linkedin.com/in/bradthomasnc',
-    'https://bradthomas.io',
-  ],
-  twitter: {
-    site: '',
-    creator: '',
-  },
+  socialLinks: [],
   verification: {
     google: GOOGLE_SITE_VERIFICATION,
     bing: BING_SITE_VERIFICATION,
   },
-  authorImage: '/avatar.svg',
-  blogImageOverlay: true,
+  blogImageOverlay: false,
   articleFeatures: {
     toc: {
-      enabled: true,
-      layout: 'auto',
-      sidebarPosition: 'left',
-      minHeadings: 3,
-      maxDepth: 3,
+      enabled: false,
     },
     comments: {
-      enabled: true,
+      // Giscus needs a QCMM-specific repo configured at https://giscus.app
+      // Once set up, enable this and fill in repo/repoId/categoryId below.
+      enabled: false,
       provider: 'giscus',
       giscus: {
-        repo: 'bradthomasdesign/btd',
-        repoId: 'R_kgDOSxaUtw',
+        repo: 'bradthomasdesign/markur-pin-quest',
+        repoId: '',
         category: 'General',
-        categoryId: 'DIC_kwDOSxaUt84C-hng',
+        categoryId: '',
         mapping: 'pathname',
         strict: false,
         reactionsEnabled: true,
@@ -178,15 +167,15 @@ const siteConfig: SiteConfig = {
   i18n: i18nConfig,
   branding: {
     logo: {
-      alt: 'Brad Thomas',
+      alt: 'QCMM',
       imageUrl: '/favicon.svg',
     },
     favicon: {
       svg: '/favicon.svg',
     },
     colors: {
-      themeColor: '#3b82f6',
-      backgroundColor: '#ffffff',
+      themeColor: '#a855f7',
+      backgroundColor: '#181410',
     },
   },
 };

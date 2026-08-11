@@ -2,17 +2,21 @@ import { config, collection, fields } from '@keystatic/core';
 
 export default config({
   storage: {
-    kind: 'github',
-    repo: { owner: 'bradthomasdesign', name: 'btd' },
+    // Use 'local' for development. Switch to 'github' for production
+    // once a QCMM-specific GitHub OAuth app is created.
+    kind: 'local',
+    // Production config (requires KEYSTATIC_GITHUB_CLIENT_ID etc. in .env):
+    // kind: 'github',
+    // repo: { owner: 'bradthomasdesign', name: 'markur-pin-quest' },
   },
 
   ui: {
-    brand: { name: 'Brad Thomas — CMS' },
+    brand: { name: 'QCMM — CMS' },
   },
 
   collections: {
     blog: collection({
-      label: 'Blog Posts',
+      label: 'QCMM News',
       slugField: 'title',
       path: 'src/content/blog/en/*',
       format: { contentField: 'body' },
@@ -31,7 +35,7 @@ export default config({
           validation: { isRequired: true },
         }),
         updatedAt: fields.date({ label: 'Updated Date' }),
-        author: fields.text({ label: 'Author', defaultValue: 'Brad Thomas' }),
+        author: fields.text({ label: 'Author', defaultValue: 'QCMM Team' }),
         image: fields.image({
           label: 'Cover Image',
           directory: 'src/assets/blog',
@@ -44,17 +48,6 @@ export default config({
         }),
         featured: fields.checkbox({ label: 'Featured', defaultValue: false }),
         draft: fields.checkbox({ label: 'Draft', defaultValue: false }),
-        toc: fields.checkbox({ label: 'Show Table of Contents' }),
-        comments: fields.checkbox({ label: 'Show Comments' }),
-        locale: fields.select({
-          label: 'Locale',
-          options: [
-            { label: 'English', value: 'en' },
-            { label: 'Spanish', value: 'es' },
-            { label: 'French', value: 'fr' },
-          ],
-          defaultValue: 'en',
-        }),
         body: fields.mdx({ label: 'Body' }),
       },
     }),
