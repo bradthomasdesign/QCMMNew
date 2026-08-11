@@ -34,23 +34,21 @@ export default function LocationStats({ locationId }: Props) {
   useEffect(() => {
     async function load() {
       const [locRes, pinRes] = await Promise.all([
-        supabase
-          .from('locations')
-          .select('page_views')
-          .eq('id', locationId)
-          .single(),
-        supabase
-          .from('pins')
-          .select('pinned_at, profiles(username, full_name)')
-          .eq('location_id', locationId)
-          .order('pinned_at', { ascending: false })
-          .limit(1)
-          .maybeSingle(),
+        supabase.from('locations').select('page_views').eq('id', locationId).single(),
+        supabase.from('pins').select('pinned_at, user_id').eq('location_id', locationId).order('pinned_at', { ascending: false }).limit(1).maybeSingle(),
       ]);
 
-      const pin = pinRes.data as any;
-      const profile = pin?.profiles;
-      const lastUser = profile?.username ?? profile?.full_name ?? null;
+      const pin = pinRes.data;
+      let lastUser: string | null = null;
+
+      if (pin?.user_id) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('username, full_name')
+          .eq('user_id', pin.user_id)
+          .maybeSingle();
+        lastUser = profile?.username ?? profile?.full_name ?? 'Explorer';
+      }
 
       setStats({
         pageViews: locRes.data?.page_views ?? null,
