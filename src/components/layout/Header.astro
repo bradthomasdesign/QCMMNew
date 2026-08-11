@@ -30,6 +30,7 @@ import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import Logo from '@/components/ui/marketing/Logo/Logo.astro';
 import ThemeModeDropdown from '@/components/layout/ThemeModeDropdown.astro';
 import ThemeSelector from '@/components/layout/ThemeSelector.astro';
+import AuthHeaderButton from '@/components/layout/AuthHeaderButton';
 import ThemeSelectorDropdown from '@/components/layout/ThemeSelectorDropdown.astro';
 import LanguageSwitcher from '@/components/layout/LanguageSwitcher.astro';
 import siteConfig from '@/config/site.config';
@@ -248,6 +249,8 @@ const buttonId = `${menuId}-button`;
           <slot name="actions" />
         ) : (
           <>
+            <AuthHeaderButton client:load />
+
             {showThemeToggle && (
               <div class="flex">
                 <ThemeModeDropdown class={isFloating ? 'hdr-invert-text' : undefined} />
