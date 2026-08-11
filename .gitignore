@@ -63,3 +63,5 @@ dark-mode-sessionstorage.png
 domain-email-vercel-setup.png
 why-i-build-with-astro.png
 
+.vercel
+.env*
