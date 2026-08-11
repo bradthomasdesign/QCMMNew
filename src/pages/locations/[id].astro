@@ -8,6 +8,7 @@ import Button from '@/components/ui/form/Button/Button.astro';
 import LocationDiscussion from '@/components/locations/LocationDiscussion';
 import MiniMap from '@/components/locations/MiniMap';
 import CheckInButton from '@/components/locations/CheckInButton';
+import LocationStats from '@/components/locations/LocationStats';
 
 export async function getStaticPaths() {
   const supabase = createClient(
@@ -125,13 +126,6 @@ const locationLine = [location.state, location.country].filter(Boolean).join(', 
         <Card padding="sm">
           <h2 class="text-xs font-semibold text-foreground-muted uppercase tracking-wide mb-3">Location Details</h2>
           <dl class="space-y-2.5">
-            {locationLine && (
-              <div class="flex items-center gap-2 text-sm">
-                <Icon name="globe" size="sm" class="text-foreground-subtle shrink-0" />
-                <dt class="text-foreground-muted shrink-0">Region</dt>
-                <dd class="ml-auto text-xs text-foreground-muted">{locationLine}</dd>
-              </div>
-            )}
             <div class="flex items-center gap-2 text-sm">
               <Icon name="map-pin" size="sm" class="text-foreground-subtle shrink-0" />
               <dt class="text-foreground-muted shrink-0">Coordinates</dt>
@@ -148,12 +142,10 @@ const locationLine = [location.state, location.country].filter(Boolean).join(', 
                 </dd>
               </div>
             )}
-            <div class="flex items-center gap-2 text-sm">
-              <Icon name={location.is_secret ? 'lock' : 'unlock'} size="sm" class="text-foreground-subtle shrink-0" />
-              <dt class="text-foreground-muted shrink-0">Visibility</dt>
-              <dd class="ml-auto text-xs text-foreground-muted">{location.is_secret ? 'Secret' : 'Public'}</dd>
-            </div>
           </dl>
+          <div class="mt-2.5 pt-2.5 border-t border-[var(--border)]">
+            <LocationStats locationId={location.id} client:load />
+          </div>
         </Card>
 
         {location.reward_description && (
