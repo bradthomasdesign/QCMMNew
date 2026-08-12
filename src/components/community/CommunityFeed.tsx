@@ -27,6 +27,15 @@ interface Post {
   user_id: string;
   profiles: { username: string | null; avatar_url: string | null } | null;
   post_likes: { id: string }[];
+  post_comments: { id: string }[];
+}
+
+interface Comment {
+  id: string;
+  content: string;
+  created_at: string;
+  user_id: string;
+  profiles: { username: string | null; avatar_url: string | null } | null;
 }
 
 function timeAgo(iso: string) {
@@ -37,6 +46,14 @@ function timeAgo(iso: string) {
   const h = Math.floor(m / 60);
   if (h < 24) return `${h}h ago`;
   return `${Math.floor(h / 24)}d ago`;
+}
+
+function Avatar({ username }: { username: string | null }) {
+  return (
+    <div className="w-7 h-7 shrink-0 rounded-full bg-gradient-to-br from-[var(--accent)]/30 to-[var(--accent)]/10 flex items-center justify-center text-[10px] font-bold text-[var(--accent)]">
+      {(username ?? '?')[0].toUpperCase()}
+    </div>
+  );
 }
 
 export default function CommunityFeed() {
@@ -51,6 +68,12 @@ export default function CommunityFeed() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Reply state
+  const [expandedPost, setExpandedPost] = useState<string | null>(null);
+  const [replies, setReplies] = useState<Record<string, Comment[]>>({});
+  const [replyText, setReplyText] = useState('');
+  const [submittingReply, setSubmittingReply] = useState(false);
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setUser(data.session?.user ?? null));
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session) =>
@@ -63,7 +86,7 @@ export default function CommunityFeed() {
     setLoading(true);
     let query = supabase
       .from('message_posts')
-      .select('id, title, content, created_at, category_id, user_id, profiles(username, avatar_url), post_likes(id)')
+      .select('id, title, content, created_at, category_id, user_id, profiles(username, avatar_url), post_likes(id), post_comments(id)')
       .eq('experience_id', QCMM_EXPERIENCE_ID)
       .order('created_at', { ascending: false })
       .limit(50);
@@ -78,6 +101,42 @@ export default function CommunityFeed() {
   }, [activeCategory]);
 
   useEffect(() => { fetchPosts(); }, [fetchPosts]);
+
+  async function fetchReplies(postId: string) {
+    const { data } = await supabase
+      .from('post_comments')
+      .select('id, content, created_at, user_id, profiles(username, avatar_url)')
+      .eq('post_id', postId)
+      .is('parent_id', null)
+      .order('created_at', { ascending: true });
+    setReplies(prev => ({ ...prev, [postId]: (data as unknown as Comment[]) ?? [] }));
+  }
+
+  async function toggleReplies(postId: string) {
+    if (expandedPost === postId) {
+      setExpandedPost(null);
+      setReplyText('');
+    } else {
+      setExpandedPost(postId);
+      if (!replies[postId]) await fetchReplies(postId);
+    }
+  }
+
+  async function submitReply(postId: string) {
+    if (!user || !replyText.trim()) return;
+    setSubmittingReply(true);
+    const { error: err } = await supabase.from('post_comments').insert({
+      post_id: postId,
+      user_id: user.id,
+      content: replyText.trim(),
+    });
+    if (!err) {
+      setReplyText('');
+      await fetchReplies(postId);
+      fetchPosts();
+    }
+    setSubmittingReply(false);
+  }
 
   async function submitPost(e: React.FormEvent) {
     e.preventDefault();
@@ -241,6 +300,9 @@ export default function CommunityFeed() {
           {posts.map((post) => {
             const likes = post.post_likes?.length ?? 0;
             const likedByMe = user && post.post_likes?.some((l: any) => l.user_id === user.id);
+            const replyCount = post.post_comments?.length ?? 0;
+            const isExpanded = expandedPost === post.id;
+            const threadReplies = replies[post.id] ?? [];
 
             return (
               <article key={post.id} className="py-4 first:pt-0">
@@ -268,12 +330,13 @@ export default function CommunityFeed() {
                     )}
                     <p className="text-sm text-[var(--foreground-secondary)] leading-relaxed">{post.content}</p>
 
-                    <div className="mt-2">
+                    {/* Post actions */}
+                    <div className="mt-2 flex items-center gap-1 -ml-2">
                       <button
                         onClick={() => toggleLike(post.id)}
                         disabled={!user}
                         className={[
-                          'inline-flex items-center gap-1.5 text-xs transition-colors rounded-lg px-2 py-1 -ml-2',
+                          'inline-flex items-center gap-1.5 text-xs transition-colors rounded-lg px-2 py-1',
                           likedByMe
                             ? 'text-[var(--accent)]'
                             : 'text-[var(--foreground-muted)] hover:text-[var(--accent)]',
@@ -282,7 +345,85 @@ export default function CommunityFeed() {
                         <Heart size={12} className={likedByMe ? 'fill-current' : ''} />
                         {likes > 0 && <span>{likes}</span>}
                       </button>
+
+                      <button
+                        onClick={() => toggleReplies(post.id)}
+                        className={[
+                          'inline-flex items-center gap-1.5 text-xs transition-colors rounded-lg px-2 py-1',
+                          isExpanded
+                            ? 'text-[var(--accent)]'
+                            : 'text-[var(--foreground-muted)] hover:text-[var(--accent)]',
+                        ].join(' ')}
+                      >
+                        <MessageSquare size={12} />
+                        {replyCount > 0
+                          ? <span>{replyCount} {replyCount === 1 ? 'reply' : 'replies'}</span>
+                          : <span>Reply</span>
+                        }
+                      </button>
                     </div>
+
+                    {/* Replies thread */}
+                    {isExpanded && (
+                      <div className="mt-3 pl-3 border-l-2 border-[var(--border)] flex flex-col gap-3">
+                        {/* Existing replies */}
+                        {threadReplies.length > 0 ? (
+                          threadReplies.map((reply) => (
+                            <div key={reply.id} className="flex items-start gap-2">
+                              <Avatar username={reply.profiles?.username ?? null} />
+                              <div className="min-w-0 flex-1">
+                                <div className="flex items-center gap-2 mb-0.5">
+                                  <span className="text-xs font-semibold text-[var(--foreground)]">
+                                    {reply.profiles?.username ?? 'Member'}
+                                  </span>
+                                  <span className="text-[10px] text-[var(--foreground-subtle)]">
+                                    {timeAgo(reply.created_at)}
+                                  </span>
+                                </div>
+                                <p className="text-xs text-[var(--foreground-secondary)] leading-relaxed">
+                                  {reply.content}
+                                </p>
+                              </div>
+                            </div>
+                          ))
+                        ) : (
+                          <p className="text-xs text-[var(--foreground-subtle)] italic">No replies yet.</p>
+                        )}
+
+                        {/* Reply compose */}
+                        {user ? (
+                          <div className="flex items-start gap-2 pt-1">
+                            <Avatar username={user.email ?? null} />
+                            <div className="flex-1 flex gap-2">
+                              <textarea
+                                value={replyText}
+                                onChange={(e) => setReplyText(e.target.value)}
+                                onKeyDown={(e) => {
+                                  if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) submitReply(post.id);
+                                }}
+                                rows={1}
+                                placeholder="Write a reply…"
+                                className="flex-1 rounded-xl border border-[var(--input-border)] bg-[var(--input-bg)] px-3 py-1.5 text-xs text-[var(--foreground)] placeholder:text-[var(--foreground-subtle)] focus:border-[var(--input-focus)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)]/20 transition-colors resize-none"
+                              />
+                              <button
+                                onClick={() => submitReply(post.id)}
+                                disabled={submittingReply || !replyText.trim()}
+                                className="shrink-0 inline-flex items-center justify-center w-8 h-8 rounded-xl bg-[var(--accent)] text-white hover:bg-[var(--accent-hover)] disabled:opacity-40 transition-colors self-end"
+                              >
+                                {submittingReply
+                                  ? <Loader2 size={12} className="animate-spin" />
+                                  : <Send size={12} />
+                                }
+                              </button>
+                            </div>
+                          </div>
+                        ) : (
+                          <a href="/auth" className="text-xs text-[var(--accent)] hover:underline">
+                            Sign in to reply
+                          </a>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
               </article>
