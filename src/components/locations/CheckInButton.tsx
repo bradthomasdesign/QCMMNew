@@ -39,22 +39,22 @@ export default function CheckInButton({ locationId, locationName, characterSlugs
     });
   }, [locationId]);
 
-  async function handleCheckIn() {
+  function handleCheckIn() {
     if (!userId) return;
-    setState('checking-in');
 
-    const { error } = await supabase.from('pins').insert({
-      user_id: userId,
-      location_id: locationId,
-    });
+    // Optimistic: show success immediately — DB triggers on pins make the
+    // insert slow, so don't block the UI on the round-trip.
+    setState('success');
 
-    if (error) {
-      setErrorMsg(error.message);
-      setState('error');
-      return;
-    }
+    supabase.from('pins').insert({ user_id: userId, location_id: locationId })
+      .then(({ error }) => {
+        // 23505 = unique_violation (already pinned) — treat as success
+        if (error && error.code !== '23505') {
+          setErrorMsg(error.message);
+          setState('error');
+        }
+      });
 
-    // Fire XP award and character discoveries without awaiting
     supabase.rpc('award_xp', {
       p_user_id: userId,
       p_action: 'checkin',
@@ -68,8 +68,6 @@ export default function CheckInButton({ locationId, locationName, characterSlugs
         { onConflict: 'user_id,character_slug', ignoreDuplicates: true },
       ).catch(() => {});
     }
-
-    setState('success');
   }
 
   if (state === 'loading') return null;

@@ -74,35 +74,34 @@ export default function CheckInFlow() {
     init();
   }, []);
 
-  async function handleCheckIn() {
+  function handleCheckIn() {
     if (!user || !location) return;
-    setState('checking-in');
 
-    const { error } = await supabase.from('pins').insert({
-      user_id: user.id,
-      location_id: location.id,
-    });
+    // Optimistic: show success immediately — DB triggers on pins make the
+    // insert slow, so don't block the UI on the round-trip.
+    setState('success');
 
-    if (error) {
-      setErrorMsg(error.message);
-      setState('error');
-    } else {
-      // Fire XP award and character discoveries without awaiting
-      supabase.rpc('award_xp', {
-        p_user_id: user.id,
-        p_action: 'checkin',
-        p_xp_amount: XP_PER_CHECKIN,
-        p_description: `Checked in at ${location.name}`,
-      }).catch(() => {});
+    supabase.from('pins').insert({ user_id: user.id, location_id: location.id })
+      .then(({ error }) => {
+        // 23505 = unique_violation (already pinned) — treat as success
+        if (error && error.code !== '23505') {
+          setErrorMsg(error.message);
+          setState('error');
+        }
+      });
 
-      if (location.character_slugs?.length > 0) {
-        supabase.from('user_characters').upsert(
-          location.character_slugs.map(slug => ({ user_id: user.id, character_slug: slug, location_id: location.id })),
-          { onConflict: 'user_id,character_slug', ignoreDuplicates: true },
-        ).catch(() => {});
-      }
+    supabase.rpc('award_xp', {
+      p_user_id: user.id,
+      p_action: 'checkin',
+      p_xp_amount: XP_PER_CHECKIN,
+      p_description: `Checked in at ${location.name}`,
+    }).catch(() => {});
 
-      setState('success');
+    if (location.character_slugs?.length > 0) {
+      supabase.from('user_characters').upsert(
+        location.character_slugs.map(slug => ({ user_id: user.id, character_slug: slug, location_id: location.id })),
+        { onConflict: 'user_id,character_slug', ignoreDuplicates: true },
+      ).catch(() => {});
     }
   }
 
