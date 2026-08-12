@@ -120,7 +120,7 @@ export interface SiteConfig {
 }
 
 const siteConfig: SiteConfig = {
-  name: 'QCMM',
+  name: 'QCMM.app',
   description:
     'Discover Staunton, VA through a location-based adventure. Check in at local landmarks, earn XP, explore local lore, and connect with your community.',
   url: SITE_URL || 'https://qcmm.app',
