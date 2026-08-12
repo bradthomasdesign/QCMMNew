@@ -8,8 +8,8 @@ import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import LetterGlitchBand from '@/components/patterns/LetterGlitchBand.astro';
 ---
 <PageLayout
-  title="About — Queen City Mischief & Magic"
-  description="Queen City Mischief & Magic is a free, volunteer-run festival celebrating magic across all forms and fandoms, held every fall in downtown Staunton, Virginia."
+  title="Queen City Mischief & Magic"
+  description="A free, volunteer-run festival celebrating magic across all forms and fandoms held every fall in the heart of historic downtown Staunton, Virginia."
 >
   <Hero layout="centered" size="sm" class="isolate">
     <Badge slot="badge" variant="brand" pill>
@@ -21,8 +21,14 @@ import LetterGlitchBand from '@/components/patterns/LetterGlitchBand.astro';
       <span class="text-brand-500 [-webkit-text-fill-color:var(--color-brand-500)]">Mischief &amp; Magic</span>
     </h1>
     <p slot="description">
-      A free, volunteer-run festival celebrating magic across all forms and fandoms — held every fall in the heart of historic downtown Staunton, Virginia.
+      A free, volunteer-run festival celebrating magic across all forms and fandoms, held every fall in the heart of historic downtown Staunton, Virginia.
     </p>
+    <Fragment slot="actions">
+      <Button href="https://queencitymagic.com" variant="outline">
+        Visit the official site
+        <Icon name="arrow-right" size="sm" />
+      </Button>
+    </Fragment>
   </Hero>
 
   <!-- Stats -->
@@ -49,12 +55,12 @@ import LetterGlitchBand from '@/components/patterns/LetterGlitchBand.astro';
   <section class="py-16 bg-background border-t border-border">
     <div class="mx-auto max-w-4xl px-6 flex flex-col gap-12">
       <div class="flex flex-col items-center gap-4 text-center" data-reveal>
-        <Badge variant="brand" pill>The Pin Quest Platform</Badge>
+        <div class="flex justify-center"><Badge variant="brand" pill>About QCMM.app</Badge></div>
         <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
-          Built for exploration
+          A companion site built for exploration
         </h2>
         <p class="text-lg text-foreground-muted max-w-2xl">
-          QCMM turns downtown Staunton into the venue. Every alley, storefront, and plaza becomes part of the adventure.
+          Queen City Mischief & Magic turns downtown Staunton into the venue. QCMM.app turns every alley, storefront, and plaza into part of the adventure.
         </p>
       </div>
 
@@ -65,7 +71,7 @@ import LetterGlitchBand from '@/components/patterns/LetterGlitchBand.astro';
           </div>
           <h3 class="text-base font-semibold text-foreground">Location Check-Ins</h3>
           <p class="text-sm text-foreground-muted leading-relaxed mt-2">
-            Visit any festival spot and tap Check In — no app required. Your pin is recorded instantly and XP is added to your profile.
+            Visit any festival spot and tap Check In. No app required. Your pin is recorded instantly and XP is added to your profile.
           </p>
         </Card>
 
@@ -96,7 +102,7 @@ import LetterGlitchBand from '@/components/patterns/LetterGlitchBand.astro';
   <section class="py-16 bg-background-secondary border-t border-border">
     <div class="mx-auto max-w-4xl px-6 flex flex-col gap-8">
       <div class="flex flex-col items-center gap-4 text-center" data-reveal>
-        <Badge variant="brand" pill>The Festival</Badge>
+        <div class="flex justify-center"><Badge variant="brand" pill>The Festival</Badge></div>
         <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
           Magic lives in Staunton
         </h2>
@@ -105,13 +111,13 @@ import LetterGlitchBand from '@/components/patterns/LetterGlitchBand.astro';
       <Card variant="elevated" padding="lg" data-reveal>
         <div class="prose prose-invert max-w-none text-foreground-muted leading-relaxed space-y-4">
           <p>
-            Queen City Mischief &amp; Magic is Staunton's annual celebration of magic, mystery, and imagination. Named for Queen City — one of Staunton's many historical nicknames — the festival transforms downtown into a living playground for fans of all things magical, from wizarding worlds to stage magic to folklore and beyond.
+            Queen City Mischief &amp; Magic is Staunton's annual celebration of magic, mystery, and imagination. Named for Queen City, one of Staunton's many historical nicknames, the festival transforms downtown into a living playground for fans of all things magical, from wizarding worlds to stage magic to folklore and beyond.
           </p>
           <p>
             The festival is free to attend, free to explore, and entirely volunteer-run. It has grown year over year to welcome more than 20,000 visitors, all drawn to the charm of a historic Virginia city that feels like it was made for magic.
           </p>
           <p>
-            QCMM.app is the official pin quest platform for the festival — a digital adventure layer built on top of the real-world event. Collect pins at festival locations, connect with fellow attendees, and discover the hidden histories of the places you visit.
+            QCMM.app is the official pin quest platform for the festival, a digital adventure layer built on top of the real-world event. Collect pins at festival locations, connect with fellow attendees, and discover the hidden histories of the places you visit.
           </p>
         </div>
       </Card>
