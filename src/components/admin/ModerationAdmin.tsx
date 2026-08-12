@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
-import { Trash2, CheckCircle, Clock, AlertTriangle } from 'lucide-react';
+import { Trash2, CheckCircle, AlertTriangle } from 'lucide-react';
 
 const supabase = createClient(
   (import.meta as any).env.PUBLIC_SUPABASE_URL,
@@ -25,6 +25,7 @@ interface Flag {
   status: string;
   created_at: string;
   reporter: { username: string | null } | null;
+  contentSnippet?: string;
 }
 
 export default function ModerationAdmin() {
@@ -43,12 +44,40 @@ export default function ModerationAdmin() {
       .limit(100)
       .then(({ data }) => { setPosts((data as any) ?? []); setLoadingPosts(false); });
 
-    supabase
+    loadFlags();
+  }, []);
+
+  async function loadFlags() {
+    setLoadingFlags(true);
+    const { data } = await supabase
       .from('flagged_content')
       .select('id,content_id,content_type,reason,description,status,created_at,reporter:profiles!flagged_content_reporter_id_fkey(username)')
-      .order('created_at', { ascending: false })
-      .then(({ data }) => { setFlags((data as any) ?? []); setLoadingFlags(false); });
-  }, []);
+      .order('created_at', { ascending: false });
+
+    const rawFlags: Flag[] = (data as any) ?? [];
+
+    // Batch-fetch content snippets for post and comment flags
+    const postIds = rawFlags.filter(f => f.content_type === 'community_post').map(f => f.content_id);
+    const commentIds = rawFlags.filter(f => f.content_type === 'community_comment').map(f => f.content_id);
+
+    const contentMap: Record<string, string> = {};
+
+    await Promise.all([
+      postIds.length > 0
+        ? supabase.from('message_posts').select('id,content').in('id', postIds).then(({ data: rows }) => {
+            (rows ?? []).forEach((r: any) => { contentMap[r.id] = r.content; });
+          })
+        : Promise.resolve(),
+      commentIds.length > 0
+        ? supabase.from('post_comments').select('id,content').in('id', commentIds).then(({ data: rows }) => {
+            (rows ?? []).forEach((r: any) => { contentMap[r.id] = r.content; });
+          })
+        : Promise.resolve(),
+    ]);
+
+    setFlags(rawFlags.map(f => ({ ...f, contentSnippet: contentMap[f.content_id] })));
+    setLoadingFlags(false);
+  }
 
   function showToast(msg: string) {
     setToast(msg);
@@ -72,6 +101,22 @@ export default function ModerationAdmin() {
     if (!error) {
       setFlags(prev => prev.map(f => f.id === flag.id ? { ...f, status: 'resolved' } : f));
       showToast('Flag resolved');
+    }
+  }
+
+  async function deleteAndResolve(flag: Flag) {
+    const label = flag.content_type === 'community_post' ? 'post' : 'reply';
+    if (!confirm(`Delete this ${label} and resolve the flag? This cannot be undone.`)) return;
+
+    const table = flag.content_type === 'community_post' ? 'message_posts' : 'post_comments';
+    const { error } = await supabase.from(table).delete().eq('id', flag.content_id);
+    if (!error) {
+      await supabase
+        .from('flagged_content')
+        .update({ status: 'resolved', reviewed_at: new Date().toISOString() })
+        .eq('id', flag.id);
+      setFlags(prev => prev.map(f => f.id === flag.id ? { ...f, status: 'resolved', contentSnippet: undefined } : f));
+      showToast(`${label.charAt(0).toUpperCase() + label.slice(1)} deleted and flag resolved`);
     }
   }
 
@@ -171,37 +216,58 @@ export default function ModerationAdmin() {
           <div className="flex flex-col gap-3">
             {flags.map(flag => (
               <div key={flag.id} className={[
-                'rounded-xl border p-4 flex items-start gap-4',
+                'rounded-xl border p-4 flex flex-col gap-3',
                 flag.status === 'pending' ? 'border-amber-500/30 bg-amber-500/5' : 'border-[var(--border)] bg-[var(--background-secondary)]',
               ].join(' ')}>
-                <div className="mt-0.5 shrink-0">
-                  {flag.status === 'pending'
-                    ? <AlertTriangle size={16} className="text-amber-500" />
-                    : <CheckCircle size={16} className="text-green-500" />
-                  }
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-xs font-medium text-[var(--foreground)] uppercase tracking-wide">{flag.content_type}</span>
-                    <span className="text-xs text-[var(--foreground-muted)]">· {flag.reason.replace(/_/g, ' ')}</span>
-                    <span className="text-xs text-[var(--foreground-subtle)]">· reported by {flag.reporter?.username ?? 'unknown'}</span>
-                    <span className="text-xs text-[var(--foreground-subtle)]">· {fmt(flag.created_at)}</span>
+                <div className="flex items-start gap-3">
+                  <div className="mt-0.5 shrink-0">
+                    {flag.status === 'pending'
+                      ? <AlertTriangle size={16} className="text-amber-500" />
+                      : <CheckCircle size={16} className="text-green-500" />
+                    }
                   </div>
-                  {flag.description && (
-                    <p className="text-sm text-[var(--foreground-muted)] mt-1">{flag.description}</p>
-                  )}
-                  <p className="text-xs text-[var(--foreground-subtle)] mt-1 font-mono">ID: {flag.content_id}</p>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="text-xs font-medium text-[var(--foreground)] uppercase tracking-wide">
+                        {flag.content_type === 'community_post' ? 'Post' : flag.content_type === 'community_comment' ? 'Reply' : flag.content_type}
+                      </span>
+                      <span className="text-xs text-[var(--foreground-muted)]">· {flag.reason.replace(/_/g, ' ')}</span>
+                      <span className="text-xs text-[var(--foreground-subtle)]">· reported by {flag.reporter?.username ?? 'unknown'}</span>
+                      <span className="text-xs text-[var(--foreground-subtle)]">· {fmt(flag.created_at)}</span>
+                    </div>
+                    {flag.description && (
+                      <p className="text-sm text-[var(--foreground-muted)] mt-1">{flag.description}</p>
+                    )}
+                    {flag.contentSnippet ? (
+                      <p className="mt-2 text-sm text-[var(--foreground)] bg-[var(--background)] border border-[var(--border)] rounded-lg px-3 py-2 line-clamp-3">
+                        {flag.contentSnippet}
+                      </p>
+                    ) : flag.status !== 'resolved' ? (
+                      <p className="mt-2 text-xs text-[var(--foreground-subtle)] italic">Content no longer exists.</p>
+                    ) : null}
+                  </div>
                 </div>
+
                 {flag.status === 'pending' && (
-                  <button
-                    onClick={() => resolveFlag(flag)}
-                    className="shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-green-500/10 text-green-600 text-xs hover:bg-green-500/20 transition-colors"
-                  >
-                    <CheckCircle size={11} /> Resolve
-                  </button>
+                  <div className="flex gap-2 justify-end">
+                    <button
+                      onClick={() => resolveFlag(flag)}
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-green-500/10 text-green-600 text-xs hover:bg-green-500/20 transition-colors"
+                    >
+                      <CheckCircle size={11} /> Resolve
+                    </button>
+                    {flag.contentSnippet && (flag.content_type === 'community_post' || flag.content_type === 'community_comment') && (
+                      <button
+                        onClick={() => deleteAndResolve(flag)}
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-red-500/10 text-red-500 text-xs hover:bg-red-500/20 transition-colors"
+                      >
+                        <Trash2 size={11} /> Delete & Resolve
+                      </button>
+                    )}
+                  </div>
                 )}
                 {flag.status !== 'pending' && (
-                  <span className="shrink-0 text-xs text-[var(--foreground-subtle)]">Resolved</span>
+                  <p className="text-right text-xs text-[var(--foreground-subtle)]">Resolved</p>
                 )}
               </div>
             ))}

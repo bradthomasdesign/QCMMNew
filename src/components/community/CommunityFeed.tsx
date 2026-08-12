@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { createClient } from '@supabase/supabase-js';
-import { MessageSquare, Plus, Heart, Loader2, Send, X, ChevronDown } from 'lucide-react';
+import { MessageSquare, Plus, Heart, Loader2, Send, X, ChevronDown, Flag } from 'lucide-react';
 import type { User } from '@supabase/supabase-js';
 
 const supabase = createClient(
@@ -13,9 +13,18 @@ const QCMM_EXPERIENCE_ID = '25ed3174-a907-44b2-9a3c-e85136f3a47d';
 const CATEGORIES = [
   { id: 'all', name: 'All Posts' },
   { id: '0082d06e-717f-407e-af44-d77aa9c5ea1e', name: 'General Discussion' },
-  { id: '05da9043-a20f-4ee9-80bd-f801841c8173', name: 'Questions' },
+  { id: '05da9043-a20f-4ee9-80bd-f801841c8173', name: 'Question' },
   { id: '1370ed9e-8fe9-4014-93f5-76d682f60658', name: 'Festival Tips' },
   { id: '0af9e6ef-23c1-4ee8-ad27-4511099db5a9', name: 'Festival Feedback' },
+];
+
+const FLAG_REASONS = [
+  { value: 'spam', label: 'Spam' },
+  { value: 'harassment', label: 'Harassment' },
+  { value: 'inappropriate_content', label: 'Inappropriate content' },
+  { value: 'hate_speech', label: 'Hate speech' },
+  { value: 'misinformation', label: 'Misinformation' },
+  { value: 'other', label: 'Other' },
 ];
 
 interface Post {
@@ -36,6 +45,11 @@ interface Comment {
   created_at: string;
   user_id: string;
   profiles: { username: string | null; avatar_url: string | null } | null;
+}
+
+interface FlagTarget {
+  id: string;
+  type: 'community_post' | 'community_comment';
 }
 
 function timeAgo(iso: string) {
@@ -74,6 +88,13 @@ export default function CommunityFeed() {
   const [replyText, setReplyText] = useState('');
   const [submittingReply, setSubmittingReply] = useState(false);
 
+  // Flag state
+  const [flagTarget, setFlagTarget] = useState<FlagTarget | null>(null);
+  const [flagReason, setFlagReason] = useState('spam');
+  const [flagDesc, setFlagDesc] = useState('');
+  const [submittingFlag, setSubmittingFlag] = useState(false);
+  const [flaggedIds, setFlaggedIds] = useState<Set<string>>(new Set());
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setUser(data.session?.user ?? null));
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session) =>
@@ -103,13 +124,32 @@ export default function CommunityFeed() {
   useEffect(() => { fetchPosts(); }, [fetchPosts]);
 
   async function fetchReplies(postId: string) {
-    const { data } = await supabase
+    const { data: comments } = await supabase
       .from('post_comments')
-      .select('id, content, created_at, user_id, profiles(username, avatar_url)')
+      .select('id, content, created_at, user_id')
       .eq('post_id', postId)
       .is('parent_id', null)
       .order('created_at', { ascending: true });
-    setReplies(prev => ({ ...prev, [postId]: (data as unknown as Comment[]) ?? [] }));
+
+    if (!comments || comments.length === 0) {
+      setReplies(prev => ({ ...prev, [postId]: [] }));
+      return;
+    }
+
+    const userIds = [...new Set(comments.map((c: any) => c.user_id))];
+    const { data: profileRows } = await supabase
+      .from('profiles')
+      .select('user_id, username, avatar_url')
+      .in('user_id', userIds);
+
+    const profileMap = new Map((profileRows ?? []).map((p: any) => [p.user_id, p]));
+
+    const enriched = comments.map((c: any) => ({
+      ...c,
+      profiles: profileMap.get(c.user_id) ?? null,
+    }));
+
+    setReplies(prev => ({ ...prev, [postId]: enriched as Comment[] }));
   }
 
   async function toggleReplies(postId: string) {
@@ -176,8 +216,77 @@ export default function CommunityFeed() {
     fetchPosts();
   }
 
+  function openFlag(id: string, type: FlagTarget['type']) {
+    if (flaggedIds.has(id)) return;
+    setFlagTarget(flagTarget?.id === id ? null : { id, type });
+    setFlagReason('spam');
+    setFlagDesc('');
+  }
+
+  async function submitFlag() {
+    if (!user || !flagTarget) return;
+    setSubmittingFlag(true);
+    const { error: err } = await supabase.from('flagged_content').insert({
+      reporter_id: user.id,
+      content_type: flagTarget.type,
+      content_id: flagTarget.id,
+      reason: flagReason,
+      description: flagDesc.trim() || null,
+      status: 'pending',
+    });
+    if (!err) {
+      setFlaggedIds(prev => new Set(prev).add(flagTarget.id));
+      setFlagTarget(null);
+    }
+    setSubmittingFlag(false);
+  }
+
   const categoryName = (id: string | null) =>
     CATEGORIES.find((c) => c.id === id)?.name ?? 'General Discussion';
+
+  function FlagForm({ id, type }: { id: string; type: FlagTarget['type'] }) {
+    if (flagTarget?.id !== id || flagTarget.type !== type) return null;
+    return (
+      <div className="mt-2 rounded-xl border border-amber-500/30 bg-amber-500/5 p-3 flex flex-col gap-2">
+        <p className="text-xs font-semibold text-[var(--foreground)]">Report this {type === 'community_post' ? 'post' : 'reply'}</p>
+        <div className="relative">
+          <select
+            value={flagReason}
+            onChange={(e) => setFlagReason(e.target.value)}
+            className="w-full appearance-none rounded-lg border border-[var(--input-border)] bg-[var(--input-bg)] px-2.5 py-1.5 text-xs text-[var(--foreground)] focus:border-[var(--input-focus)] focus:outline-none pr-6"
+          >
+            {FLAG_REASONS.map((r) => (
+              <option key={r.value} value={r.value}>{r.label}</option>
+            ))}
+          </select>
+          <ChevronDown size={11} className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-[var(--foreground-muted)]" />
+        </div>
+        <textarea
+          value={flagDesc}
+          onChange={(e) => setFlagDesc(e.target.value)}
+          rows={2}
+          placeholder="Additional details (optional)"
+          className="rounded-lg border border-[var(--input-border)] bg-[var(--input-bg)] px-2.5 py-1.5 text-xs text-[var(--foreground)] placeholder:text-[var(--foreground-subtle)] focus:border-[var(--input-focus)] focus:outline-none resize-none"
+        />
+        <div className="flex justify-end gap-2">
+          <button
+            onClick={() => setFlagTarget(null)}
+            className="rounded-lg px-2.5 py-1 text-xs text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={submitFlag}
+            disabled={submittingFlag}
+            className="inline-flex items-center gap-1 rounded-lg bg-amber-500 px-2.5 py-1 text-xs font-semibold text-white hover:bg-amber-600 disabled:opacity-60 transition-colors"
+          >
+            {submittingFlag ? <Loader2 size={10} className="animate-spin" /> : <Flag size={10} />}
+            Submit Report
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-6">
@@ -303,6 +412,7 @@ export default function CommunityFeed() {
             const replyCount = post.post_comments?.length ?? 0;
             const isExpanded = expandedPost === post.id;
             const threadReplies = replies[post.id] ?? [];
+            const postFlagged = flaggedIds.has(post.id);
 
             return (
               <article key={post.id} className="py-4 first:pt-0">
@@ -361,31 +471,74 @@ export default function CommunityFeed() {
                           : <span>Reply</span>
                         }
                       </button>
+
+                      {user && (
+                        <button
+                          onClick={() => openFlag(post.id, 'community_post')}
+                          disabled={postFlagged}
+                          className={[
+                            'inline-flex items-center gap-1 text-xs transition-colors rounded-lg px-2 py-1 ml-auto',
+                            postFlagged
+                              ? 'text-amber-500 opacity-60 cursor-default'
+                              : flagTarget?.id === post.id
+                                ? 'text-amber-500'
+                                : 'text-[var(--foreground-subtle)] hover:text-amber-500',
+                          ].join(' ')}
+                        >
+                          <Flag size={11} />
+                          <span>{postFlagged ? 'Reported' : 'Flag'}</span>
+                        </button>
+                      )}
                     </div>
+
+                    {/* Post flag form */}
+                    <FlagForm id={post.id} type="community_post" />
 
                     {/* Replies thread */}
                     {isExpanded && (
                       <div className="mt-3 pl-3 border-l-2 border-[var(--border)] flex flex-col gap-3">
                         {/* Existing replies */}
                         {threadReplies.length > 0 ? (
-                          threadReplies.map((reply) => (
-                            <div key={reply.id} className="flex items-start gap-2">
-                              <Avatar username={reply.profiles?.username ?? null} />
-                              <div className="min-w-0 flex-1">
-                                <div className="flex items-center gap-2 mb-0.5">
-                                  <span className="text-xs font-semibold text-[var(--foreground)]">
-                                    {reply.profiles?.username ?? 'Member'}
-                                  </span>
-                                  <span className="text-[10px] text-[var(--foreground-subtle)]">
-                                    {timeAgo(reply.created_at)}
-                                  </span>
+                          threadReplies.map((reply) => {
+                            const replyFlagged = flaggedIds.has(reply.id);
+                            return (
+                              <div key={reply.id} className="flex items-start gap-2">
+                                <Avatar username={reply.profiles?.username ?? null} />
+                                <div className="min-w-0 flex-1">
+                                  <div className="flex items-center gap-2 mb-0.5">
+                                    <span className="text-xs font-semibold text-[var(--foreground)]">
+                                      {reply.profiles?.username ?? 'Member'}
+                                    </span>
+                                    <span className="text-[10px] text-[var(--foreground-subtle)]">
+                                      {timeAgo(reply.created_at)}
+                                    </span>
+                                    {user && (
+                                      <button
+                                        onClick={() => openFlag(reply.id, 'community_comment')}
+                                        disabled={replyFlagged}
+                                        className={[
+                                          'ml-auto inline-flex items-center gap-1 text-[10px] transition-colors rounded px-1.5 py-0.5',
+                                          replyFlagged
+                                            ? 'text-amber-500 opacity-60 cursor-default'
+                                            : flagTarget?.id === reply.id
+                                              ? 'text-amber-500'
+                                              : 'text-[var(--foreground-subtle)] hover:text-amber-500',
+                                        ].join(' ')}
+                                      >
+                                        <Flag size={9} />
+                                        <span>{replyFlagged ? 'Reported' : 'Flag'}</span>
+                                      </button>
+                                    )}
+                                  </div>
+                                  <p className="text-xs text-[var(--foreground-secondary)] leading-relaxed">
+                                    {reply.content}
+                                  </p>
+                                  {/* Reply flag form */}
+                                  <FlagForm id={reply.id} type="community_comment" />
                                 </div>
-                                <p className="text-xs text-[var(--foreground-secondary)] leading-relaxed">
-                                  {reply.content}
-                                </p>
                               </div>
-                            </div>
-                          ))
+                            );
+                          })
                         ) : (
                           <p className="text-xs text-[var(--foreground-subtle)] italic">No replies yet.</p>
                         )}
