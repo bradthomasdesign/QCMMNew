@@ -28,7 +28,7 @@ import Icon from '@/components/ui/primitives/Icon/Icon.astro';
   <section class="py-16 bg-background-secondary border-t border-border">
     <div class="mx-auto max-w-4xl px-6 flex flex-col gap-10">
       <div class="flex flex-col items-center gap-4 text-center" data-reveal>
-        <Badge variant="brand" pill>The process</Badge>
+        <div class="flex justify-center"><Badge variant="brand" pill>The process</Badge></div>
         <h2 class="font-display text-3xl font-bold text-foreground">Three simple steps</h2>
       </div>
 
@@ -39,7 +39,7 @@ import Icon from '@/components/ui/primitives/Icon/Icon.astro';
             <div>
               <h3 class="text-lg font-semibold text-foreground mb-2">Create a free account</h3>
               <p class="text-foreground-muted leading-relaxed">
-                Sign up at qcmm.app — all you need is an email address. Already have an account? Just sign in. Your profile tracks every pin you collect and your XP total.
+                Sign up at qcmm.app. All you need is an email address. Already have an account? Just sign in. Your profile tracks every pin you collect and your XP total.
               </p>
             </div>
           </div>
@@ -51,7 +51,7 @@ import Icon from '@/components/ui/primitives/Icon/Icon.astro';
             <div>
               <h3 class="text-lg font-semibold text-foreground mb-2">Find locations across downtown</h3>
               <p class="text-foreground-muted leading-relaxed">
-                Festival spots are spread across downtown Staunton. Check the <a href="/locations" class="text-brand-500 hover:underline">Locations map</a> to plan your route, or discover them as you wander. Keep your eyes open — some are tucked away in plain sight.
+                Festival spots are spread across downtown Staunton. Check the <a href="/locations" class="text-brand-500 hover:underline">Locations map</a> to plan your route, or discover them as you wander. Keep your eyes open. Some are tucked away in plain sight.
               </p>
             </div>
           </div>
@@ -63,7 +63,7 @@ import Icon from '@/components/ui/primitives/Icon/Icon.astro';
             <div>
               <h3 class="text-lg font-semibold text-foreground mb-2">Check in, earn your pin</h3>
               <p class="text-foreground-muted leading-relaxed">
-                Open the location page on your phone and tap Check In. Your pin is recorded instantly and XP is added to your profile. No app needed — it works entirely in your browser.
+                Open the location page on your phone and tap Check In. Your pin is recorded instantly and XP is added to your profile. No app needed. It works entirely in your browser.
               </p>
             </div>
           </div>
@@ -76,16 +76,16 @@ import Icon from '@/components/ui/primitives/Icon/Icon.astro';
   <section class="py-16 bg-background border-t border-border">
     <div class="mx-auto max-w-4xl px-6 flex flex-col gap-8">
       <div class="flex flex-col items-center gap-4 text-center" data-reveal>
-        <Badge variant="brand" pill>Tips</Badge>
+        <div class="flex justify-center"><Badge variant="brand" pill>Tips</Badge></div>
         <h2 class="font-display text-3xl font-bold text-foreground">Check-in tips</h2>
       </div>
 
       <div class="grid gap-4 sm:grid-cols-2">
         {[
-          { icon: 'smartphone', text: "No app to download — QCMM works entirely in your phone's browser." },
+          { icon: 'smartphone', text: "No app to download. QCMM works entirely in your phone's browser." },
           { icon: 'log-in', text: "Sign in before you head out so your check-ins record the moment you tap the button." },
           { icon: 'wifi', text: "Make sure you have a data connection when checking in. Check-ins won't queue offline." },
-          { icon: 'repeat', text: "Checking in to the same location twice is safe — you'll just see a friendly \"already checked in\" message." },
+          { icon: 'repeat', text: "Checking in to the same location twice is safe. You'll just see a friendly \"already checked in\" message." },
         ].map(({ icon, text }, i) => (
           <Card class="flex items-start gap-4" data-reveal data-reveal-delay={i}>
             <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0 mt-0.5">
@@ -102,7 +102,7 @@ import Icon from '@/components/ui/primitives/Icon/Icon.astro';
   <section class="py-16 bg-background-secondary border-t border-border">
     <div class="mx-auto max-w-4xl px-6 flex flex-col gap-8">
       <div class="flex flex-col items-center gap-4 text-center" data-reveal>
-        <Badge variant="brand" pill>FAQ</Badge>
+        <div class="flex justify-center"><Badge variant="brand" pill>FAQ</Badge></div>
         <h2 class="font-display text-3xl font-bold text-foreground">Common questions</h2>
       </div>
 
@@ -110,7 +110,7 @@ import Icon from '@/components/ui/primitives/Icon/Icon.astro';
         {[
           {
             q: 'Do I need to download an app?',
-            a: 'Nope. QCMM.app runs entirely in your mobile browser. No App Store, no Google Play — just visit and go.',
+            a: 'Nope. QCMM.app runs entirely in your mobile browser. No App Store, no Google Play. Just visit and go.',
           },
           {
             q: 'What exactly is a "pin"?',
@@ -118,7 +118,7 @@ import Icon from '@/components/ui/primitives/Icon/Icon.astro';
           },
           {
             q: 'Can I check in to the same location twice?',
-            a: "Each location records one pin per account. Checking in twice is harmless — it just won't add another pin.",
+            a: "Each location records one pin per account. Checking in twice is harmless. It just won't add another pin.",
           },
           {
             q: 'Is it free to sign up?',
@@ -126,11 +126,11 @@ import Icon from '@/components/ui/primitives/Icon/Icon.astro';
           },
           {
             q: 'What do I win?',
-            a: 'Your pins are displayed on your profile and the Members leaderboard. Organizers may announce prizes — keep an eye on the Community board for announcements.',
+            a: 'Your pins are displayed on your profile and the Members leaderboard. Organizers may announce prizes, so keep an eye on the Community board for announcements.',
           },
           {
             q: 'I tapped Check In but nothing happened. What do I do?',
-            a: 'Make sure you have a data connection and are signed in, then try again. If the problem continues, try a different browser — Chrome or Safari work best.',
+            a: 'Make sure you have a data connection and are signed in, then try again. If the problem continues, try a different browser. Chrome or Safari work best.',
           },
         ].map(({ q, a }, i) => (
           <Card variant="elevated" padding="lg" data-reveal data-reveal-delay={i % 3}>
