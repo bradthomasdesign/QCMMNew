@@ -1,0 +1,32 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import { Hero } from '@/components/hero';
+import Badge from '@/components/ui/data-display/Badge/Badge.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import RewardsCatalog from '@/components/gamification/RewardsCatalog';
+---
+
+<PageLayout
+  title="Rewards — QCMM"
+  description="Spend your XP on rewards from the QCMM merch store at Queen City Mischief & Magic."
+>
+  <Hero layout="centered" size="sm" class="isolate">
+    <Badge slot="badge" variant="brand" pill>
+      <Icon name="gift" size="sm" />
+      Rewards
+    </Badge>
+    <h1 slot="title">
+      <span class="text-foreground [-webkit-text-fill-color:currentColor]">Spend your</span><br />
+      <span class="text-brand-500 [-webkit-text-fill-color:var(--color-brand-500)]">XP.</span>
+    </h1>
+    <p slot="description">
+      Trade your earned XP for discount codes on QCMM merch. Codes are yours to keep.
+    </p>
+  </Hero>
+
+  <section class="py-16 bg-background border-t border-border">
+    <div class="mx-auto max-w-2xl px-6">
+      <RewardsCatalog client:load />
+    </div>
+  </section>
+</PageLayout>

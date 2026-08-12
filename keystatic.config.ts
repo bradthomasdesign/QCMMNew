@@ -47,5 +47,51 @@ export default config({
         body: fields.mdx({ label: 'Body' }),
       },
     }),
+
+    characters: collection({
+      label: 'Characters',
+      slugField: 'name',
+      path: 'src/content/characters/*',
+      format: { data: 'json' },
+      schema: {
+        name: fields.slug({
+          name: { label: 'Name', validation: { isRequired: true } },
+        }),
+        bio: fields.text({
+          label: 'Bio',
+          multiline: true,
+          validation: { isRequired: true },
+        }),
+        avatar: fields.image({
+          label: 'Avatar',
+          directory: 'src/assets/characters',
+          publicPath: '../../../assets/characters/',
+        }),
+        active: fields.checkbox({ label: 'Active', defaultValue: true }),
+      },
+    }),
+
+    locationCollections: collection({
+      label: 'Collections',
+      slugField: 'name',
+      path: 'src/content/collections/*',
+      format: { data: 'json' },
+      schema: {
+        name: fields.slug({
+          name: { label: 'Name', validation: { isRequired: true } },
+        }),
+        description: fields.text({
+          label: 'Description',
+          multiline: true,
+          validation: { isRequired: true },
+        }),
+        badgeImage: fields.image({
+          label: 'Badge Image',
+          directory: 'src/assets/collections',
+          publicPath: '../../../assets/collections/',
+        }),
+        active: fields.checkbox({ label: 'Active', defaultValue: true }),
+      },
+    }),
   },
 });

@@ -7,6 +7,8 @@ const supabase = createClient(
   (import.meta as any).env.PUBLIC_SUPABASE_ANON_KEY,
 );
 
+interface SlugOption { slug: string; name: string; }
+
 interface Location {
   id: string;
   name: string;
@@ -16,7 +18,8 @@ interface Location {
   is_active: boolean;
   is_secret: boolean;
   difficulty_level: number | null;
-  qr_token: string;
+  character_slugs: string[];
+  collection_slugs: string[];
 }
 
 interface EditState {
@@ -24,9 +27,58 @@ interface EditState {
   name: string;
   description: string;
   difficulty_level: string;
+  character_slugs: string[];
+  collection_slugs: string[];
 }
 
-export default function LocationsAdmin() {
+interface Props {
+  characterOptions?: SlugOption[];
+  collectionOptions?: SlugOption[];
+}
+
+function SlugCheckboxes({
+  label,
+  options,
+  selected,
+  onChange,
+}: {
+  label: string;
+  options: SlugOption[];
+  selected: string[];
+  onChange: (val: string[]) => void;
+}) {
+  if (options.length === 0) return null;
+  function toggle(slug: string) {
+    onChange(selected.includes(slug) ? selected.filter(s => s !== slug) : [...selected, slug]);
+  }
+  return (
+    <div className="mt-2">
+      <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--foreground-muted)] mb-1">{label}</p>
+      <div className="flex flex-wrap gap-1.5">
+        {options.map(o => {
+          const on = selected.includes(o.slug);
+          return (
+            <button
+              key={o.slug}
+              type="button"
+              onClick={() => toggle(o.slug)}
+              className={[
+                'px-2 py-0.5 rounded-full text-xs border transition-colors',
+                on
+                  ? 'border-[var(--accent)] bg-[var(--accent)]/10 text-[var(--accent)]'
+                  : 'border-[var(--border)] bg-[var(--background-secondary)] text-[var(--foreground-muted)] hover:border-[var(--accent)]/50',
+              ].join(' ')}
+            >
+              {o.name}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+export default function LocationsAdmin({ characterOptions = [], collectionOptions = [] }: Props) {
   const [locations, setLocations] = useState<Location[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -37,7 +89,7 @@ export default function LocationsAdmin() {
   useEffect(() => {
     supabase
       .from('locations')
-      .select('id,name,description,latitude,longitude,is_active,is_secret,difficulty_level,qr_token')
+      .select('id,name,description,latitude,longitude,is_active,is_secret,difficulty_level,character_slugs,collection_slugs')
       .order('name')
       .then(({ data }) => { setLocations(data ?? []); setLoading(false); });
   }, []);
@@ -48,10 +100,7 @@ export default function LocationsAdmin() {
   }
 
   async function toggleActive(loc: Location) {
-    const { error } = await supabase
-      .from('locations')
-      .update({ is_active: !loc.is_active })
-      .eq('id', loc.id);
+    const { error } = await supabase.from('locations').update({ is_active: !loc.is_active }).eq('id', loc.id);
     if (!error) {
       setLocations(prev => prev.map(l => l.id === loc.id ? { ...l, is_active: !l.is_active } : l));
       showToast(`${loc.name} ${loc.is_active ? 'deactivated' : 'activated'}`);
@@ -59,10 +108,7 @@ export default function LocationsAdmin() {
   }
 
   async function toggleSecret(loc: Location) {
-    const { error } = await supabase
-      .from('locations')
-      .update({ is_secret: !loc.is_secret })
-      .eq('id', loc.id);
+    const { error } = await supabase.from('locations').update({ is_secret: !loc.is_secret }).eq('id', loc.id);
     if (!error) {
       setLocations(prev => prev.map(l => l.id === loc.id ? { ...l, is_secret: !l.is_secret } : l));
       showToast(`${loc.name} marked ${loc.is_secret ? 'public' : 'secret'}`);
@@ -78,6 +124,8 @@ export default function LocationsAdmin() {
         name: editing.name.trim(),
         description: editing.description.trim() || null,
         difficulty_level: editing.difficulty_level ? parseInt(editing.difficulty_level) : null,
+        character_slugs: editing.character_slugs,
+        collection_slugs: editing.collection_slugs,
       })
       .eq('id', editing.id);
     setSaving(false);
@@ -87,15 +135,15 @@ export default function LocationsAdmin() {
         name: editing.name.trim(),
         description: editing.description.trim() || null,
         difficulty_level: editing.difficulty_level ? parseInt(editing.difficulty_level) : null,
+        character_slugs: editing.character_slugs,
+        collection_slugs: editing.collection_slugs,
       } : l));
       setEditing(null);
       showToast('Location saved');
     }
   }
 
-  const filtered = locations.filter(l =>
-    l.name.toLowerCase().includes(search.toLowerCase())
-  );
+  const filtered = locations.filter(l => l.name.toLowerCase().includes(search.toLowerCase()));
 
   const stats = {
     total: locations.length,
@@ -105,7 +153,6 @@ export default function LocationsAdmin() {
 
   return (
     <div className="flex flex-col gap-6">
-      {/* Toast */}
       {toast && (
         <div className="fixed bottom-6 right-6 z-50 bg-[var(--foreground)] text-[var(--background)] text-sm px-4 py-2 rounded-lg shadow-lg">
           {toast}
@@ -117,13 +164,8 @@ export default function LocationsAdmin() {
         <p className="text-sm text-[var(--foreground-muted)] mt-1">Manage all {stats.total} pin locations</p>
       </div>
 
-      {/* Stats row */}
       <div className="grid grid-cols-3 gap-4">
-        {[
-          { label: 'Total', value: stats.total },
-          { label: 'Active', value: stats.active },
-          { label: 'Secret', value: stats.secret },
-        ].map(s => (
+        {[{ label: 'Total', value: stats.total }, { label: 'Active', value: stats.active }, { label: 'Secret', value: stats.secret }].map(s => (
           <div key={s.label} className="rounded-xl border border-[var(--border)] bg-[var(--background-secondary)] px-4 py-3">
             <p className="text-2xl font-bold text-[var(--foreground)]">{s.value}</p>
             <p className="text-xs text-[var(--foreground-muted)]">{s.label}</p>
@@ -131,7 +173,6 @@ export default function LocationsAdmin() {
         ))}
       </div>
 
-      {/* Search */}
       <div className="relative">
         <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--foreground-muted)]" />
         <input
@@ -142,7 +183,6 @@ export default function LocationsAdmin() {
         />
       </div>
 
-      {/* Table */}
       {loading ? (
         <div className="py-12 text-center text-sm text-[var(--foreground-muted)]">Loading…</div>
       ) : (
@@ -159,7 +199,7 @@ export default function LocationsAdmin() {
             </thead>
             <tbody className="divide-y divide-[var(--border)]">
               {filtered.map(loc => (
-                <tr key={loc.id} className="hover:bg-[var(--background-secondary)] transition-colors">
+                <tr key={loc.id} className="hover:bg-[var(--background-secondary)] transition-colors align-top">
                   <td className="px-4 py-3">
                     {editing?.id === loc.id ? (
                       <div className="flex flex-col gap-1.5">
@@ -174,11 +214,37 @@ export default function LocationsAdmin() {
                           placeholder="Description…"
                           className="rounded-lg border border-[var(--input-border)] bg-[var(--input-bg)] px-2 py-1 text-xs text-[var(--foreground)] focus:outline-none focus:border-[var(--input-focus)]"
                         />
+                        <SlugCheckboxes
+                          label="Collections"
+                          options={collectionOptions}
+                          selected={editing.collection_slugs}
+                          onChange={v => setEditing(p => p && ({ ...p, collection_slugs: v }))}
+                        />
+                        <SlugCheckboxes
+                          label="Characters"
+                          options={characterOptions}
+                          selected={editing.character_slugs}
+                          onChange={v => setEditing(p => p && ({ ...p, character_slugs: v }))}
+                        />
                       </div>
                     ) : (
                       <div>
                         <p className="font-medium text-[var(--foreground)]">{loc.name}</p>
                         {loc.description && <p className="text-xs text-[var(--foreground-muted)] truncate max-w-xs">{loc.description}</p>}
+                        {(loc.collection_slugs.length > 0 || loc.character_slugs.length > 0) && (
+                          <div className="flex flex-wrap gap-1 mt-1">
+                            {loc.collection_slugs.map(s => (
+                              <span key={s} className="text-[10px] px-1.5 py-0.5 rounded-full bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/20">
+                                {collectionOptions.find(o => o.slug === s)?.name ?? s}
+                              </span>
+                            ))}
+                            {loc.character_slugs.map(s => (
+                              <span key={s} className="text-[10px] px-1.5 py-0.5 rounded-full bg-[var(--background-secondary)] text-[var(--foreground-muted)] border border-[var(--border)]">
+                                {characterOptions.find(o => o.slug === s)?.name ?? s}
+                              </span>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     )}
                   </td>
@@ -233,7 +299,14 @@ export default function LocationsAdmin() {
                       </div>
                     ) : (
                       <button
-                        onClick={() => setEditing({ id: loc.id, name: loc.name, description: loc.description ?? '', difficulty_level: loc.difficulty_level?.toString() ?? '' })}
+                        onClick={() => setEditing({
+                          id: loc.id,
+                          name: loc.name,
+                          description: loc.description ?? '',
+                          difficulty_level: loc.difficulty_level?.toString() ?? '',
+                          character_slugs: loc.character_slugs ?? [],
+                          collection_slugs: loc.collection_slugs ?? [],
+                        })}
                         className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[var(--muted)] text-[var(--foreground-muted)] text-xs hover:text-[var(--foreground)] hover:bg-[var(--background-tertiary)] transition-colors"
                       >
                         <Pencil size={11} /> Edit

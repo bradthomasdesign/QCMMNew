@@ -20,18 +20,22 @@ const NAV = [
 
 type Page = typeof NAV[number]['key'];
 
+
+interface SlugOption { slug: string; name: string; }
+
 interface Props {
   page: Page;
+  characterOptions?: SlugOption[];
+  collectionOptions?: SlugOption[];
 }
 
-const PAGES: Record<Page, React.ComponentType> = {
+const PAGES: Partial<Record<Page, React.ComponentType>> = {
   dashboard: AdminDashboard,
-  locations: LocationsAdmin,
   users: UsersAdmin,
   moderation: ModerationAdmin,
 };
 
-export default function AdminApp({ page }: Props) {
+export default function AdminApp({ page, characterOptions = [], collectionOptions = [] }: Props) {
   const [state, setState] = useState<'loading' | 'authed' | 'denied'>('loading');
   const Content = PAGES[page];
 
@@ -108,7 +112,9 @@ export default function AdminApp({ page }: Props) {
 
       {/* Main content */}
       <main className="flex-1 min-w-0 p-8 overflow-y-auto">
-        <Content />
+        {page === 'locations'
+          ? <LocationsAdmin characterOptions={characterOptions} collectionOptions={collectionOptions} />
+          : <Content />}
       </main>
     </div>
   );

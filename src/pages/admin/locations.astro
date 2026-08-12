@@ -1,7 +1,16 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import AdminApp from '@/components/admin/AdminApp';
+import { getCollection } from 'astro:content';
+
+const [characters, locationCollections] = await Promise.all([
+  getCollection('characters', (c) => c.data.active),
+  getCollection('locationCollections', (c) => c.data.active),
+]);
+
+const characterOptions = characters.map((c) => ({ slug: c.id, name: c.data.name }));
+const collectionOptions = locationCollections.map((c) => ({ slug: c.id, name: c.data.name }));
 ---
 <BaseLayout title="Locations — Admin — QCMM" noindex>
-  <AdminApp page="locations" client:load />
+  <AdminApp page="locations" characterOptions={characterOptions} collectionOptions={collectionOptions} client:load />
 </BaseLayout>

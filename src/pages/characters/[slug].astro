@@ -1,0 +1,113 @@
+---
+import { getCollection } from 'astro:content';
+import { createClient } from '@supabase/supabase-js';
+import PageLayout from '@/layouts/PageLayout.astro';
+import Badge from '@/components/ui/data-display/Badge/Badge.astro';
+import Card from '@/components/ui/data-display/Card/Card.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+
+export async function getStaticPaths() {
+  const characters = await getCollection('characters', (c) => c.data.active);
+
+  const supabase = createClient(
+    import.meta.env.PUBLIC_SUPABASE_URL,
+    import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
+  );
+
+  return Promise.all(
+    characters.map(async (char) => {
+      const { data: locations } = await supabase
+        .from('locations')
+        .select('id, name, description')
+        .contains('character_slugs', [char.id])
+        .eq('is_active', true)
+        .order('name');
+
+      return {
+        params: { slug: char.id },
+        props: { character: char, locations: locations ?? [] },
+      };
+    })
+  );
+}
+
+const { character, locations } = Astro.props;
+---
+
+<PageLayout
+  title={`${character.data.name} — Characters — QCMM`}
+  description={character.data.bio}
+>
+  <!-- Back nav -->
+  <div class="border-b border-border bg-background-secondary">
+    <div class="mx-auto max-w-4xl px-6 py-3">
+      <a href="/characters" class="inline-flex items-center gap-1.5 text-sm text-foreground-muted hover:text-foreground transition-colors">
+        <Icon name="arrow-left" size="sm" />
+        All Characters
+      </a>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <section class="bg-background py-12 border-b border-border">
+    <div class="mx-auto max-w-4xl px-6">
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-8">
+        {character.data.avatar ? (
+          <img
+            src={(character.data.avatar as any).src}
+            alt={character.data.name}
+            width={96}
+            height={96}
+            class="rounded-full object-cover shrink-0"
+          />
+        ) : (
+          <div class="w-24 h-24 rounded-full bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
+            <Icon name="user" size="lg" />
+          </div>
+        )}
+
+        <div class="flex flex-col gap-2">
+          <Badge variant="brand" pill>
+            <Icon name="user" size="sm" />
+            Character
+          </Badge>
+          <h1 class="font-display text-3xl sm:text-4xl font-bold text-foreground leading-tight">
+            {character.data.name}
+          </h1>
+          <p class="text-foreground-muted text-lg leading-relaxed max-w-2xl">
+            {character.data.bio}
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Where to find them -->
+  {locations.length > 0 && (
+    <section class="py-10 bg-background-secondary border-b border-border">
+      <div class="mx-auto max-w-4xl px-6">
+        <h2 class="text-sm font-semibold text-foreground-muted uppercase tracking-wide mb-5">
+          Where to find {character.data.name}
+        </h2>
+        <div class="flex flex-col gap-3">
+          {locations.map((loc) => (
+            <Card hover href={`/locations/${loc.id}`} class="group flex items-center gap-4">
+              <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
+                <Icon name="map-pin" size="sm" />
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="font-semibold text-foreground group-hover:text-brand-500 transition-colors">
+                  {loc.name}
+                </p>
+                {loc.description && (
+                  <p class="text-sm text-foreground-muted mt-0.5 line-clamp-1">{loc.description}</p>
+                )}
+              </div>
+              <Icon name="arrow-right" size="sm" class="text-foreground-subtle group-hover:text-brand-500 transition-colors shrink-0" />
+            </Card>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+</PageLayout>

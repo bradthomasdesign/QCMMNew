@@ -1,0 +1,96 @@
+---
+import { getCollection } from 'astro:content';
+import { createClient } from '@supabase/supabase-js';
+import PageLayout from '@/layouts/PageLayout.astro';
+import { Hero } from '@/components/hero';
+import Badge from '@/components/ui/data-display/Badge/Badge.astro';
+import Card from '@/components/ui/data-display/Card/Card.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+
+const allCollections = await getCollection('locationCollections', (c) => c.data.active);
+
+// Count locations per collection at build time
+const supabase = createClient(
+  import.meta.env.PUBLIC_SUPABASE_URL,
+  import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
+);
+
+const { data: locRows } = await supabase
+  .from('locations')
+  .select('collection_slugs')
+  .eq('is_active', true);
+
+const locationCounts: Record<string, number> = {};
+for (const loc of locRows ?? []) {
+  for (const slug of loc.collection_slugs ?? []) {
+    locationCounts[slug] = (locationCounts[slug] ?? 0) + 1;
+  }
+}
+---
+
+<PageLayout
+  title="Collections — QCMM"
+  description="Complete themed trails across downtown Staunton and earn unique badges at Queen City Mischief & Magic."
+>
+  <Hero layout="centered" size="sm" class="isolate">
+    <Badge slot="badge" variant="brand" pill>
+      <Icon name="layers" size="sm" />
+      Collections
+    </Badge>
+    <h1 slot="title">
+      <span class="text-foreground [-webkit-text-fill-color:currentColor]">Follow the</span><br />
+      <span class="text-brand-500 [-webkit-text-fill-color:var(--color-brand-500)]">trails.</span>
+    </h1>
+    <p slot="description">
+      Complete a collection by checking in at every location in it — and earn a badge when you finish.
+    </p>
+  </Hero>
+
+  <section class="py-16 bg-background border-t border-border">
+    <div class="mx-auto max-w-4xl px-6">
+      {allCollections.length === 0 ? (
+        <div class="py-16 text-center text-foreground-muted">
+          <Icon name="layers" size="lg" class="mx-auto mb-3 opacity-40" />
+          <p>No collections have been added yet. Check back soon.</p>
+        </div>
+      ) : (
+        <div class="grid gap-5 sm:grid-cols-2">
+          {allCollections.map((col) => {
+            const count = locationCounts[col.id] ?? 0;
+            return (
+              <Card hover href={`/collections/${col.id}`} class="group flex flex-col gap-4" data-reveal>
+                {col.data.badgeImage && (
+                  <img
+                    src={(col.data.badgeImage as any).src}
+                    alt={`${col.data.name} badge`}
+                    width={48}
+                    height={48}
+                    class="rounded-lg object-contain"
+                  />
+                )}
+                {!col.data.badgeImage && (
+                  <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500">
+                    <Icon name="layers" size="md" />
+                  </div>
+                )}
+                <div class="flex-1">
+                  <h2 class="text-base font-semibold text-foreground group-hover:text-brand-500 transition-colors mb-1">
+                    {col.data.name}
+                  </h2>
+                  <p class="text-sm text-foreground-muted leading-relaxed">
+                    {col.data.description}
+                  </p>
+                </div>
+                <div class="flex items-center gap-2 text-xs text-foreground-muted">
+                  <Icon name="map-pin" size="sm" />
+                  {count === 1 ? '1 location' : `${count} locations`}
+                  <Icon name="arrow-right" size="sm" class="ml-auto text-foreground-subtle group-hover:text-brand-500 transition-colors" />
+                </div>
+              </Card>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  </section>
+</PageLayout>

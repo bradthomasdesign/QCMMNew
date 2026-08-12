@@ -1,0 +1,106 @@
+---
+import { getCollection } from 'astro:content';
+import { createClient } from '@supabase/supabase-js';
+import PageLayout from '@/layouts/PageLayout.astro';
+import Badge from '@/components/ui/data-display/Badge/Badge.astro';
+import Card from '@/components/ui/data-display/Card/Card.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import CollectionLocationList from '@/components/gamification/CollectionLocationList';
+
+export async function getStaticPaths() {
+  const collections = await getCollection('locationCollections', (c) => c.data.active);
+
+  const supabase = createClient(
+    import.meta.env.PUBLIC_SUPABASE_URL,
+    import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
+  );
+
+  return Promise.all(
+    collections.map(async (col) => {
+      const { data: locations } = await supabase
+        .from('locations')
+        .select('id, name, description, difficulty_level')
+        .contains('collection_slugs', [col.id])
+        .eq('is_active', true)
+        .order('name');
+
+      return {
+        params: { slug: col.id },
+        props: { collection: col, locations: locations ?? [] },
+      };
+    })
+  );
+}
+
+const { collection, locations } = Astro.props;
+const total = locations.length;
+---
+
+<PageLayout
+  title={`${collection.data.name} — Collections — QCMM`}
+  description={collection.data.description}
+>
+  <!-- Back nav -->
+  <div class="border-b border-border bg-background-secondary">
+    <div class="mx-auto max-w-4xl px-6 py-3">
+      <a href="/collections" class="inline-flex items-center gap-1.5 text-sm text-foreground-muted hover:text-foreground transition-colors">
+        <Icon name="arrow-left" size="sm" />
+        All Collections
+      </a>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <section class="bg-background py-12 border-b border-border">
+    <div class="mx-auto max-w-4xl px-6">
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-8">
+        {collection.data.badgeImage && (
+          <img
+            src={(collection.data.badgeImage as any).src}
+            alt={`${collection.data.name} badge`}
+            width={80}
+            height={80}
+            class="rounded-2xl object-contain shrink-0"
+          />
+        )}
+        {!collection.data.badgeImage && (
+          <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
+            <Icon name="layers" size="lg" />
+          </div>
+        )}
+
+        <div class="flex flex-col gap-2">
+          <Badge variant="brand" pill>
+            <Icon name="layers" size="sm" />
+            Collection
+          </Badge>
+          <h1 class="font-display text-3xl sm:text-4xl font-bold text-foreground leading-tight">
+            {collection.data.name}
+          </h1>
+          <p class="text-foreground-muted text-lg leading-relaxed max-w-2xl">
+            {collection.data.description}
+          </p>
+          <p class="text-sm text-foreground-muted">
+            {total === 1 ? '1 location' : `${total} locations`} · Check in at all of them to earn this badge.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Location list -->
+  <section class="py-10 bg-background-secondary border-b border-border">
+    <div class="mx-auto max-w-4xl px-6">
+      <h2 class="text-sm font-semibold text-foreground-muted uppercase tracking-wide mb-5">Locations</h2>
+      {total === 0 ? (
+        <Card padding="lg">
+          <p class="text-sm text-foreground-muted text-center py-4">
+            No locations have been added to this collection yet.
+          </p>
+        </Card>
+      ) : (
+        <CollectionLocationList locations={locations} client:load />
+      )}
+    </div>
+  </section>
+</PageLayout>

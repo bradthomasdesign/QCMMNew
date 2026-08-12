@@ -116,8 +116,8 @@ export default function CheckInFlow() {
           <MapPin size={24} className="text-[var(--foreground-muted)]" />
         </div>
         <div>
-          <h2 className="font-semibold text-[var(--foreground)] mb-1">No QR code detected</h2>
-          <p className="text-sm text-[var(--foreground-muted)]">Scan a QCMM QR code to check in at a location.</p>
+          <h2 className="font-semibold text-[var(--foreground)] mb-1">No location found</h2>
+          <p className="text-sm text-[var(--foreground-muted)]">Visit a location page to check in.</p>
         </div>
         <a href="/locations" className="rounded-xl bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-white hover:bg-[var(--accent-hover)] transition-colors">
           Browse Locations
@@ -134,7 +134,7 @@ export default function CheckInFlow() {
         </div>
         <div>
           <h2 className="font-semibold text-[var(--foreground)] mb-1">Location not found</h2>
-          <p className="text-sm text-[var(--foreground-muted)]">This QR code doesn't match an active QCMM location.</p>
+          <p className="text-sm text-[var(--foreground-muted)]">This link doesn't match an active QCMM location.</p>
         </div>
         <a href="/locations" className="text-sm text-[var(--accent)] hover:underline">Browse all locations</a>
       </div>

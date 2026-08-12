@@ -1,4 +1,5 @@
 ---
+import { getCollection } from 'astro:content';
 import { createClient } from '@supabase/supabase-js';
 import PageLayout from '@/layouts/PageLayout.astro';
 import Badge from '@/components/ui/data-display/Badge/Badge.astro';
@@ -9,6 +10,7 @@ import LocationDiscussion from '@/components/locations/LocationDiscussion';
 import MiniMap from '@/components/locations/MiniMap';
 import CheckInButton from '@/components/locations/CheckInButton';
 import LocationStats from '@/components/locations/LocationStats';
+import CollectionProgressTag from '@/components/gamification/CollectionProgressTag';
 
 export async function getStaticPaths() {
   const supabase = createClient(
@@ -16,19 +18,36 @@ export async function getStaticPaths() {
     import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
   );
 
-  const { data: locations } = await supabase
-    .from('locations')
-    .select('id, name, description, latitude, longitude, is_secret, difficulty_level, featured_image_url, reward_description, state, country')
-    .eq('is_active', true)
-    .order('name');
+  const [{ data: locations }, allCollections, allCharacters] = await Promise.all([
+    supabase
+      .from('locations')
+      .select('id, name, description, latitude, longitude, is_secret, difficulty_level, featured_image_url, reward_description, state, country, collection_slugs, character_slugs')
+      .eq('is_active', true)
+      .order('name'),
+    getCollection('locationCollections', (c) => c.data.active),
+    getCollection('characters', (c) => c.data.active),
+  ]);
 
-  return (locations ?? []).map((loc) => ({
-    params: { id: loc.id },
-    props: { location: loc },
-  }));
+  const collectionMap = new Map(allCollections.map((c) => [c.id, c.data]));
+  const characterMap = new Map(allCharacters.map((c) => [c.id, c.data]));
+
+  return (locations ?? []).map((loc) => {
+    const collections = (loc.collection_slugs ?? [])
+      .map((slug: string) => ({ slug, ...collectionMap.get(slug) }))
+      .filter((c: any) => c.name);
+
+    const characters = (loc.character_slugs ?? [])
+      .map((slug: string) => ({ slug, ...characterMap.get(slug) }))
+      .filter((c: any) => c.name);
+
+    return {
+      params: { id: loc.id },
+      props: { location: loc, collections, characters },
+    };
+  });
 }
 
-const { location } = Astro.props;
+const { location, collections, characters } = Astro.props;
 
 function difficultyLabel(level: number | null) {
   if (!level) return null;
@@ -161,9 +180,63 @@ const locationLine = [location.state, location.country].filter(Boolean).join(', 
         )}
 
         <CheckInButton locationId={location.id} locationName={location.name} client:load />
+
+        {collections.length > 0 && (
+          <Card padding="sm">
+            <h2 class="text-xs font-semibold text-foreground-muted uppercase tracking-wide mb-3">Part of</h2>
+            <div class="flex flex-col gap-2">
+              {collections.map((col: any) => (
+                <CollectionProgressTag
+                  collectionSlug={col.slug}
+                  collectionName={col.name}
+                  client:load
+                />
+              ))}
+            </div>
+          </Card>
+        )}
       </div>
     </div>
   </section>
+
+  <!-- Character sightings -->
+  {characters.length > 0 && (
+    <section class="py-10 bg-background border-b border-border">
+      <div class="mx-auto max-w-4xl px-6">
+        <h2 class="text-sm font-semibold text-foreground-muted uppercase tracking-wide mb-4">
+          Who you might meet here
+        </h2>
+        <div class="grid gap-3 sm:grid-cols-2">
+          {characters.map((char: any) => (
+            <a
+              href={`/characters/${char.slug}`}
+              class="flex items-start gap-3 rounded-xl border border-border bg-background-secondary p-4 hover:border-brand-500 transition-colors group"
+            >
+              {char.avatar ? (
+                <img
+                  src={(char.avatar as any).src}
+                  alt={char.name}
+                  width={40}
+                  height={40}
+                  class="rounded-full object-cover shrink-0"
+                />
+              ) : (
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
+                  <Icon name="user" size="sm" />
+                </div>
+              )}
+              <div class="min-w-0">
+                <p class="font-semibold text-foreground group-hover:text-brand-500 transition-colors text-sm">
+                  {char.name}
+                </p>
+                <p class="text-xs text-foreground-muted mt-0.5 line-clamp-2">{char.bio}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 
   <!-- Discussion -->
   <section class="py-10 bg-background">

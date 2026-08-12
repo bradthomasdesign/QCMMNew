@@ -27,20 +27,24 @@ export interface LegalLink {
 
 export const navItems: NavItem[] = [
   { label: 'Locations', href: '/locations', order: 1 },
-  { label: 'Community', href: '/community', order: 2 },
-  { label: 'QCMM News', href: '/blog', order: 3 },
-  { label: 'Members', href: '/members', order: 4 },
-  { label: 'About', href: '/about', order: 5 },
+  { label: 'Collections', href: '/collections', order: 2 },
+  { label: 'Characters', href: '/characters', order: 3 },
+  { label: 'Community', href: '/community', order: 4 },
+  { label: 'Members', href: '/members', order: 5 },
+  { label: 'About', href: '/about', order: 6 },
 ];
 
 export const footerNavItems: NavItem[] = [
   { label: 'Locations', href: '/locations', order: 1 },
-  { label: 'Community', href: '/community', order: 2 },
-  { label: 'QCMM News', href: '/blog', order: 3 },
-  { label: 'About', href: '/about', order: 4 },
-  { label: 'How It Works', href: '/how-it-works', order: 5 },
-  { label: 'Contact', href: '/contact', order: 6 },
-  { label: 'Search', href: '/search', order: 7 },
+  { label: 'Collections', href: '/collections', order: 2 },
+  { label: 'Characters', href: '/characters', order: 3 },
+  { label: 'Rewards', href: '/rewards', order: 4 },
+  { label: 'Community', href: '/community', order: 5 },
+  { label: 'QCMM News', href: '/blog', order: 6 },
+  { label: 'About', href: '/about', order: 7 },
+  { label: 'How It Works', href: '/how-it-works', order: 8 },
+  { label: 'Contact', href: '/contact', order: 9 },
+  { label: 'Search', href: '/search', order: 10 },
 ];
 
 export const legalLinks: LegalLink[] = [

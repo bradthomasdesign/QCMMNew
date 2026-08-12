@@ -1,0 +1,43 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from '@/layouts/PageLayout.astro';
+import { Hero } from '@/components/hero';
+import Badge from '@/components/ui/data-display/Badge/Badge.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import CharacterRoster from '@/components/gamification/CharacterDiscoveredBadges';
+
+const allCharacters = await getCollection('characters', (c) => c.data.active);
+
+const characterData = allCharacters.map((c) => ({
+  slug: c.id,
+  name: c.data.name,
+  bio: c.data.bio,
+  avatarSrc: c.data.avatar ? (c.data.avatar as any).src : undefined,
+  avatarAlt: c.data.name,
+}));
+---
+
+<PageLayout
+  title="Characters — QCMM"
+  description="Meet the cast of characters roaming downtown Staunton at Queen City Mischief & Magic."
+>
+  <Hero layout="centered" size="sm" class="isolate">
+    <Badge slot="badge" variant="brand" pill>
+      <Icon name="users" size="sm" />
+      Characters
+    </Badge>
+    <h1 slot="title">
+      <span class="text-foreground [-webkit-text-fill-color:currentColor]">Who will you</span><br />
+      <span class="text-brand-500 [-webkit-text-fill-color:var(--color-brand-500)]">meet?</span>
+    </h1>
+    <p slot="description">
+      These characters are out there, somewhere. Find them at their haunts and add them to your roster.
+    </p>
+  </Hero>
+
+  <section class="py-16 bg-background border-t border-border">
+    <div class="mx-auto max-w-5xl px-6">
+      <CharacterRoster characters={characterData} client:load />
+    </div>
+  </section>
+</PageLayout>

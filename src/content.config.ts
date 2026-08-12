@@ -126,6 +126,30 @@ const stack = defineCollection({
   }),
 });
 
+// Characters — managed in Keystatic, referenced by slug from locations.character_slugs
+const characters = defineCollection({
+  loader: glob({ pattern: '**/*.json', base: './src/content/characters' }),
+  schema: ({ image }) =>
+    z.object({
+      name: z.string(),
+      bio: z.string(),
+      avatar: image().optional(),
+      active: z.boolean().default(true),
+    }),
+});
+
+// Collections — managed in Keystatic, referenced by slug from locations.collection_slugs
+const locationCollections = defineCollection({
+  loader: glob({ pattern: '**/*.json', base: './src/content/collections' }),
+  schema: ({ image }) =>
+    z.object({
+      name: z.string(),
+      description: z.string(),
+      badgeImage: image().optional(),
+      active: z.boolean().default(true),
+    }),
+});
+
 export const collections = {
   blog,
   pages,
@@ -133,4 +157,6 @@ export const collections = {
   faqs,
   stack,
   projects,
+  characters,
+  locationCollections,
 };

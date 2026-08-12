@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
-import { User, MapPin, Zap, Trophy, Star, Loader2, LogOut, Pencil, Check, X, Camera } from 'lucide-react';
+import { User, MapPin, Zap, Trophy, Star, Loader2, LogOut, Pencil, Check, X, Camera, Gift, Copy } from 'lucide-react';
 import type { User as SupabaseUser } from '@supabase/supabase-js';
 
 const supabase = createClient(
@@ -41,7 +41,9 @@ export default function ProfileDashboard() {
   const [xp, setXP] = useState<XP | null>(null);
   const [pins, setPins] = useState<Pin[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'pins' | 'badges'>('pins');
+  const [activeTab, setActiveTab] = useState<'pins' | 'badges' | 'rewards'>('pins');
+  const [redemptions, setRedemptions] = useState<{ coupon_id: string; code: string; redeemed_at: string; title: string }[] | null>(null);
+  const [copiedCode, setCopiedCode] = useState<string | null>(null);
 
   // Edit state
   const [editing, setEditing] = useState(false);
@@ -91,6 +93,32 @@ export default function ProfileDashboard() {
     setAvatarPreview(null);
     setAvatarFile(null);
     setSaveError('');
+  }
+
+  async function switchTab(tab: typeof activeTab) {
+    setActiveTab(tab);
+    if (tab === 'rewards' && redemptions === null && user) {
+      const { data } = await supabase
+        .from('coupon_redemptions')
+        .select('coupon_id, code, redeemed_at, coupons(title)')
+        .eq('user_id', user.id)
+        .order('redeemed_at', { ascending: false });
+      setRedemptions(
+        (data ?? []).map((r: any) => ({
+          coupon_id: r.coupon_id,
+          code: r.code,
+          redeemed_at: r.redeemed_at,
+          title: r.coupons?.title ?? 'Reward',
+        }))
+      );
+    }
+  }
+
+  function copyCode(code: string) {
+    navigator.clipboard.writeText(code).then(() => {
+      setCopiedCode(code);
+      setTimeout(() => setCopiedCode(null), 2000);
+    });
   }
 
   function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -304,10 +332,10 @@ export default function ProfileDashboard() {
       {/* Tabs */}
       <div>
         <div className="flex gap-1 border-b border-[var(--border)] mb-4">
-          {(['pins', 'badges'] as const).map((tab) => (
+          {(['pins', 'badges', 'rewards'] as const).map((tab) => (
             <button
               key={tab}
-              onClick={() => setActiveTab(tab)}
+              onClick={() => switchTab(tab)}
               className={[
                 'px-4 py-2 text-sm font-medium capitalize transition-colors border-b-2 -mb-px',
                 activeTab === tab
@@ -353,8 +381,46 @@ export default function ProfileDashboard() {
           <div className="py-10 text-center">
             <Trophy size={28} className="mx-auto text-[var(--foreground-subtle)] mb-2" />
             <p className="text-sm text-[var(--foreground-muted)]">No badges earned yet.</p>
-            <p className="text-xs text-[var(--foreground-subtle)] mt-1">Check in at locations to start earning.</p>
+            <p className="text-xs text-[var(--foreground-subtle)] mt-1">Complete a collection to earn your first badge.</p>
           </div>
+        )}
+
+        {activeTab === 'rewards' && (
+          redemptions === null ? (
+            <div className="flex justify-center py-10">
+              <Loader2 size={20} className="animate-spin text-[var(--accent)]" />
+            </div>
+          ) : redemptions.length === 0 ? (
+            <div className="py-10 text-center">
+              <Gift size={28} className="mx-auto text-[var(--foreground-subtle)] mb-2" />
+              <p className="text-sm text-[var(--foreground-muted)]">No rewards redeemed yet.</p>
+              <a href="/rewards" className="mt-2 inline-block text-sm text-[var(--accent)] hover:underline">Browse rewards</a>
+            </div>
+          ) : (
+            <div className="flex flex-col divide-y divide-[var(--border)]">
+              {redemptions.map((r) => (
+                <div key={r.coupon_id} className="py-3 flex items-start gap-3">
+                  <div className="w-8 h-8 shrink-0 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center mt-0.5">
+                    <Gift size={14} className="text-[var(--accent)]" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-[var(--foreground)]">{r.title}</p>
+                    <div className="flex items-center gap-1 mt-0.5">
+                      <p className="text-xs font-mono text-[var(--foreground-muted)] select-all">{r.code}</p>
+                      <button
+                        onClick={() => copyCode(r.code)}
+                        className="text-[var(--foreground-muted)] hover:text-[var(--accent)] transition-colors"
+                        title="Copy code"
+                      >
+                        {copiedCode === r.code ? <Check size={11} /> : <Copy size={11} />}
+                      </button>
+                    </div>
+                    <p className="text-xs text-[var(--foreground-subtle)]">{timeAgo(r.redeemed_at)}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )
         )}
       </div>
     </div>
