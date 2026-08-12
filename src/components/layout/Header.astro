@@ -249,6 +249,19 @@ const buttonId = `${menuId}-button`;
           <slot name="actions" />
         ) : (
           <>
+            <a
+              href="/search"
+              aria-label="Search"
+              class={cn(
+                'inline-flex items-center justify-center w-9 h-9 rounded-lg transition-colors',
+                isFloating
+                  ? 'hdr-invert-text hover:bg-white/10'
+                  : 'text-foreground-muted hover:text-foreground hover:bg-secondary/70'
+              )}
+            >
+              <Icon name="search" size="sm" />
+            </a>
+
             <div class={isFloating ? 'hdr-auth-btn' : undefined}>
               <AuthHeaderButton client:load />
             </div>
