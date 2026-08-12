@@ -179,7 +179,7 @@ const locationLine = [location.state, location.country].filter(Boolean).join(', 
           </Card>
         )}
 
-        <CheckInButton locationId={location.id} locationName={location.name} client:load />
+        <CheckInButton locationId={location.id} locationName={location.name} characterSlugs={location.character_slugs ?? []} client:load />
 
         {collections.length > 0 && (
           <Card padding="sm">

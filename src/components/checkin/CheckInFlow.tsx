@@ -17,6 +17,7 @@ interface Location {
   difficulty_level: number | null;
   is_secret: boolean;
   reward_description: string | null;
+  character_slugs: string[];
 }
 
 function difficultyLabel(level: number | null) {
@@ -45,7 +46,7 @@ export default function CheckInFlow() {
         supabase.auth.getSession(),
         supabase
           .from('locations')
-          .select('id, name, description, difficulty_level, is_secret, reward_description')
+          .select('id, name, description, difficulty_level, is_secret, reward_description, character_slugs')
           .eq('qr_token', t)
           .eq('is_active', true)
           .single(),
@@ -86,13 +87,20 @@ export default function CheckInFlow() {
       setErrorMsg(error.message);
       setState('error');
     } else {
-      // Award XP
-      await supabase.rpc('award_xp', {
+      // Fire XP award and character discoveries without awaiting
+      supabase.rpc('award_xp', {
         p_user_id: user.id,
         p_action: 'checkin',
         p_xp_amount: XP_PER_CHECKIN,
         p_description: `Checked in at ${location.name}`,
-      }).catch(() => {}); // RPC may not exist yet, don't block
+      }).catch(() => {});
+
+      if (location.character_slugs?.length > 0) {
+        supabase.from('user_characters').upsert(
+          location.character_slugs.map(slug => ({ user_id: user.id, character_slug: slug, location_id: location.id })),
+          { onConflict: 'user_id,character_slug', ignoreDuplicates: true },
+        ).catch(() => {});
+      }
 
       setState('success');
     }

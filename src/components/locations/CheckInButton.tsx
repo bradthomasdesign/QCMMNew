@@ -12,11 +12,12 @@ const XP_PER_CHECKIN = 50;
 interface Props {
   locationId: string;
   locationName: string;
+  characterSlugs?: string[];
 }
 
 type State = 'loading' | 'not-authed' | 'ready' | 'checking-in' | 'success' | 'already-pinned' | 'error';
 
-export default function CheckInButton({ locationId, locationName }: Props) {
+export default function CheckInButton({ locationId, locationName, characterSlugs = [] }: Props) {
   const [state, setState] = useState<State>('loading');
   const [userId, setUserId] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState('');
@@ -53,13 +54,20 @@ export default function CheckInButton({ locationId, locationName }: Props) {
       return;
     }
 
-    // Fire XP award without awaiting — don't block the success state
+    // Fire XP award and character discoveries without awaiting
     supabase.rpc('award_xp', {
       p_user_id: userId,
       p_action: 'checkin',
       p_xp_amount: XP_PER_CHECKIN,
       p_description: `Checked in at ${locationName}`,
     }).catch(() => {});
+
+    if (characterSlugs.length > 0) {
+      supabase.from('user_characters').upsert(
+        characterSlugs.map(slug => ({ user_id: userId, character_slug: slug, location_id: locationId })),
+        { onConflict: 'user_id,character_slug', ignoreDuplicates: true },
+      ).catch(() => {});
+    }
 
     setState('success');
   }
