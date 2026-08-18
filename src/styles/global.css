@@ -294,6 +294,20 @@
     --color-primary-foreground: var(--surface-invert);
   }
 
+  /* Photo-page mode: make bg-background sections semi-transparent so the
+     fixed background image shows through the page content. */
+  body[data-photo-page] {
+    --color-background: oklch(0% 0 0 / 0.35);
+  }
+
+  /* Footer on photo pages: explicit stacking context (position + z-index) so
+     the footer paints above the fixed background image (z-index -2/-1). */
+  body[data-photo-page] footer {
+    position: relative;
+    z-index: 1;
+    background-color: oklch(18% 0.008 38) !important;
+  }
+
   /* Container */
   .container {
     width: 100%;
@@ -339,50 +353,6 @@
     position: relative;
     isolation: isolate;
     background: linear-gradient(to bottom, var(--color-brand-500) 0%, #000 100%);
-  }
-  html:not(.dark) .hero-dark-gradient {
-    --color-foreground:           oklch(91% 0.008 250);
-    --color-foreground-secondary: oklch(82% 0.012 250);
-    --color-foreground-muted:     oklch(68% 0.01 250);
-    --color-background:           var(--surface-invert);
-    --color-secondary:            var(--surface-invert-secondary);
-    --color-secondary-hover:      var(--surface-invert-tertiary);
-    --color-ring:                 oklch(91% 0.008 250);
-  }
-
-  /* H1 spans: first span uses remapped foreground (near-white), remaining
-     spans use pure #fff. Mirrors the dark-mode treatment. */
-  html:not(.dark) .hero-dark-gradient h1 > span:first-of-type {
-    color: var(--color-foreground);
-    -webkit-text-fill-color: currentColor;
-  }
-  html:not(.dark) .hero-dark-gradient h1 > span:not(:first-of-type) {
-    color: #fff;
-    -webkit-text-fill-color: currentColor;
-  }
-
-  /* Primary CTA — near-white gradient pill. Targets .btn-primary, which is
-     the homepage primary CTA marker (added by the primary button variant). */
-  html:not(.dark) .hero-dark-gradient .btn-primary {
-    background-color: var(--color-foreground);
-    background-image: linear-gradient(
-      180deg,
-      var(--color-foreground) 0%,
-      color-mix(in oklch, var(--color-foreground) 55%, var(--color-foreground-secondary)) 100%
-    );
-    border: 1px solid var(--color-foreground-secondary);
-    color: var(--color-background);
-  }
-  html:not(.dark) .hero-dark-gradient .btn-primary:hover {
-    background-image: none;
-    background-color: color-mix(in oklch, var(--color-foreground) 90%, transparent);
-  }
-
-  html:not(.dark) .hero-dark-gradient .border-foreground\/25 {
-    border-color: color-mix(in oklch, var(--color-foreground) 25%, transparent);
-  }
-  html:not(.dark) .hero-dark-gradient .border-foreground\/25:hover {
-    border-color: color-mix(in oklch, var(--color-foreground) 40%, transparent);
   }
 
   /* Brand badge in the hero — applied in BOTH light and dark mode.
@@ -1257,17 +1227,6 @@
   background-image: none !important;
 }
 
-/* Header CTA — brand colour in light mode (brand-700 for AA white text) */
-:root:not(.dark) .hdr-cta-brand {
-  background-color: var(--color-brand-700) !important;
-  background-image: none !important;
-  color: white !important;
-  border-color: transparent !important;
-}
-:root:not(.dark) .hdr-cta-brand:hover {
-  background-color: var(--color-brand-800) !important;
-  opacity: 1 !important;
-}
 
 /* Destructive button — fixed dark red in both modes so the white label clears
    WCAG AA (white on oklch(53%) = 5.9:1). Decoupled from the --destructive token,

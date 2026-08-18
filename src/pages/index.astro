@@ -287,19 +287,19 @@ import LetterGlitchBand from '@/components/patterns/LetterGlitchBand.astro';
         <Card variant="elevated" padding="lg" class="h-full flex flex-col" data-reveal="left" data-reveal-delay="1" data-reveal-ease="smooth">
           <p class="text-sm text-foreground mb-5 text-center sm:hidden glitch:block">A few things about the festival.</p>
           <div class="grid grid-cols-2 sm:grid-cols-4 glitch:grid-cols-2 gap-3 flex-1 auto-rows-fr">
-            <div class="bg-background-tertiary rounded-xl p-5 flex flex-col items-center justify-center text-center gap-2 border-t-2 border-brand-500/40 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-brand-500 cursor-default h-full">
+            <div class="bg-background-tertiary rounded-xl p-5 flex flex-col items-center justify-center text-center gap-2 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md cursor-default h-full">
               <Icon name="users" class="w-10 h-10 text-brand-500" />
               <p class="text-sm font-semibold text-foreground">20k+ Visitors</p>
             </div>
-            <div class="bg-background-tertiary rounded-xl p-5 flex flex-col items-center justify-center text-center gap-2 border-t-2 border-brand-500/40 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-brand-500 cursor-default h-full">
+            <div class="bg-background-tertiary rounded-xl p-5 flex flex-col items-center justify-center text-center gap-2 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md cursor-default h-full">
               <Icon name="heart" class="w-10 h-10 text-brand-500" />
               <p class="text-sm font-semibold text-foreground">100% Volunteer</p>
             </div>
-            <div class="bg-background-tertiary rounded-xl p-5 flex flex-col items-center justify-center text-center gap-2 border-t-2 border-brand-500/40 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-brand-500 cursor-default h-full">
+            <div class="bg-background-tertiary rounded-xl p-5 flex flex-col items-center justify-center text-center gap-2 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md cursor-default h-full">
               <Icon name="ticket" class="w-10 h-10 text-brand-500" />
               <p class="text-sm font-semibold text-foreground">Always Free</p>
             </div>
-            <div class="bg-background-tertiary rounded-xl p-5 flex flex-col items-center justify-center text-center gap-2 border-t-2 border-brand-500/40 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-brand-500 cursor-default h-full">
+            <div class="bg-background-tertiary rounded-xl p-5 flex flex-col items-center justify-center text-center gap-2 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md cursor-default h-full">
               <Icon name="map-pin" class="w-10 h-10 text-brand-500" />
               <p class="text-sm font-semibold text-foreground">Staunton, VA</p>
             </div>
@@ -364,22 +364,13 @@ import LetterGlitchBand from '@/components/patterns/LetterGlitchBand.astro';
     z-index: -2;
   }
 
-  /* Purple-to-dark overlay — semi-transparent so video shows through */
+  /* Neutral dark overlay — dims the video without adding a colour cast */
   .hero-video-overlay {
     z-index: -1;
     background: linear-gradient(
       to bottom,
-      color-mix(in oklch, var(--color-brand-600) 48%, transparent) 0%,
-      rgba(0, 0, 0, 0.62) 100%
-    );
-  }
-
-  /* Light mode gets same dark treatment (hero-dark-gradient remaps vars) */
-  html:not(.dark) .hero-video-overlay {
-    background: linear-gradient(
-      to bottom,
-      color-mix(in oklch, var(--color-brand-700) 54%, transparent) 0%,
-      rgba(0, 0, 0, 0.68) 100%
+      rgba(0, 0, 0, 0.38) 0%,
+      rgba(0, 0, 0, 0.60) 100%
     );
   }
 

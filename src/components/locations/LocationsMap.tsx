@@ -61,9 +61,10 @@ export default function LocationsMap() {
         zoomControl: true,
       });
 
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        maxZoom: 19,
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/">CARTO</a>',
+        subdomains: 'abcd',
+        maxZoom: 20,
       }).addTo(map);
 
       const dot = (secret: boolean) =>
@@ -77,7 +78,11 @@ export default function LocationsMap() {
       locations.forEach((loc) => {
         const popup = L.popup({ closeButton: false, className: 'qcmm-popup' })
           .setContent(
-            `<div style="padding:2px 0"><strong style="font-size:13px">${loc.name}</strong><br/><a href="/locations/${loc.id}" style="font-size:11px;color:#f97316;text-decoration:none">View details →</a></div>`
+            `<div style="min-width:180px;padding:2px 0">
+              <p style="font-weight:600;font-size:13px;color:#111827;margin:0 0 4px">${loc.name}</p>
+              ${loc.description ? `<p style="font-size:11px;color:#6b7280;margin:0 0 8px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${loc.description}</p>` : ''}
+              <a href="/locations/${loc.id}" style="display:inline-block;font-size:11px;font-weight:500;color:#fff;background:#f97316;padding:4px 10px;border-radius:4px;text-decoration:none">View location</a>
+            </div>`
           );
         const marker = L.marker([loc.latitude, loc.longitude], { icon: dot(loc.is_secret) })
           .addTo(map)

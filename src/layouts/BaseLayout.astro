@@ -1,7 +1,6 @@
 ---
 import '@/styles/global.css';
-import outfitFont from '@fontsource-variable/outfit/files/outfit-latin-wght-normal.woff2?url';
-import manropeFont from '@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url';
+import interFont from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
 import SEO from '@/components/seo/SEO.astro';
 import JsonLd from '@/components/seo/JsonLd.astro';
 import Analytics from '@/components/layout/Analytics.astro';
@@ -29,6 +28,7 @@ interface Props {
   includeProfessionalServiceSchema?: boolean;
   extraSchemas?: WithContext<Thing>[];
   eagerReveal?: boolean;
+  bgImage?: string;
 }
 
 const {
@@ -44,6 +44,7 @@ const {
   includeProfessionalServiceSchema = false,
   extraSchemas = [],
   eagerReveal = false,
+  bgImage,
 } = Astro.props;
 
 // Build JSON-LD schemas
@@ -63,15 +64,14 @@ const locale = getLocaleFromPath(Astro.url.pathname);
 ---
 
 <!doctype html>
-<html lang={locale} class="scroll-smooth dark" data-theme="purple" data-theme-mode="dark">
+<html lang={locale} class="scroll-smooth dark" data-theme="orange" data-theme-mode="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
 
-    <!-- Preload display + body fonts so they're ready for first paint -->
-    <link rel="preload" as="font" type="font/woff2" href={manropeFont} crossorigin="anonymous" />
-    <link rel="preload" as="font" type="font/woff2" href={outfitFont} crossorigin="anonymous" />
+    <!-- Preload Inter for first paint -->
+    <link rel="preload" as="font" type="font/woff2" href={interFont} crossorigin="anonymous" />
 
     {siteConfig.articleFeatures?.comments?.enabled && (
       <link rel="preconnect" href="https://giscus.app" crossorigin />
@@ -153,38 +153,14 @@ const locale = getLocaleFromPath(Astro.url.pathname);
       })();
     </script>
 
-    <!-- Theme bootstrap (runs before body paint; no flash of wrong theme).
-         Implements a 3-state colour-mode contract:
-           localStorage.theme ∈ {'system','light','dark'}  (default 'system')
-           <html data-theme-mode="…">                      (mirrors saved mode)
-           <html class="dark">                              (resolved appearance)
-         When mode === 'system', <html>.dark tracks prefers-color-scheme live. -->
+    <!-- Theme bootstrap: always dark. Applies dark class before paint to
+         prevent flash. Color palette (orange by default) reads from sessionStorage. -->
     <script is:inline>
       (function () {
         const COLOR_THEMES = ['orange', 'amber', 'lime', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'magenta'];
-        const VALID_MODES = ['system', 'light', 'dark'];
-
-        function getMode() {
-          try {
-            const stored = localStorage.getItem('theme');
-            if (VALID_MODES.indexOf(stored) !== -1) return stored;
-          } catch { /* private mode / disabled storage */ }
-          return 'dark';
-        }
-
-        function applyMode(el) {
-          const mode = getMode();
-          el.setAttribute('data-theme-mode', mode);
-          const isDark =
-            mode === 'dark' ||
-            (mode === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-          if (isDark) el.classList.add('dark');
-          else el.classList.remove('dark');
-        }
 
         function applyColorTheme(el) {
           try {
-            // Color palette — sessionStorage so it resets to default on each new visit
             const saved = sessionStorage.getItem('color-theme');
             if (saved && COLOR_THEMES.indexOf(saved) !== -1) {
               el.setAttribute('data-theme', saved);
@@ -192,37 +168,28 @@ const locale = getLocaleFromPath(Astro.url.pathname);
           } catch { /* ignored */ }
         }
 
-        function applyTheme(el) {
-          applyMode(el);
-          applyColorTheme(el);
-        }
-
-        applyTheme(document.documentElement);
+        var el = document.documentElement;
+        el.classList.add('dark');
+        el.setAttribute('data-theme-mode', 'dark');
+        applyColorTheme(el);
 
         if (!window.__themeListenersInit) {
           window.__themeListenersInit = true;
-
-          // Live-update when the OS flips colour scheme AND the user is on 'system'.
-          const mql = window.matchMedia('(prefers-color-scheme: dark)');
-          const onSchemeChange = function () {
-            if (getMode() === 'system') applyMode(document.documentElement);
-          };
-          if (mql.addEventListener) mql.addEventListener('change', onSchemeChange);
-          else if (mql.addListener) mql.addListener(onSchemeChange); // Safari < 14
-
-          // Re-apply across Astro view transitions (no flash on swap).
           document.addEventListener('astro:before-swap', function (e) {
-            applyTheme(e.newDocument.documentElement);
+            e.newDocument.documentElement.classList.add('dark');
+            e.newDocument.documentElement.setAttribute('data-theme-mode', 'dark');
+            applyColorTheme(e.newDocument.documentElement);
           });
           document.addEventListener('astro:after-swap', function () {
-            applyTheme(document.documentElement);
+            document.documentElement.classList.add('dark');
+            applyColorTheme(document.documentElement);
           });
         }
       })();
     </script>
   </head>
 
-  <body class="min-h-screen bg-background text-foreground antialiased" data-eager-reveal={eagerReveal ? '' : undefined}>
+  <body class="min-h-screen bg-background text-foreground antialiased" data-eager-reveal={eagerReveal ? '' : undefined} data-photo-page={bgImage ? '' : undefined}>
     <!-- Skip to content link -->
     <a
       href="#main-content"

@@ -17,9 +17,10 @@ interface Props {
   nofollow?: boolean;
   showScrollProgress?: boolean;
   eagerReveal?: boolean;
+  bgImage?: string;
 }
 
-const { title, description, image, imageAlt, noindex, nofollow, showScrollProgress = false, eagerReveal = false } = Astro.props;
+const { title, description, image, imageAlt, noindex, nofollow, showScrollProgress = false, eagerReveal = false, bgImage } = Astro.props;
 
 ---
 
@@ -31,6 +32,7 @@ const { title, description, image, imageAlt, noindex, nofollow, showScrollProgre
   noindex={noindex}
   nofollow={nofollow}
   eagerReveal={eagerReveal}
+  bgImage={bgImage}
 >
   <Header
     slot="header"

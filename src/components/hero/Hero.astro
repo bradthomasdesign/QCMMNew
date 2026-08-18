@@ -26,6 +26,8 @@ interface Props extends HTMLAttributes<'section'> {
   showScrollIndicator?: boolean;
   /** Stretch the section to fill at least the full viewport height (min-h-[100dvh]) */
   fullHeight?: boolean;
+  /** Optional background image path — shows image with dark overlay, switches text to white */
+  bgImage?: string;
 }
 
 const {
@@ -39,6 +41,7 @@ const {
   bottomFade = false,
   showScrollIndicator = false,
   fullHeight = false,
+  bgImage,
   class: className,
   ...attrs
 } = Astro.props;
@@ -53,8 +56,13 @@ const hasAsideSlot = Astro.slots.has('aside');
 // Compute alignment based on layout
 const alignment = layout === 'centered' ? 'text-center items-center' : 'text-left items-start';
 
-// Compute classes
-const sectionClasses = cn(heroSectionVariants({ size }), fullHeight && 'min-h-[100dvh]', className);
+// Compute classes — when bgImage is set, remove bg-background and overflow-hidden so the fixed image shows through
+const sectionClasses = cn(
+  heroSectionVariants({ size }),
+  fullHeight && 'min-h-[100dvh]',
+  bgImage && '!bg-transparent',
+  className
+);
 
 const contentClasses = cn(
   'z-10 flex flex-col',
@@ -67,7 +75,13 @@ const gridClasses = cn(
 );
 ---
 
-<section class={sectionClasses} {...attrs}>
+<section class={sectionClasses} data-photo-hero={bgImage ? '' : undefined} {...attrs}>
+  {bgImage && (
+    <>
+      <img src={bgImage} alt="" aria-hidden="true" class="fixed inset-0 w-full h-full object-cover pointer-events-none" style="z-index:-2" />
+      <div class="fixed inset-0 bg-black/65 pointer-events-none" aria-hidden="true" style="z-index:-1" />
+    </>
+  )}
   {showHeroHalo && <HeroGrid />}
   {showHeroHalo && <HeroBeam />}
 
@@ -133,8 +147,10 @@ const gridClasses = cn(
       {hasTitleSlot && (
         <div class={cn(
           'hero-title-slot hero-lcp-title mb-[var(--space-heading-gap)]',
-          '[&>h1]:font-display [&>h1]:text-5xl [&>h1]:leading-[1.1] [&>h1]:font-bold [&>h1]:tracking-tight [&>h1]:text-balance [&>h1]:text-foreground md:[&>h1]:text-6xl lg:[&>h1]:text-7xl',
-          '[&>h2]:font-display [&>h2]:text-4xl [&>h2]:leading-[1.1] [&>h2]:font-bold [&>h2]:tracking-tight [&>h2]:text-balance [&>h2]:text-foreground md:[&>h2]:text-5xl lg:[&>h2]:text-6xl'
+          '[&>h1]:font-display [&>h1]:text-5xl [&>h1]:leading-[1.05] [&>h1]:font-black [&>h1]:tracking-tighter [&>h1]:text-balance md:[&>h1]:text-6xl lg:[&>h1]:text-7xl',
+          bgImage ? '[&>h1]:text-white' : '[&>h1]:text-foreground',
+          '[&>h2]:font-display [&>h2]:text-4xl [&>h2]:leading-[1.05] [&>h2]:font-black [&>h2]:tracking-tighter [&>h2]:text-balance md:[&>h2]:text-5xl lg:[&>h2]:text-6xl',
+          bgImage ? '[&>h2]:text-white' : '[&>h2]:text-foreground',
         )}>
           <slot name="title" />
         </div>
@@ -143,8 +159,9 @@ const gridClasses = cn(
       {/* Description Slot */}
       {hasDescriptionSlot && (
         <div class={cn(
-          'mb-[var(--space-stack-lg)] max-w-xl text-lg leading-relaxed text-foreground-muted',
-          '[&>p]:text-lg [&>p]:leading-relaxed [&>p]:text-foreground-muted',
+          'mb-[var(--space-stack-lg)] max-w-xl text-lg leading-relaxed',
+          bgImage ? 'text-white/80 [&>p]:text-white/80' : 'text-foreground-muted [&>p]:text-foreground-muted',
+          '[&>p]:text-lg [&>p]:leading-relaxed',
           layout === 'centered' && 'mx-auto'
         )}>
           <slot name="description" />
@@ -175,6 +192,21 @@ const gridClasses = cn(
 </section>
 
 <style>
+  /* When a fixed background photo is present, force all heading spans to white
+     regardless of light/dark mode. The [-webkit-text-fill-color:currentColor]
+     utility on span elements would otherwise lock them to the light-mode fg color. */
+  [data-photo-hero] .hero-title-slot h1 span,
+  [data-photo-hero] .hero-title-slot h2 span {
+    color: white !important;
+    -webkit-text-fill-color: white !important;
+  }
+  /* Brand-colored spans keep their orange — only plain text spans go white */
+  [data-photo-hero] .hero-title-slot h1 span[class*="brand"],
+  [data-photo-hero] .hero-title-slot h2 span[class*="brand"] {
+    color: var(--color-brand-500) !important;
+    -webkit-text-fill-color: var(--color-brand-500) !important;
+  }
+
   /* Desktop only: hide on landscape mobile (phones max out ~430px tall) */
   .scroll-indicator-wrapper {
     display: none;
