@@ -44,7 +44,6 @@ export const footerNavItems: NavItem[] = [
   { label: 'About', href: '/about', order: 7 },
   { label: 'How It Works', href: '/how-it-works', order: 8 },
   { label: 'Contact', href: '/contact', order: 9 },
-  { label: 'Search', href: '/search', order: 10 },
 ];
 
 export const legalLinks: LegalLink[] = [

@@ -107,7 +107,7 @@ export default function CommunityFeed() {
     setLoading(true);
     let query = supabase
       .from('message_posts')
-      .select('id, title, content, created_at, category_id, user_id, profiles(username, avatar_url), post_likes(id), post_comments(id)')
+      .select('id, title, content, created_at, category_id, user_id, profiles(username, avatar_url), post_likes(id, user_id), post_comments(id)')
       .eq('experience_id', QCMM_EXPERIENCE_ID)
       .order('created_at', { ascending: false })
       .limit(50);
