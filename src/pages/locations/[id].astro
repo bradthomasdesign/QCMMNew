@@ -88,7 +88,7 @@ const locationLine = [location.state, location.country].filter(Boolean).join(', 
   <!-- Location image — fixed so content scrolls over it -->
   {(location.featured_image_url || true) && (
     <div
-      class="w-full h-64 sm:h-80"
+      class="w-full h-[456px] sm:h-[520px]"
       style={`background: url('${location.featured_image_url ?? 'https://picsum.photos/seed/qcmm/1200/400'}') center / cover fixed; background-color: var(--color-background-secondary);`}
     />
   )}
