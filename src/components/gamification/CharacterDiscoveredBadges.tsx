@@ -37,10 +37,15 @@ export default function CharacterRoster({ characters }: Props) {
   const [loaded, setLoaded] = useState(false);
   const [activeGroup, setActiveGroup] = useState('all');
 
-  // Derive sorted list of groups that actually appear in the data
-  const groups = ['all', ...Object.keys(GROUP_LABELS).filter(
-    (g) => characters.some((c) => c.group === g)
-  )];
+  const groupCounts = Object.fromEntries(
+    Object.keys(GROUP_LABELS).map((g) => [g, characters.filter((c) => c.group === g).length])
+  );
+  const groups = [
+    'all',
+    ...Object.keys(GROUP_LABELS)
+      .filter((g) => groupCounts[g] > 0)
+      .sort((a, b) => groupCounts[b] - groupCounts[a]),
+  ];
 
   const visible = activeGroup === 'all'
     ? characters
@@ -88,7 +93,7 @@ export default function CharacterRoster({ characters }: Props) {
                 : 'bg-[var(--background-secondary)] text-[var(--foreground-muted)] hover:text-[var(--foreground)] border border-[var(--border)]',
             ].join(' ')}
           >
-            {g === 'all' ? 'All' : GROUP_LABELS[g]}
+            {g === 'all' ? `All (${characters.length})` : `${GROUP_LABELS[g]} (${groupCounts[g]})`}
           </button>
         ))}
       </div>
