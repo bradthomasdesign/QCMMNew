@@ -2,9 +2,9 @@
 import PageLayout from '@/layouts/PageLayout.astro';
 import { Hero } from '@/components/hero';
 import Badge from '@/components/ui/data-display/Badge/Badge.astro';
-import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import LocationsMap from '@/components/locations/LocationsMap';
+import AuthAwareCTA from '@/components/auth/AuthAwareCTA';
 ---
 <PageLayout title="Visit QCMM Locations and check-in for perks" description="Every festival spot, mapped across downtown Staunton." bgImage="/staunton.jpg">
   <Hero layout="centered" size="sm" class="isolate" bgImage="/staunton.jpg">
@@ -18,10 +18,13 @@ import LocationsMap from '@/components/locations/LocationsMap';
     </h1>
     <p slot="description">Every festival spot, mapped across downtown Staunton.</p>
     <Fragment slot="actions">
-      <Button href="/auth">
-        Sign in to check in
-        <Icon name="arrow-right" size="sm" />
-      </Button>
+      <AuthAwareCTA
+        signInHref="/auth"
+        signInLabel="Sign in to check in →"
+        authedHref="/profile"
+        authedLabel="View your profile →"
+        client:load
+      />
     </Fragment>
   </Hero>
 

@@ -2,9 +2,9 @@
 import PageLayout from '@/layouts/PageLayout.astro';
 import { Hero } from '@/components/hero';
 import Badge from '@/components/ui/data-display/Badge/Badge.astro';
-import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import MembersLeaderboard from '@/components/members/MembersLeaderboard';
+import AuthAwareCTA from '@/components/auth/AuthAwareCTA';
 ---
 <PageLayout title="Who's on the quest?" description="The top pin collectors. See how many XP fellow adventurers have earned, and how you stack up." bgImage="/staunton.jpg">
   <Hero layout="centered" size="sm" class="isolate" bgImage="/staunton.jpg">
@@ -18,10 +18,11 @@ import MembersLeaderboard from '@/components/members/MembersLeaderboard';
     </h1>
     <p slot="description">The top pin collectors. See how many XP fellow adventurers have earned, and how you stack up.</p>
     <Fragment slot="actions">
-      <Button href="/auth">
-        Sign in to join
-        <Icon name="arrow-right" size="sm" />
-      </Button>
+      <AuthAwareCTA
+        signInHref="/auth"
+        signInLabel="Sign in to join →"
+        client:load
+      />
     </Fragment>
   </Hero>
 

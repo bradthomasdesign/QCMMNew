@@ -86,13 +86,21 @@ const locationLine = [location.state, location.country].filter(Boolean).join(', 
     </div>
   </div>
 
-  <!-- Location image — fixed so content scrolls over it -->
+  <!-- Location image — fixed on desktop, scroll on mobile (iOS Safari doesn't support background-attachment:fixed) -->
   {(location.featured_image_url || true) && (
-    <div
-      class="w-full h-[456px] sm:h-[520px]"
-      style={`background: url('${location.featured_image_url ?? '/staunton-downtown.jpg'}') center / cover fixed; background-color: var(--color-background-secondary);`}
-    />
+    <div class="location-hero-image w-full h-[360px] sm:h-[520px]" style={`--loc-img: url('${location.featured_image_url ?? '/staunton-downtown.jpg'}')`} />
   )}
+  <style>
+    .location-hero-image {
+      background: var(--loc-img) center / cover fixed;
+      background-color: var(--color-background-secondary);
+    }
+    @media (max-width: 767px) {
+      .location-hero-image {
+        background-attachment: scroll;
+      }
+    }
+  </style>
 
   <!-- Hero -->
   <section class="relative z-10 bg-background py-12 border-b border-border">
