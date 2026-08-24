@@ -90,7 +90,7 @@ const locationLine = [location.state, location.country].filter(Boolean).join(', 
   {(location.featured_image_url || true) && (
     <div
       class="w-full h-[456px] sm:h-[520px]"
-      style={`background: url('${location.featured_image_url ?? 'https://visitstaunton.com/wp-content/uploads/2016/02/ASC-Comedy-of-Errors.jpg'}') center / cover fixed; background-color: var(--color-background-secondary);`}
+      style={`background: url('${location.featured_image_url ?? '/staunton-downtown.jpg'}') center / cover fixed; background-color: var(--color-background-secondary);`}
     />
   )}
 
