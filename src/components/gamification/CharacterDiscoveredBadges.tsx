@@ -11,9 +11,21 @@ export interface CharacterData {
   slug: string;
   name: string;
   bio: string;
+  group?: string;
   avatarSrc?: string;
   avatarAlt?: string;
 }
+
+const GROUP_LABELS: Record<string, string> = {
+  'professors': 'Professors',
+  'students': 'Students',
+  'ozland': 'Ozland',
+  'favorite-supporting': 'Favorite Supporting',
+  'supporting': 'Supporting',
+  'beauxbatons': 'Beauxbatons',
+  'baddies': 'Baddies',
+  'founders': 'Founders',
+};
 
 interface Props {
   characters: CharacterData[];
@@ -23,6 +35,16 @@ export default function CharacterRoster({ characters }: Props) {
   const [discoveredSlugs, setDiscoveredSlugs] = useState<Set<string>>(new Set());
   const [authed, setAuthed] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [activeGroup, setActiveGroup] = useState('all');
+
+  // Derive sorted list of groups that actually appear in the data
+  const groups = ['all', ...Object.keys(GROUP_LABELS).filter(
+    (g) => characters.some((c) => c.group === g)
+  )];
+
+  const visible = activeGroup === 'all'
+    ? characters
+    : characters.filter((c) => c.group === activeGroup);
 
   useEffect(() => {
     if (characters.length === 0) { setLoaded(true); return; }
@@ -53,6 +75,24 @@ export default function CharacterRoster({ characters }: Props) {
 
   return (
     <div>
+      {/* Group filter tabs */}
+      <div className="flex gap-1.5 flex-wrap mb-6">
+        {groups.map((g) => (
+          <button
+            key={g}
+            onClick={() => setActiveGroup(g)}
+            className={[
+              'rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors',
+              activeGroup === g
+                ? 'bg-[var(--accent)] text-white'
+                : 'bg-[var(--background-secondary)] text-[var(--foreground-muted)] hover:text-[var(--foreground)] border border-[var(--border)]',
+            ].join(' ')}
+          >
+            {g === 'all' ? 'All' : GROUP_LABELS[g]}
+          </button>
+        ))}
+      </div>
+
       {authed && loaded && (
         <p className="mb-6 text-sm text-[var(--foreground-muted)]">
           You've met <span className="font-semibold text-[var(--foreground)]">{discoveredSlugs.size}</span> of{' '}
@@ -61,7 +101,7 @@ export default function CharacterRoster({ characters }: Props) {
       )}
 
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {characters.map((char) => {
+        {visible.map((char) => {
           const discovered = discoveredSlugs.has(char.slug);
           return (
             <a
@@ -89,14 +129,23 @@ export default function CharacterRoster({ characters }: Props) {
                     <Users size={20} className="text-[var(--foreground-muted)]" />
                   </div>
                 )}
-                <h3 className="font-semibold text-[var(--foreground)] group-hover:text-[var(--accent)] transition-colors leading-snug">
-                  {char.name}
-                </h3>
+                <div className="min-w-0">
+                  <h3 className="font-semibold text-[var(--foreground)] group-hover:text-[var(--accent)] transition-colors leading-snug">
+                    {char.name}
+                  </h3>
+                  {char.group && (
+                    <p className="text-[11px] text-[var(--foreground-subtle)] mt-0.5">
+                      {GROUP_LABELS[char.group] ?? char.group}
+                    </p>
+                  )}
+                </div>
               </div>
 
-              <p className="text-sm text-[var(--foreground-muted)] leading-relaxed line-clamp-3">
-                {char.bio}
-              </p>
+              {char.bio && (
+                <p className="text-sm text-[var(--foreground-muted)] leading-relaxed line-clamp-3">
+                  {char.bio}
+                </p>
+              )}
             </a>
           );
         })}

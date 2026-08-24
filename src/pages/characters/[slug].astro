@@ -32,6 +32,18 @@ export async function getStaticPaths() {
 }
 
 const { character, locations } = Astro.props;
+
+const GROUP_LABELS: Record<string, string> = {
+  'professors': 'Professors',
+  'students': 'Students',
+  'ozland': 'Ozland',
+  'favorite-supporting': 'Favorite Supporting',
+  'supporting': 'Supporting',
+  'beauxbatons': 'Beauxbatons',
+  'baddies': 'Baddies',
+  'founders': 'Founders',
+};
+const groupLabel = character.data.group ? (GROUP_LABELS[character.data.group] ?? character.data.group) : null;
 ---
 
 <PageLayout
@@ -67,10 +79,17 @@ const { character, locations } = Astro.props;
         )}
 
         <div class="flex flex-col gap-2">
-          <Badge variant="brand" pill>
-            <Icon name="user" size="sm" />
-            Character
-          </Badge>
+          <div class="flex flex-wrap gap-2">
+            <Badge variant="brand" pill>
+              <Icon name="user" size="sm" />
+              Character
+            </Badge>
+            {groupLabel && (
+              <span class="inline-flex items-center rounded-full border border-border bg-background-secondary px-3 py-1 text-xs font-medium text-foreground-muted">
+                {groupLabel}
+              </span>
+            )}
+          </div>
           <h1 class="font-display text-3xl sm:text-4xl font-bold text-foreground leading-tight">
             {character.data.name}
           </h1>

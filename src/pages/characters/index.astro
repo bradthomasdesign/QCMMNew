@@ -12,6 +12,7 @@ const characterData = allCharacters.map((c) => ({
   slug: c.id,
   name: c.data.name,
   bio: c.data.bio,
+  group: c.data.group,
   avatarSrc: c.data.avatar ? (c.data.avatar as any).src : undefined,
   avatarAlt: c.data.name,
 }));
