@@ -29,6 +29,8 @@ export default function LocationsMap() {
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState<Location | null>(null);
   const markersRef = useRef<Record<string, any>>({});
+  const userMarkerRef = useRef<any>(null);
+  const userCircleRef = useRef<any>(null);
 
   useEffect(() => {
     Promise.all([
@@ -105,6 +107,35 @@ export default function LocationsMap() {
       });
 
       mapInstance.current = map;
+
+      // Show user's current position
+      const userDot = L.divIcon({
+        className: '',
+        html: `<div style="width:14px;height:14px;border-radius:50%;background:#3b82f6;border:2px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.4)"></div>`,
+        iconSize: [14, 14],
+        iconAnchor: [7, 7],
+      });
+
+      if ('geolocation' in navigator) {
+        const watchId = navigator.geolocation.watchPosition(
+          (pos) => {
+            const { latitude, longitude, accuracy } = pos.coords;
+            if (userMarkerRef.current) {
+              userMarkerRef.current.setLatLng([latitude, longitude]);
+              userCircleRef.current.setLatLng([latitude, longitude]).setRadius(accuracy);
+            } else {
+              userMarkerRef.current = L.marker([latitude, longitude], { icon: userDot, zIndexOffset: 1000 }).addTo(map);
+              userCircleRef.current = L.circle([latitude, longitude], { radius: accuracy, color: '#3b82f6', fillColor: '#3b82f6', fillOpacity: 0.1, weight: 1 }).addTo(map);
+            }
+          },
+          () => {}, // silently ignore permission denial
+          { enableHighAccuracy: true, maximumAge: 10000 }
+        );
+        return () => {
+          navigator.geolocation.clearWatch(watchId);
+          if (mapInstance.current) { mapInstance.current.remove(); mapInstance.current = null; }
+        };
+      }
     });
 
     return () => {
@@ -145,6 +176,24 @@ export default function LocationsMap() {
           </div>
         )}
         <div ref={mapEl} style={{ width: '100%', height: '100%' }} />
+        {/* Find me button */}
+        <button
+          onClick={() => {
+            if (!mapInstance.current) return;
+            if (userMarkerRef.current) {
+              mapInstance.current.setView(userMarkerRef.current.getLatLng(), 17, { animate: true });
+            } else {
+              navigator.geolocation?.getCurrentPosition((pos) => {
+                mapInstance.current.setView([pos.coords.latitude, pos.coords.longitude], 17, { animate: true });
+              });
+            }
+          }}
+          className="absolute bottom-3 right-3 z-[1000] flex items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-1.5 text-xs font-medium text-[var(--foreground)] shadow hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors"
+          title="Center map on your location"
+        >
+          <MapPin size={12} />
+          Find me
+        </button>
         {/* Leaflet CSS loaded inline */}
         <style>{`
           .leaflet-container { font-family: inherit; background: var(--background-secondary); }
