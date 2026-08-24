@@ -23,6 +23,7 @@ export default function LocationsMap() {
   const mapEl = useRef<HTMLDivElement>(null);
   const mapInstance = useRef<any>(null);
   const [locations, setLocations] = useState<Location[]>([]);
+  const [checkedInIds, setCheckedInIds] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState('');
@@ -30,16 +31,28 @@ export default function LocationsMap() {
   const markersRef = useRef<Record<string, any>>({});
 
   useEffect(() => {
-    supabase
-      .from('locations')
-      .select('id, name, description, latitude, longitude, is_secret, difficulty_level')
-      .eq('is_active', true)
-      .order('name')
-      .then(({ data, error: err }) => {
-        if (err) { setError(err.message); }
-        else { setLocations(data ?? []); }
-        setLoading(false);
-      });
+    Promise.all([
+      supabase
+        .from('locations')
+        .select('id, name, description, latitude, longitude, is_secret, difficulty_level')
+        .eq('is_active', true)
+        .order('name'),
+      supabase.auth.getSession(),
+    ]).then(async ([{ data: locs, error: err }, { data: sessionData }]) => {
+      if (err) { setError(err.message); }
+      else { setLocations(locs ?? []); }
+
+      const userId = sessionData.session?.user.id;
+      if (userId && locs && locs.length > 0) {
+        const { data: pins } = await supabase
+          .from('pins')
+          .select('location_id')
+          .eq('user_id', userId);
+        setCheckedInIds(new Set((pins ?? []).map((p: any) => p.location_id)));
+      }
+
+      setLoading(false);
+    });
   }, []);
 
   useEffect(() => {
@@ -67,10 +80,10 @@ export default function LocationsMap() {
         maxZoom: 20,
       }).addTo(map);
 
-      const dot = (secret: boolean) =>
+      const dot = (secret: boolean, checkedIn: boolean) =>
         L.divIcon({
           className: '',
-          html: `<div style="width:16px;height:16px;border-radius:50%;background:${secret ? '#64748b' : '#f97316'};border:2px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.4)"></div>`,
+          html: `<div style="width:16px;height:16px;border-radius:50%;background:${checkedIn ? '#22c55e' : secret ? '#64748b' : '#f97316'};border:2px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.4)"></div>`,
           iconSize: [16, 16],
           iconAnchor: [8, 8],
         });
@@ -84,7 +97,7 @@ export default function LocationsMap() {
               <a href="/locations/${loc.id}" style="display:inline-block;font-size:11px;font-weight:500;color:#fff;background:#f97316;padding:4px 10px;border-radius:4px;text-decoration:none">View location</a>
             </div>`
           );
-        const marker = L.marker([loc.latitude, loc.longitude], { icon: dot(loc.is_secret) })
+        const marker = L.marker([loc.latitude, loc.longitude], { icon: dot(loc.is_secret, checkedInIds.has(loc.id)) })
           .addTo(map)
           .bindPopup(popup)
           .on('click', () => { setSelected(loc); marker.openPopup(); });
@@ -177,7 +190,7 @@ export default function LocationsMap() {
             ].join(' ')}>
               <button
                 onClick={() => panToLocation(loc)}
-                className={`mt-0.5 shrink-0 ${loc.is_secret ? 'text-[var(--foreground-muted)]' : 'text-[var(--accent)]'}`}
+                className={`mt-0.5 shrink-0 ${checkedInIds.has(loc.id) ? 'text-green-500' : loc.is_secret ? 'text-[var(--foreground-muted)]' : 'text-[var(--accent)]'}`}
                 aria-label="Pan to location on map"
               >
                 {loc.is_secret ? <Lock size={13} /> : <MapPin size={13} />}
@@ -206,7 +219,7 @@ export default function LocationsMap() {
         </div>
 
         <p className="text-xs text-[var(--foreground-subtle)] text-center">
-          {filtered.length} of {locations.length} locations shown &middot; orange dots on the map are public pins
+          {filtered.length} of {locations.length} locations shown &middot; <span style={{color:'#f97316'}}>●</span> not visited &middot; <span style={{color:'#22c55e'}}>●</span> checked in
         </p>
       </div>
     </div>
