@@ -133,6 +133,7 @@ const characters = defineCollection({
     z.object({
       name: z.string(),
       bio: z.string(),
+      group: z.enum(['professors', 'students', 'ozland', 'favorite-supporting', 'supporting', 'beauxbatons', 'baddies', 'founders']).optional(),
       avatar: image().optional(),
       active: z.boolean().default(true),
     }),
