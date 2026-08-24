@@ -37,7 +37,7 @@ const characterData = allCharacters.map((c) => ({
     </p>
   </Hero>
 
-  <section class="py-16 bg-background border-t border-border">
+  <section class="relative z-10 py-16 bg-background border-t border-border">
     <div class="mx-auto max-w-5xl px-6">
       <CharacterRoster characters={characterData} client:load />
     </div>
