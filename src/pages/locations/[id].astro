@@ -66,7 +66,8 @@ function difficultyColor(level: number | null) {
   return colors[level] ?? 'text-foreground-muted bg-background-secondary';
 }
 
-const mapsUrl = `https://www.openstreetmap.org/?mlat=${location.latitude}&mlon=${location.longitude}&zoom=17`;
+const appleMapsUrl = `https://maps.apple.com/?daddr=${location.latitude},${location.longitude}&dirflg=d`;
+const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${location.latitude},${location.longitude}`;
 const difficulty = difficultyLabel(location.difficulty_level);
 const locationLine = [location.state, location.country].filter(Boolean).join(', ');
 ---
@@ -121,13 +122,22 @@ const locationLine = [location.state, location.country].filter(Boolean).join(', 
 
         <div class="flex flex-wrap gap-3 mt-2">
           <a
-            href={mapsUrl}
+            href={appleMapsUrl}
             target="_blank"
             rel="noopener noreferrer"
             class="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium text-foreground hover:border-brand-500 hover:text-brand-500 transition-colors"
           >
             <Icon name="map" size="sm" />
-            Open in Maps
+            Apple Maps
+          </a>
+          <a
+            href={googleMapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium text-foreground hover:border-brand-500 hover:text-brand-500 transition-colors"
+          >
+            <Icon name="map" size="sm" />
+            Google Maps
           </a>
         </div>
       </div>
