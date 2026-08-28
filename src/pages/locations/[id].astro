@@ -7,6 +7,7 @@ import Card from '@/components/ui/data-display/Card/Card.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import Button from '@/components/ui/form/Button/Button.astro';
 import MiniMap from '@/components/locations/MiniMap';
+import LocalCheckInButton from '@/components/locations/LocalCheckInButton';
 import CollectionProgressTag from '@/components/gamification/CollectionProgressTag';
 
 export async function getStaticPaths() {
@@ -200,7 +201,7 @@ const locationLine = [location.state, location.country].filter(Boolean).join(', 
           </Card>
         )}
 
-        <!-- SUPPRESSED for festival: CheckInButton (sign in to collect pin / earn XP) -->
+        <LocalCheckInButton locationId={location.id} locationName={location.name} client:load />
 
         {collections.length > 0 && (
           <Card padding="sm">

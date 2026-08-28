@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import { Search, MapPin, Lock, Loader2 } from 'lucide-react';
+import { getCheckedInIds, CHECKINS_KEY } from './LocalCheckInButton';
 
 const supabase = createClient(
   (import.meta as any).env.PUBLIC_SUPABASE_URL,
@@ -33,28 +34,21 @@ export default function LocationsMap() {
   const userCircleRef = useRef<any>(null);
 
   useEffect(() => {
-    Promise.all([
-      supabase
-        .from('locations')
-        .select('id, name, description, latitude, longitude, is_secret, difficulty_level')
-        .eq('is_active', true)
-        .order('name'),
-      supabase.auth.getSession(),
-    ]).then(async ([{ data: locs, error: err }, { data: sessionData }]) => {
-      if (err) { setError(err.message); }
-      else { setLocations(locs ?? []); }
+    supabase
+      .from('locations')
+      .select('id, name, description, latitude, longitude, is_secret, difficulty_level')
+      .eq('is_active', true)
+      .order('name')
+      .then(({ data: locs, error: err }) => {
+        if (err) setError(err.message);
+        else setLocations(locs ?? []);
+        setCheckedInIds(getCheckedInIds());
+        setLoading(false);
+      });
 
-      const userId = sessionData.session?.user.id;
-      if (userId && locs && locs.length > 0) {
-        const { data: pins } = await supabase
-          .from('pins')
-          .select('location_id')
-          .eq('user_id', userId);
-        setCheckedInIds(new Set((pins ?? []).map((p: any) => p.location_id)));
-      }
-
-      setLoading(false);
-    });
+    const onCheckin = () => setCheckedInIds(getCheckedInIds());
+    window.addEventListener('qcmm-checkin', onCheckin);
+    return () => window.removeEventListener('qcmm-checkin', onCheckin);
   }, []);
 
   useEffect(() => {
@@ -89,6 +83,7 @@ export default function LocationsMap() {
           iconAnchor: [8, 8],
         });
 
+      const currentCheckins = getCheckedInIds();
       locations.forEach((loc) => {
         const popup = L.popup({ closeButton: false, className: 'qcmm-popup' })
           .setContent(
@@ -98,12 +93,22 @@ export default function LocationsMap() {
               <a href="/locations/${loc.id}" style="display:inline-block;font-size:11px;font-weight:500;color:#fff;background:#f97316;padding:4px 10px;border-radius:4px;text-decoration:none">View location</a>
             </div>`
           );
-        const marker = L.marker([loc.latitude, loc.longitude], { icon: dot(loc.is_secret, checkedInIds.has(loc.id)) })
+        const marker = L.marker([loc.latitude, loc.longitude], { icon: dot(loc.is_secret, currentCheckins.has(loc.id)) })
           .addTo(map)
           .bindPopup(popup)
           .on('click', () => { setSelected(loc); marker.openPopup(); });
         markersRef.current[loc.id] = marker;
       });
+
+      // Update marker icons when a check-in happens on another page
+      const updateMarkers = (e: Event) => {
+        const { locationId } = (e as CustomEvent).detail;
+        const m = markersRef.current[locationId];
+        const loc = locations.find(l => l.id === locationId);
+        if (m && loc) m.setIcon(dot(loc.is_secret, true));
+      };
+      window.addEventListener('qcmm-checkin', updateMarkers);
+      // cleanup handled by the outer return
 
       mapInstance.current = map;
 
