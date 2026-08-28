@@ -6,10 +6,8 @@ import Badge from '@/components/ui/data-display/Badge/Badge.astro';
 import Card from '@/components/ui/data-display/Card/Card.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import Button from '@/components/ui/form/Button/Button.astro';
-import LocationDiscussion from '@/components/locations/LocationDiscussion';
 import MiniMap from '@/components/locations/MiniMap';
-import CheckInButton from '@/components/locations/CheckInButton';
-import LocationStats from '@/components/locations/LocationStats';
+import LocalCheckInButton from '@/components/locations/LocalCheckInButton';
 import CollectionProgressTag from '@/components/gamification/CollectionProgressTag';
 
 export async function getStaticPaths() {
@@ -162,7 +160,7 @@ const locationLine = [location.state, location.country].filter(Boolean).join(', 
           <MiniMap lat={location.latitude} lng={location.longitude} name={location.name} client:load />
         </div>
         <p class="mt-2 text-xs text-foreground-subtle text-center">
-          © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer" class="hover:underline">OpenStreetMap</a> contributors © <a href="https://carto.com/" target="_blank" rel="noopener noreferrer" class="hover:underline">CARTO</a>
+          © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer" class="hover:underline">OpenStreetMap</a> contributors
         </p>
       </div>
 
@@ -188,9 +186,7 @@ const locationLine = [location.state, location.country].filter(Boolean).join(', 
               </div>
             )}
           </dl>
-          <div class="mt-2.5 pt-2.5 border-t border-[var(--border)]">
-            <LocationStats locationId={location.id} client:load />
-          </div>
+          <!-- SUPPRESSED for festival: Last check-in stats -->
         </Card>
 
         {location.reward_description && (
@@ -205,7 +201,7 @@ const locationLine = [location.state, location.country].filter(Boolean).join(', 
           </Card>
         )}
 
-        <CheckInButton locationId={location.id} locationName={location.name} characterSlugs={location.character_slugs ?? []} client:load />
+        <LocalCheckInButton locationId={location.id} locationName={location.name} client:load />
 
         {collections.length > 0 && (
           <Card padding="sm">
@@ -264,12 +260,7 @@ const locationLine = [location.state, location.country].filter(Boolean).join(', 
     </section>
   )}
 
-  <!-- Discussion -->
-  <section class="relative z-10 py-10 bg-background">
-    <div class="mx-auto max-w-4xl px-6">
-      <LocationDiscussion locationId={location.id} client:load />
-    </div>
-  </section>
+  <!-- SUPPRESSED for festival: Discussion / Comments section -->
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 </PageLayout>

@@ -4,7 +4,6 @@ import { Hero } from '@/components/hero';
 import Badge from '@/components/ui/data-display/Badge/Badge.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import LocationsMap from '@/components/locations/LocationsMap';
-import AuthAwareCTA from '@/components/auth/AuthAwareCTA';
 ---
 <PageLayout title="Visit QCMM Locations and check-in for perks" description="Every festival spot, mapped across downtown Staunton." bgImage="/staunton.jpg">
   <Hero layout="centered" size="sm" class="isolate" bgImage="/staunton.jpg">
@@ -17,15 +16,7 @@ import AuthAwareCTA from '@/components/auth/AuthAwareCTA';
       <span class="text-brand-500 [-webkit-text-fill-color:var(--color-brand-500)]">next pin.</span>
     </h1>
     <p slot="description">Every festival spot, mapped across downtown Staunton.</p>
-    <Fragment slot="actions">
-      <AuthAwareCTA
-        signInHref="/auth"
-        signInLabel="Sign in to check in →"
-        authedHref="/profile"
-        authedLabel="View your profile →"
-        client:load
-      />
-    </Fragment>
+    <!-- SUPPRESSED for festival: Sign in to check in button -->
   </Hero>
 
   <section class="relative z-10 py-16 bg-background border-t border-border">

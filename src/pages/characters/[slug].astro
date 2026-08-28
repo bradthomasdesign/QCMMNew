@@ -3,8 +3,10 @@ import { getCollection } from 'astro:content';
 import { createClient } from '@supabase/supabase-js';
 import PageLayout from '@/layouts/PageLayout.astro';
 import Badge from '@/components/ui/data-display/Badge/Badge.astro';
+import Button from '@/components/ui/form/Button/Button.astro';
 import Card from '@/components/ui/data-display/Card/Card.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import LocalMetButton from '@/components/characters/LocalMetButton';
 
 export async function getStaticPaths() {
   const characters = await getCollection('characters', (c) => c.data.active);
@@ -96,6 +98,9 @@ const groupLabel = character.data.group ? (GROUP_LABELS[character.data.group] ??
           <p class="text-foreground-muted text-lg leading-relaxed max-w-2xl">
             {character.data.bio}
           </p>
+          <div class="mt-4">
+            <LocalMetButton slug={character.id} name={character.data.name} client:load />
+          </div>
         </div>
       </div>
     </div>

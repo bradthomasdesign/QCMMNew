@@ -29,9 +29,9 @@ export const navItems: NavItem[] = [
   { label: 'Locations', href: '/locations', order: 1 },
   { label: 'Collections', href: '/collections', order: 2 },
   { label: 'Characters', href: '/characters', order: 3 },
-  { label: 'Community', href: '/community', order: 4 },
-  { label: 'Members', href: '/members', order: 5 },
-  { label: 'About', href: '/about', order: 6 },
+  // SUPPRESSED for festival: { label: 'Community', href: '/community', order: 4 },
+  // SUPPRESSED for festival: { label: 'Members', href: '/members', order: 5 },
+  // SUPPRESSED for festival: { label: 'About', href: '/about', order: 6 },
 ];
 
 export const footerNavItems: NavItem[] = [
