@@ -1,11 +1,6 @@
 import { useEffect, useState } from 'react';
-import { createClient } from '@supabase/supabase-js';
-import { Users } from 'lucide-react';
-
-const supabase = createClient(
-  (import.meta as any).env.PUBLIC_SUPABASE_URL,
-  (import.meta as any).env.PUBLIC_SUPABASE_ANON_KEY,
-);
+import { Users, Check } from 'lucide-react';
+import { getMetSlugs, MET_CHARS_KEY } from '@/components/characters/LocalMetButton';
 
 export interface CharacterData {
   slug: string;
@@ -33,7 +28,6 @@ interface Props {
 
 export default function CharacterRoster({ characters }: Props) {
   const [discoveredSlugs, setDiscoveredSlugs] = useState<Set<string>>(new Set());
-  const [authed, setAuthed] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [activeGroup, setActiveGroup] = useState('all');
 
@@ -52,21 +46,12 @@ export default function CharacterRoster({ characters }: Props) {
     : characters.filter((c) => c.group === activeGroup);
 
   useEffect(() => {
-    if (characters.length === 0) { setLoaded(true); return; }
-    supabase.auth.getSession().then(async ({ data }) => {
-      const userId = data.session?.user.id ?? null;
-      setAuthed(!!userId);
+    setDiscoveredSlugs(getMetSlugs());
+    setLoaded(true);
 
-      if (userId) {
-        const { data: rows } = await supabase
-          .from('user_characters')
-          .select('character_slug')
-          .eq('user_id', userId)
-          .in('character_slug', characters.map((c) => c.slug));
-        setDiscoveredSlugs(new Set((rows ?? []).map((r: any) => r.character_slug)));
-      }
-      setLoaded(true);
-    });
+    const onMet = () => setDiscoveredSlugs(getMetSlugs());
+    window.addEventListener('qcmm-met-character', onMet);
+    return () => window.removeEventListener('qcmm-met-character', onMet);
   }, []);
 
   if (characters.length === 0) {
@@ -98,7 +83,7 @@ export default function CharacterRoster({ characters }: Props) {
         ))}
       </div>
 
-      {authed && loaded && (
+      {loaded && discoveredSlugs.size > 0 && (
         <p className="mb-6 text-sm text-[var(--foreground-muted)]">
           You've met <span className="font-semibold text-[var(--foreground)]">{discoveredSlugs.size}</span> of{' '}
           <span className="font-semibold text-[var(--foreground)]">{characters.length}</span> characters.
@@ -114,8 +99,9 @@ export default function CharacterRoster({ characters }: Props) {
               href={`/characters/${char.slug}`}
               className="relative flex flex-col gap-3 rounded-xl border border-[var(--border)] bg-[var(--background)] p-5 hover:border-[var(--accent)] transition-colors group"
             >
-              {authed && loaded && discovered && (
-                <span className="absolute top-3 right-3 rounded-full bg-[var(--accent)] px-2 py-0.5 text-[10px] font-bold text-white">
+              {loaded && discovered && (
+                <span className="absolute top-3 right-3 flex items-center gap-1 rounded-full bg-green-500 px-2 py-0.5 text-[10px] font-bold text-white">
+                  <Check size={10} />
                   Met!
                 </span>
               )}
