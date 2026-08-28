@@ -1,12 +1,9 @@
 ---
 import LandingLayout from '@/layouts/LandingLayout.astro';
-import { Hero } from '@/components/hero';
 import Button from '@/components/ui/form/Button/Button.astro';
 import Badge from '@/components/ui/data-display/Badge/Badge.astro';
 import Card from '@/components/ui/data-display/Card/Card.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
-import LetterGlitchBand from '@/components/patterns/LetterGlitchBand.astro';
-import AuthAwareCTA from '@/components/auth/AuthAwareCTA';
 ---
 
 <LandingLayout
@@ -66,22 +63,23 @@ import AuthAwareCTA from '@/components/auth/AuthAwareCTA';
         <!-- Description -->
         <div class="mb-[var(--space-stack-lg)] max-w-xl mx-auto">
           <p class="text-lg leading-relaxed font-medium" style="color: rgba(255,255,255,0.90)">
-            Explore downtown Staunton, check into festival locations, earn XP, and connect with the community at Virginia's most magical free festival.
+            Explore downtown Staunton and connect with the community at Virginia's most magical free festival.
           </p>
         </div>
 
         <!-- Actions -->
         <div class="flex w-full flex-col gap-4 sm:w-auto sm:flex-row justify-center">
-          <AuthAwareCTA
-            signInHref="/auth"
-            signInLabel="Start your adventure →"
-            authedHref="/profile"
-            authedLabel="Continue your adventure →"
-            client:load
-          />
-          <Button size="lg" variant="outline" href="/locations">
+          <Button size="lg" variant="brand" href="/locations">
             <Icon name="map-pin" size="sm" />
-            View locations
+            View Locations
+          </Button>
+          <Button size="lg" variant="outline" href="/collections">
+            <Icon name="layers" size="sm" />
+            Browse Collections
+          </Button>
+          <Button size="lg" variant="outline" href="/characters">
+            <Icon name="users" size="sm" />
+            Character List
           </Button>
         </div>
 
@@ -109,160 +107,8 @@ import AuthAwareCTA from '@/components/auth/AuthAwareCTA';
     </div>
   </section>
 
-  <!-- How It Works -->
-  <section class="relative z-10 py-[var(--space-section-md)] bg-background border-t border-border">
-    <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
-      <div class="flex flex-col items-center gap-4 text-center" data-reveal>
-        <Badge variant="brand" pill>How It Works</Badge>
-        <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
-          Three simple steps
-        </h2>
-        <p class="text-lg text-foreground-muted max-w-2xl">
-          No app download required. Just your phone and a sense of adventure.
-        </p>
-      </div>
-
-      <div class="grid gap-6 sm:grid-cols-3">
-        <Card hover class="group flex flex-col" data-reveal>
-          <div class="flex items-start gap-4 sm:flex-col sm:gap-3">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 font-bold shrink-0">
-              1
-            </div>
-            <div class="flex-1">
-              <h3 class="text-base font-semibold text-foreground">Create a free account</h3>
-              <p class="text-sm text-foreground-muted leading-relaxed mt-1.5">
-                Sign up at qcmm.app; all you need is an email address.
-              </p>
-            </div>
-          </div>
-        </Card>
-
-        <Card hover class="group flex flex-col" data-reveal data-reveal-delay="1">
-          <div class="flex items-start gap-4 sm:flex-col sm:gap-3">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 font-bold shrink-0">
-              2
-            </div>
-            <div class="flex-1">
-              <h3 class="text-base font-semibold text-foreground">Find locations across downtown</h3>
-              <p class="text-sm text-foreground-muted leading-relaxed mt-1.5">
-                Festival spots are spread across downtown Staunton. Explore the area, keep your eyes open.
-              </p>
-            </div>
-          </div>
-        </Card>
-
-        <Card hover class="group flex flex-col" data-reveal data-reveal-delay="2">
-          <div class="flex items-start gap-4 sm:flex-col sm:gap-3">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 font-bold shrink-0">
-              3
-            </div>
-            <div class="flex-1">
-              <h3 class="text-base font-semibold text-foreground">Check in and build your profile/h3>
-              <p class="text-sm text-foreground-muted leading-relaxed mt-1.5">
-                Open the location page and tap Check In; it is recorded instantly.
-              </p>
-            </div>
-          </div>
-        </Card>
-      </div>
-
-      <div class="text-center">
-        <Button variant="outline" href="/how-it-works">
-          Full guide
-          <Icon name="arrow-right" size="sm" />
-        </Button>
-      </div>
-    </div>
-  </section>
-
-  <!-- Features -->
-  <section class="relative z-10 py-[var(--space-section-md)] bg-background-secondary border-t border-border">
-    <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
-      <div class="flex flex-col items-center gap-4 text-center" data-reveal>
-        <Badge variant="brand" pill>What's Inside</Badge>
-        <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
-          More than just a map
-        </h2>
-        <p class="text-lg text-foreground-muted max-w-2xl">
-          QCMM is a full adventure platform — explore, connect, and discover the stories behind Staunton.
-        </p>
-      </div>
-
-      <div class="grid gap-6 sm:grid-cols-2">
-        <Card hover href="/locations" class="group flex flex-col" data-reveal>
-          <div class="flex items-start gap-4">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
-              <Icon name="map-pin" size="sm" />
-            </div>
-            <div class="flex-1 min-w-0">
-              <h3 class="text-base font-semibold text-foreground">Locations</h3>
-              <p class="text-sm text-foreground-muted leading-relaxed mt-1.5">
-                An interactive map and full list of every festival spot. Plan your route before the festival, or discover as you go.
-              </p>
-              <span class="inline-flex items-center gap-1 text-sm font-medium text-brand-500 mt-3 group-hover:gap-2 transition-all">
-                Explore the map
-                <Icon name="arrow-right" size="sm" />
-              </span>
-            </div>
-          </div>
-        </Card>
-
-        <Card hover href="/community" class="group flex flex-col" data-reveal data-reveal-delay="1">
-          <div class="flex items-start gap-4">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
-              <Icon name="message-square" size="sm" />
-            </div>
-            <div class="flex-1 min-w-0">
-              <h3 class="text-base font-semibold text-foreground">Community</h3>
-              <p class="text-sm text-foreground-muted leading-relaxed mt-1.5">
-                A message board for festival attendees. Ask questions, share what you found, or say hello to fellow explorers.
-              </p>
-              <span class="inline-flex items-center gap-1 text-sm font-medium text-brand-500 mt-3 group-hover:gap-2 transition-all">
-                Join the conversation
-                <Icon name="arrow-right" size="sm" />
-              </span>
-            </div>
-          </div>
-        </Card>
-
-        <Card hover href="/blog" class="group flex flex-col" data-reveal data-reveal-delay="2">
-          <div class="flex items-start gap-4">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
-              <Icon name="book-open" size="sm" />
-            </div>
-            <div class="flex-1 min-w-0">
-              <h3 class="text-base font-semibold text-foreground">QCMM News</h3>
-              <p class="text-sm text-foreground-muted leading-relaxed mt-1.5">
-                Festival news, event updates, and community stories from the team and attendees of Queen City Mischief & Magic.
-              </p>
-              <span class="inline-flex items-center gap-1 text-sm font-medium text-brand-500 mt-3 group-hover:gap-2 transition-all">
-                Read the news
-                <Icon name="arrow-right" size="sm" />
-              </span>
-            </div>
-          </div>
-        </Card>
-
-        <Card hover href="/members" class="group flex flex-col" data-reveal data-reveal-delay="3">
-          <div class="flex items-start gap-4">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
-              <Icon name="trophy" size="sm" />
-            </div>
-            <div class="flex-1 min-w-0">
-              <h3 class="text-base font-semibold text-foreground">Members</h3>
-              <p class="text-sm text-foreground-muted leading-relaxed mt-1.5">
-                A leaderboard of who has collected the most pins and earned the most XP. See how you stack up against other adventurers.
-              </p>
-              <span class="inline-flex items-center gap-1 text-sm font-medium text-brand-500 mt-3 group-hover:gap-2 transition-all">
-                See the leaderboard
-                <Icon name="arrow-right" size="sm" />
-              </span>
-            </div>
-          </div>
-        </Card>
-      </div>
-    </div>
-  </section>
+  <!-- SUPPRESSED for festival: "Three simple steps" and "More than just a map" sections -->
+  <!-- Re-enable by restoring the sections from the post-festival-edits branch history -->
 
   <!-- About QCMM -->
   <section class="relative z-10 py-[var(--space-section-md)] bg-background border-t border-border">
@@ -282,10 +128,16 @@ import AuthAwareCTA from '@/components/auth/AuthAwareCTA';
           <p class="text-lg text-foreground-muted leading-relaxed text-pretty mb-8 sm:max-w-xl glitch:max-w-none sm:hidden glitch:block">
             QCMM turns the whole city into the venue. Every alley, storefront, and plaza becomes part of the adventure.
           </p>
-          <Button variant="outline" href="/about" class="self-start sm:self-center glitch:self-start sm:hidden glitch:inline-flex">
-            About the festival
-            <Icon name="arrow-right" size="sm" />
-          </Button>
+          <div class="flex flex-col sm:flex-row gap-3 self-start sm:self-center glitch:self-start sm:hidden glitch:inline-flex">
+            <Button variant="brand" href="https://queencitymagic.com/" class="self-start">
+              Official Festival Website
+              <Icon name="arrow-right" size="sm" />
+            </Button>
+            <Button variant="outline" href="#" class="self-start">
+              View the Schedule
+              <Icon name="calendar" size="sm" />
+            </Button>
+          </div>
         </div>
 
         <Card variant="elevated" padding="lg" class="h-full flex flex-col" data-reveal="left" data-reveal-delay="1" data-reveal-ease="smooth">
@@ -310,62 +162,22 @@ import AuthAwareCTA from '@/components/auth/AuthAwareCTA';
           </div>
         </Card>
 
-        <div class="hidden sm:flex justify-center glitch:hidden" data-reveal data-reveal-delay="2">
-          <Button variant="outline" href="/about">
-            About the festival
+        <div class="hidden sm:flex justify-center gap-3 glitch:hidden" data-reveal data-reveal-delay="2">
+          <Button variant="brand" href="https://queencitymagic.com/">
+            Official Festival Website
             <Icon name="arrow-right" size="sm" />
+          </Button>
+          <Button variant="outline" href="#">
+            View the Schedule
+            <Icon name="calendar" size="sm" />
           </Button>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- CTA -->
-  <section class="relative z-10 py-[var(--space-section-md)] bg-background-secondary border-t border-border">
-    <div class="glitch:hidden mx-auto max-w-2xl px-6 text-center" data-reveal>
-      <Badge variant="brand" pill class="mb-6">Ready to play?</Badge>
-      <h2 class="font-display text-4xl font-bold text-foreground mb-4 text-balance">
-        Your adventure starts now.
-      </h2>
-      <p class="text-lg text-foreground-muted mb-8 text-balance">
-        Create a free account and start collecting pins at Queen City Mischief &amp; Magic.
-      </p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <AuthAwareCTA
-          signInHref="/auth"
-          signInLabel="Create free account →"
-          authedHref="/profile"
-          authedLabel="View your profile →"
-          client:load
-        />
-        <Button size="lg" variant="outline" href="/how-it-works">
-          How it works
-        </Button>
-      </div>
-    </div>
-
-    <LetterGlitchBand>
-      <h2 class="font-display text-4xl font-bold text-foreground mb-4 text-balance">
-        Your adventure starts now.
-      </h2>
-      <p class="text-lg text-foreground-muted mb-8 text-balance">
-        Create a free account and start collecting pins at Queen City Mischief &amp; Magic.
-      </p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <AuthAwareCTA
-          signInHref="/auth"
-          signInLabel="Create free account →"
-          authedHref="/profile"
-          authedLabel="View your profile →"
-          client:load
-        />
-        </Button>
-        <Button size="lg" variant="outline" href="/how-it-works">
-          How it works
-        </Button>
-      </div>
-    </LetterGlitchBand>
-  </section>
+  <!-- SUPPRESSED for festival: "Your adventure starts now" CTA section -->
+  <!-- Re-enable by restoring from the post-festival-edits branch history -->
 
 </LandingLayout>
 

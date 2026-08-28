@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import { createClient } from '@supabase/supabase-js';
 import PageLayout from '@/layouts/PageLayout.astro';
 import Badge from '@/components/ui/data-display/Badge/Badge.astro';
+import Button from '@/components/ui/form/Button/Button.astro';
 import Card from '@/components/ui/data-display/Card/Card.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 
@@ -96,10 +97,32 @@ const groupLabel = character.data.group ? (GROUP_LABELS[character.data.group] ??
           <p class="text-foreground-muted text-lg leading-relaxed max-w-2xl">
             {character.data.bio}
           </p>
+          <div class="mt-4">
+            <Button variant="brand" size="md" id="met-character-btn">
+              <Icon name="check" size="sm" />
+              Met this Character
+            </Button>
+          </div>
         </div>
       </div>
     </div>
   </section>
+
+  <script>
+    const btn = document.getElementById('met-character-btn');
+    if (btn) {
+      const key = `met-char-${location.pathname}`;
+      if (localStorage.getItem(key)) {
+        btn.textContent = '✓ Already met!';
+        btn.setAttribute('disabled', 'true');
+      }
+      btn.addEventListener('click', () => {
+        localStorage.setItem(key, '1');
+        btn.textContent = '✓ Already met!';
+        btn.setAttribute('disabled', 'true');
+      });
+    }
+  </script>
 
   <!-- Where to find them -->
   {locations.length > 0 && (
