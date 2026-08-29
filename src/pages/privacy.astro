@@ -4,7 +4,7 @@ import { Hero } from '@/components/hero';
 import Badge from '@/components/ui/data-display/Badge/Badge.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 ---
-<PageLayout title="Privacy Policy — QCMM" description="How Queen City Mischief & Magic collects and uses your information.">
+<PageLayout title="Privacy Policy — QCMM" description="How QCMM.app collects and uses information.">
   <Hero layout="centered" size="sm" class="isolate">
     <Badge slot="badge" variant="brand" pill>
       <Icon name="shield" size="sm" />
@@ -17,16 +17,17 @@ import Icon from '@/components/ui/primitives/Icon/Icon.astro';
   <section class="py-16 bg-background border-t border-border">
     <div class="mx-auto max-w-3xl px-6 prose prose-sm prose-neutral dark:prose-invert max-w-none">
       <h2>What we collect</h2>
-      <p>When you create a QCMM account we collect your email address and the username you choose. When you check in at a location we record which location and when. We do not collect your device's precise GPS coordinates — check-ins are triggered by you, not by passive location tracking.</p>
+      <p>QCMM.app does not require an account and does not collect any personal information. We do not ask for your name, email address, or any other identifying details.</p>
+      <p>Features such as location check-ins use your browser's local storage only — data stays on your device and is never transmitted to our servers.</p>
 
-      <h2>How we use it</h2>
-      <p>We use your information to power the pin-quest leaderboard, track your XP, and let you see your own check-in history. We don't sell your data or share it with third parties for advertising.</p>
-
-      <h2>Data storage</h2>
-      <p>All data is stored in Supabase (hosted on AWS). You can delete your account and all associated data at any time by contacting us at <a href="mailto:hello@qcmm.app">hello@qcmm.app</a>.</p>
+      <h2>Analytics</h2>
+      <p>We use <a href="https://umami.is" target="_blank" rel="noopener noreferrer">Umami</a> to collect anonymous, aggregated traffic data — page views, referrers, and general browser information. Umami does not use cookies, does not track you across sites, and does not collect any personally identifiable information. No data is sold or shared with third parties.</p>
 
       <h2>Cookies</h2>
-      <p>We use a single authentication cookie to keep you signed in. We use Umami for privacy-respecting analytics (no personal data, no cross-site tracking).</p>
+      <p>QCMM.app does not use tracking or advertising cookies. The only data stored locally is your in-app preferences and any check-in state saved to your browser's local storage, which you can clear at any time through your browser settings.</p>
+
+      <h2>Third-party links</h2>
+      <p>This site links to the official Queen City Mischief &amp; Magic festival website (<a href="https://queencitymagic.com/" target="_blank" rel="noopener noreferrer">queencitymagic.com</a>). That site has its own privacy policy and we have no control over its data practices.</p>
 
       <h2>Contact</h2>
       <p>Questions? Email <a href="mailto:hello@qcmm.app">hello@qcmm.app</a>.</p>
