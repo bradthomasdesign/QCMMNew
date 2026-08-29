@@ -6,7 +6,6 @@ import TagList from '@/components/blog/TagList.astro';
 import Badge from '@/components/ui/data-display/Badge/Badge.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import CTA from '@/components/ui/marketing/CTA/CTA.astro';
-import LetterGlitchBand from '@/components/patterns/LetterGlitchBand.astro';
 import { Hero } from '@/components/hero';
 import siteConfig from '@/config/site.config';
 import { resolveSocialLinks } from '@/lib/utils';
@@ -161,39 +160,4 @@ const topTags = collectTopTags(posts, TAG_CLOUD_LIMIT);
     </div>
   </CTA>
 
-  <!-- Desktop: contained LetterGlitch band with glass card -->
-  <section class:list={['hidden glitch:block relative z-10 py-[var(--space-section-md)]', featuredPosts.length > 0 ? 'bg-background-secondary' : 'bg-background']}>
-    <LetterGlitchBand>
-      <h2 class="font-display text-4xl font-bold text-foreground mb-4 text-balance">Join the adventure</h2>
-      <p class="text-lg text-foreground-muted mb-8 text-balance">Stay in the loop — new lore, festival news, and community updates.</p>
-
-      <div class="flex flex-wrap items-center justify-center gap-3">
-        <a
-          href="/rss.xml"
-          class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-brand-400 hover:bg-brand-500/20 hover:text-foreground"
-        >
-          <Icon name="rss" size="sm" />
-          RSS Feed
-        </a>
-        {socialLinks.map((link) => (
-          <a
-            href={link.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-brand-400 hover:bg-brand-500/20 hover:text-foreground"
-          >
-            <Icon name={link.icon} size="sm" />
-            {link.label}
-          </a>
-        ))}
-        <a
-          href={`mailto:${siteConfig.email}`}
-          class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-brand-400 hover:bg-brand-500/20 hover:text-foreground"
-        >
-          <Icon name="mail" size="sm" />
-          Email
-        </a>
-      </div>
-    </LetterGlitchBand>
-  </section>
 </PageLayout>

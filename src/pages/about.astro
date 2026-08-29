@@ -5,7 +5,6 @@ import Badge from '@/components/ui/data-display/Badge/Badge.astro';
 import Card from '@/components/ui/data-display/Card/Card.astro';
 import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
-import LetterGlitchBand from '@/components/patterns/LetterGlitchBand.astro';
 ---
 <PageLayout
   title="About — QCMM.app"
@@ -177,23 +176,4 @@ import LetterGlitchBand from '@/components/patterns/LetterGlitchBand.astro';
     </div>
   </section>
 
-  <!-- CTA -->
-  <LetterGlitchBand>
-    <h2 class="font-display text-4xl font-bold text-foreground mb-4 text-balance">
-      Ready to explore?
-    </h2>
-    <p class="text-lg text-foreground-muted mb-8 text-balance">
-      Browse locations, collections and characters. Then come experience it in person.
-    </p>
-    <div class="flex flex-col sm:flex-row gap-4 justify-center">
-      <Button size="lg" variant="brand" href="/locations">
-        <Icon name="map-pin" size="sm" />
-        View Locations
-      </Button>
-      <Button size="lg" variant="outline" href="https://queencitymagic.com">
-        Official Festival Site
-        <Icon name="arrow-right" size="sm" />
-      </Button>
-    </div>
-  </LetterGlitchBand>
 </PageLayout>
