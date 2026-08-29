@@ -40,6 +40,7 @@ export const footerNavItems: NavItem[] = [
   { label: 'Characters', href: '/characters', order: 3 },
   { label: 'About', href: '/about', order: 4 },
   { label: 'Official Queen City Mischief & Magic Site', href: 'https://queencitymagic.com/', order: 5, external: true },
+  { label: 'Stauntonian.com', href: 'https://stauntonian.com', order: 6, external: true },
 ];
 
 export const legalLinks: LegalLink[] = [
