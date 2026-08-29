@@ -38,6 +38,7 @@ export const footerNavItems: NavItem[] = [
   { label: 'Locations', href: '/locations', order: 1 },
   { label: 'Collections', href: '/collections', order: 2 },
   { label: 'Characters', href: '/characters', order: 3 },
+  { label: 'Official Queen City Mischief & Magic Site', href: 'https://queencitymagic.com/', order: 4, external: true },
 ];
 
 export const legalLinks: LegalLink[] = [
