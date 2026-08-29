@@ -214,6 +214,18 @@ function getSocialIcon(platform: string): string {
       {showCopyright && (
         <div class="mt-[var(--space-stack-lg)] pt-[var(--space-stack-lg)] border-t border-border text-center">
           <p class="text-sm text-foreground-muted" set:html={processedCopyright} />
+          {resolvedLegalLinks.length > 0 && (
+            <div class="flex items-center justify-center gap-[var(--space-inline-lg)] mt-2">
+              {resolvedLegalLinks.map((link) => (
+                <a
+                  href={link.href}
+                  class="text-xs text-foreground-muted transition-colors hover:text-foreground"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+          )}
           {disclaimer && (
             <p class="text-xs text-foreground-muted/60 mt-2" set:html={disclaimer} />
           )}
