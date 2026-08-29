@@ -22,6 +22,8 @@ export const buttonVariants = cva(
         ghost:
           'text-foreground-secondary hover:text-foreground hover:bg-secondary active:scale-[0.98]',
         link: 'text-foreground-secondary hover:text-foreground underline-offset-4 hover:underline',
+        brand:
+          'bg-brand-500 text-white hover:bg-brand-600 active:scale-[0.98] [&_svg]:text-white',
         destructive:
           'btn-destructive bg-destructive text-destructive-foreground hover:bg-destructive/90 active:scale-[0.98]',
       },
