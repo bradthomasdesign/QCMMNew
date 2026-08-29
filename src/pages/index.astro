@@ -14,17 +14,16 @@ import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 >
   <!-- Hero with video background -->
   <section
-    class="hero-dark-gradient relative overflow-hidden isolate min-h-[100dvh] pt-[calc(var(--space-page-top)_+_var(--space-16))] pb-[var(--space-section-xl)]"
-    style="background: transparent"
+    class="hero-dark-gradient relative overflow-hidden min-h-[100dvh] pt-[calc(var(--space-page-top)_+_var(--space-16))] pb-[var(--space-section-xl)]"
   >
-    <!-- Video background — fixed for parallax scroll effect -->
+    <!-- Video background -->
     <video
       autoplay
       muted
       loop
       playsinline
       aria-hidden="true"
-      class="hero-video fixed inset-0 w-full h-full object-cover"
+      class="hero-video absolute inset-0 w-full h-full object-cover"
     >
       <source src="/video/hero.mp4" type="video/mp4" />
     </video>
@@ -184,12 +183,12 @@ import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 <style>
   /* Video sits behind everything in the hero stacking context */
   .hero-video {
-    z-index: -2;
+    z-index: 0;
   }
 
   /* Neutral dark overlay — dims the video without adding a colour cast */
   .hero-video-overlay {
-    z-index: -1;
+    z-index: 1;
     background: linear-gradient(
       to bottom,
       rgba(0, 0, 0, 0.38) 0%,
