@@ -77,6 +77,8 @@ interface Props extends HTMLAttributes<'footer'> {
   tagline?: string;
   /** Max width of the inner container. Defaults to `'6xl'`. */
   maxWidth?: '4xl' | '5xl' | '6xl' | '7xl' | 'full';
+  /** Optional disclaimer shown below the copyright line */
+  disclaimer?: string;
 }
 
 const {
@@ -93,6 +95,7 @@ const {
   hideLogo = false,
   tagline,
   maxWidth = '6xl',
+  disclaimer = 'QCMM.app is an independent companion app and is not affiliated with or operated by the Queen City Mischief &amp; Magic festival.',
   class: className,
   ...attrs
 } = Astro.props;
@@ -211,6 +214,9 @@ function getSocialIcon(platform: string): string {
       {showCopyright && (
         <div class="mt-[var(--space-stack-lg)] pt-[var(--space-stack-lg)] border-t border-border text-center">
           <p class="text-sm text-foreground-muted" set:html={processedCopyright} />
+          {disclaimer && (
+            <p class="text-xs text-foreground-muted/60 mt-2" set:html={disclaimer} />
+          )}
         </div>
       )}
       </>
