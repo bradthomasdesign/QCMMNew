@@ -1,6 +1,6 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 
-export const footerVariants = cva('mt-6 py-[var(--space-stack-lg)]', {
+export const footerVariants = cva('py-[var(--space-stack-lg)]', {
   variants: {
     background: {
       default: 'relative z-10 bg-background-secondary border-t border-border',
