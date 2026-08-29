@@ -29,16 +29,17 @@ export const navItems: NavItem[] = [
   { label: 'Locations', href: '/locations', order: 1 },
   { label: 'Collections', href: '/collections', order: 2 },
   { label: 'Characters', href: '/characters', order: 3 },
-  // SUPPRESSED for festival: { label: 'Community', href: '/community', order: 4 },
-  // SUPPRESSED for festival: { label: 'Members', href: '/members', order: 5 },
-  // SUPPRESSED for festival: { label: 'About', href: '/about', order: 6 },
+  { label: 'About', href: '/about', order: 4 },
+  // SUPPRESSED for festival: { label: 'Community', href: '/community', order: 5 },
+  // SUPPRESSED for festival: { label: 'Members', href: '/members', order: 6 },
 ];
 
 export const footerNavItems: NavItem[] = [
   { label: 'Locations', href: '/locations', order: 1 },
   { label: 'Collections', href: '/collections', order: 2 },
   { label: 'Characters', href: '/characters', order: 3 },
-  { label: 'Official Queen City Mischief & Magic Site', href: 'https://queencitymagic.com/', order: 4, external: true },
+  { label: 'About', href: '/about', order: 4 },
+  { label: 'Official Queen City Mischief & Magic Site', href: 'https://queencitymagic.com/', order: 5, external: true },
 ];
 
 export const legalLinks: LegalLink[] = [

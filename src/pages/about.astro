@@ -8,7 +8,7 @@ import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import LetterGlitchBand from '@/components/patterns/LetterGlitchBand.astro';
 ---
 <PageLayout
-  title="Queen City Mischief & Magic"
+  title="About — QCMM.app"
   description="A free, volunteer-run festival celebrating magic across all forms and fandoms held every fall in the heart of historic downtown Staunton, Virginia."
   bgImage="/staunton.jpg"
 >
@@ -52,7 +52,7 @@ import LetterGlitchBand from '@/components/patterns/LetterGlitchBand.astro';
     </div>
   </section>
 
-  <!-- About the platform -->
+  <!-- About the app -->
   <section class="relative z-10 py-16 bg-background border-t border-border">
     <div class="mx-auto max-w-4xl px-6 flex flex-col gap-12">
       <div class="flex flex-col items-center gap-4 text-center" data-reveal>
@@ -61,7 +61,7 @@ import LetterGlitchBand from '@/components/patterns/LetterGlitchBand.astro';
           A companion site built for exploration
         </h2>
         <p class="text-lg text-foreground-muted max-w-2xl">
-          Queen City Mischief & Magic turns downtown Staunton into the venue. QCMM.app turns every alley, storefront, and plaza into part of the adventure.
+          Queen City Mischief &amp; Magic turns downtown Staunton into the venue. QCMM.app turns every alley, storefront, and plaza into part of the adventure.
         </p>
       </div>
 
@@ -70,19 +70,19 @@ import LetterGlitchBand from '@/components/patterns/LetterGlitchBand.astro';
           <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 mb-4">
             <Icon name="map-pin" size="md" />
           </div>
-          <h3 class="text-base font-semibold text-foreground">Location Check-Ins</h3>
+          <h3 class="text-base font-semibold text-foreground">Explore Locations</h3>
           <p class="text-sm text-foreground-muted leading-relaxed mt-2">
-            Visit any festival spot and tap Check In. No app required. Your pin is recorded instantly and XP is added to your profile.
+            Browse every festival location on an interactive map and check in as you explore downtown Staunton during the event.
           </p>
         </Card>
 
         <Card hover class="flex flex-col text-center items-center" data-reveal data-reveal-delay="1">
           <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 mb-4">
-            <Icon name="trophy" size="md" />
+            <Icon name="layers" size="md" />
           </div>
-          <h3 class="text-base font-semibold text-foreground">Collect &amp; Earn</h3>
+          <h3 class="text-base font-semibold text-foreground">Browse Collections</h3>
           <p class="text-sm text-foreground-muted leading-relaxed mt-2">
-            Every location adds a verified pin to your collection and earns XP. Climb the leaderboard and unlock rewards as you explore.
+            Locations are grouped into themed collections — from the wizarding world to Oz and beyond. Discover what each part of the festival has in store.
           </p>
         </Card>
 
@@ -90,9 +90,9 @@ import LetterGlitchBand from '@/components/patterns/LetterGlitchBand.astro';
           <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 mb-4">
             <Icon name="users" size="md" />
           </div>
-          <h3 class="text-base font-semibold text-foreground">Community Driven</h3>
+          <h3 class="text-base font-semibold text-foreground">Meet the Characters</h3>
           <p class="text-sm text-foreground-muted leading-relaxed mt-2">
-            Share stories, post to the community board, and connect with fellow explorers discovering the same places you are.
+            Get to know the characters appearing at the festival — who they are, where they come from, and where you might find them during the event.
           </p>
         </Card>
       </div>
@@ -112,13 +112,13 @@ import LetterGlitchBand from '@/components/patterns/LetterGlitchBand.astro';
       <Card variant="elevated" padding="lg" data-reveal>
         <div class="prose prose-invert max-w-none text-foreground-muted leading-relaxed space-y-4">
           <p>
-            Queen City Mischief &amp; Magic is Staunton's annual celebration of magic, mystery, and imagination. Named for Queen City, one of Staunton's many historical nicknames, the festival transforms downtown into a living playground for fans of all things magical, from wizarding worlds to stage magic to folklore and beyond.
+            Queen City Mischief &amp; Magic is Staunton's annual celebration of magic, mystery, and imagination. Named for Queen City, one of Staunton's many historical nicknames, the festival transforms downtown into a living playground for fans of all things magical — from wizarding worlds to stage magic to folklore and beyond.
           </p>
           <p>
             The festival is free to attend, free to explore, and entirely volunteer-run. It has grown year over year to welcome more than 20,000 visitors, all drawn to the charm of a historic Virginia city that feels like it was made for magic.
           </p>
           <p>
-            QCMM.app is the official pin quest platform for the festival, a digital adventure layer built on top of the real-world event. Collect pins at festival locations, connect with fellow attendees, and discover the hidden histories of the places you visit.
+            QCMM.app is an independently operated companion app affiliated with the festival — a digital guide built on top of the real-world event to help you get the most out of your visit.
           </p>
         </div>
       </Card>
@@ -128,18 +128,19 @@ import LetterGlitchBand from '@/components/patterns/LetterGlitchBand.astro';
   <!-- CTA -->
   <LetterGlitchBand>
     <h2 class="font-display text-4xl font-bold text-foreground mb-4 text-balance">
-      Ready to start your quest?
+      Ready to explore?
     </h2>
     <p class="text-lg text-foreground-muted mb-8 text-balance">
-      Create a free account and join the adventure.
+      Browse locations, collections, and characters — then come experience the magic in person.
     </p>
     <div class="flex flex-col sm:flex-row gap-4 justify-center">
-      <Button size="lg" href="/auth" class="hero-btn-brand">
-        Create free account
-        <Icon name="arrow-right" size="sm" />
+      <Button size="lg" variant="brand" href="/locations">
+        <Icon name="map-pin" size="sm" />
+        View Locations
       </Button>
-      <Button size="lg" variant="outline" href="/how-it-works">
-        How it works
+      <Button size="lg" variant="outline" href="https://queencitymagic.com">
+        Official Festival Site
+        <Icon name="arrow-right" size="sm" />
       </Button>
     </div>
   </LetterGlitchBand>
