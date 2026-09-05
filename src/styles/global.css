@@ -355,6 +355,13 @@
     background: linear-gradient(to bottom, var(--color-brand-500) 0%, #000 100%);
   }
 
+  /* Fixed video parallax on desktop; absolute on iOS/touch (fixed breaks iOS video playback) */
+  @media (hover: hover) {
+    .hero-video {
+      position: fixed;
+    }
+  }
+
   /* Brand badge in the hero — applied in BOTH light and dark mode.
      Glass pill with a brand-400 pulse core and brand-300 soft halo. */
   .hero-dark-gradient .bg-brand-500\/10 {
