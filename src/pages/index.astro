@@ -106,8 +106,71 @@ import Icon from '@/components/ui/primitives/Icon/Icon.astro';
     </div>
   </section>
 
-  <!-- SUPPRESSED for festival: "Three simple steps" and "More than just a map" sections -->
-  <!-- Re-enable by restoring the sections from the post-festival-edits branch history -->
+  <!-- Festival Dates -->
+  <section class="relative z-10 py-[var(--space-section-md)] bg-background border-t border-border">
+    <div class="mx-auto max-w-6xl px-6">
+      <div class="flex flex-col items-center text-center gap-6" data-reveal>
+        <Badge variant="brand" pill>
+          <Icon name="calendar" size="sm" />
+          2026 Festival
+        </Badge>
+        <h2 class="font-display text-4xl md:text-5xl font-black text-foreground">
+          September 26 &amp; 27, 2026
+        </h2>
+        <p class="text-lg text-foreground-muted">
+          Downtown Staunton, Virginia &mdash; free and open to all.
+        </p>
+        <Button variant="outline" href="https://queencitymagic.com/" >
+          Official Festival Website
+          <Icon name="arrow-right" size="sm" />
+        </Button>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="relative z-10 py-[var(--space-section-md)] bg-background-secondary border-t border-border">
+    <div class="mx-auto max-w-6xl px-6 flex flex-col gap-12">
+      <div class="flex flex-col items-center gap-4 text-center" data-reveal>
+        <Badge variant="brand" pill>How It Works</Badge>
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
+          Your guide to the festival
+        </h2>
+        <p class="text-lg text-foreground-muted max-w-2xl">
+          QCMM.app is a free companion site to help you explore the festival, discover locations and learn about the characters you will meet along the way.
+        </p>
+      </div>
+      <div class="grid gap-6 sm:grid-cols-3">
+        <div class="flex flex-col items-center text-center gap-3" data-reveal>
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500">
+            <Icon name="map-pin" size="md" />
+          </div>
+          <h3 class="font-semibold text-foreground">Explore the Map</h3>
+          <p class="text-sm text-foreground-muted leading-relaxed">
+            Browse an interactive map of every festival location around downtown Staunton. Tap any pin to learn more about what is happening there.
+          </p>
+        </div>
+        <div class="flex flex-col items-center text-center gap-3" data-reveal data-reveal-delay="1">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500">
+            <Icon name="layers" size="md" />
+          </div>
+          <h3 class="font-semibold text-foreground">Browse Collections</h3>
+          <p class="text-sm text-foreground-muted leading-relaxed">
+            Locations are grouped into themed collections. Find every Hogwarts house block, every Oz landmark and more, all in one place.
+          </p>
+        </div>
+        <div class="flex flex-col items-center text-center gap-3" data-reveal data-reveal-delay="2">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500">
+            <Icon name="users" size="md" />
+          </div>
+          <h3 class="font-semibold text-foreground">Meet the Characters</h3>
+          <p class="text-sm text-foreground-muted leading-relaxed">
+            Get to know the characters appearing at the festival before you arrive. Learn who they are and where you might find them during the event.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- About QCMM -->
   <section class="relative z-10 py-[var(--space-section-md)] bg-background border-t border-border">
@@ -122,10 +185,10 @@ import Icon from '@/components/ui/primitives/Icon/Icon.astro';
             </h2>
           </div>
           <p class="text-lg text-foreground-muted leading-relaxed text-pretty mb-4 sm:max-w-xl glitch:max-w-none">
-            Queen City Mischief &amp; Magic is a free, volunteer-run festival celebrating magic across all forms and fandoms — held every fall in the heart of historic downtown Staunton, Virginia.
+            Queen City Mischief &amp; Magic is a free, volunteer-run festival celebrating magic across all forms and fandoms held every fall in the heart of historic downtown Staunton, Virginia.
           </p>
           <p class="text-lg text-foreground-muted leading-relaxed text-pretty mb-8 sm:max-w-xl glitch:max-w-none sm:hidden glitch:block">
-            QCMM turns the whole city into the venue. Every alley, storefront, and plaza becomes part of the adventure.
+            QCMM turns downtown Staunton into the venue. Every alley, storefront, and street becomes part of the adventure.
           </p>
           <div class="flex flex-col sm:flex-row gap-3 self-start sm:self-center glitch:self-start sm:hidden glitch:inline-flex">
             <Button variant="brand" href="https://queencitymagic.com/" class="self-start">
