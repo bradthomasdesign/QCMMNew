@@ -1,6 +1,5 @@
 ---
 import { getCollection } from 'astro:content';
-import { createClient } from '@supabase/supabase-js';
 import PageLayout from '@/layouts/PageLayout.astro';
 import Badge from '@/components/ui/data-display/Badge/Badge.astro';
 import Button from '@/components/ui/form/Button/Button.astro';
@@ -9,28 +8,22 @@ import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import LocalMetButton from '@/components/characters/LocalMetButton';
 
 export async function getStaticPaths() {
-  const characters = await getCollection('characters', (c) => c.data.active);
+  const [characters, allLocations] = await Promise.all([
+    getCollection('characters', (c) => c.data.active),
+    getCollection('locations', (l) => l.data.is_active),
+  ]);
 
-  const supabase = createClient(
-    import.meta.env.PUBLIC_SUPABASE_URL,
-    import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
-  );
+  return characters.map((char) => {
+    const locations = allLocations
+      .filter((l) => (l.data.character_slugs ?? []).includes(char.id))
+      .map((l) => ({ slug: l.id, name: l.data.name, description: l.data.description ?? null }))
+      .sort((a, b) => a.name.localeCompare(b.name));
 
-  return Promise.all(
-    characters.map(async (char) => {
-      const { data: locations } = await supabase
-        .from('locations')
-        .select('id, name, description')
-        .contains('character_slugs', [char.id])
-        .eq('is_active', true)
-        .order('name');
-
-      return {
-        params: { slug: char.id },
-        props: { character: char, locations: locations ?? [] },
-      };
-    })
-  );
+    return {
+      params: { slug: char.id },
+      props: { character: char, locations },
+    };
+  });
 }
 
 const { character, locations } = Astro.props;
@@ -115,7 +108,7 @@ const groupLabel = character.data.group ? (GROUP_LABELS[character.data.group] ??
         </h2>
         <div class="flex flex-col gap-3">
           {locations.map((loc) => (
-            <Card hover href={`/locations/${loc.id}`} class="group flex items-center gap-4">
+            <Card hover href={`/locations/${loc.slug}`} class="group flex items-center gap-4">
               <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
                 <Icon name="map-pin" size="sm" />
               </div>

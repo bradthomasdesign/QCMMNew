@@ -1,0 +1,13 @@
+{
+  "name": "Quidditch",
+  "description": "Hufflepuff Block – #19 | Event feature, W Beverley / Frederick area",
+  "latitude": 38.1497,
+  "longitude": -79.0736,
+  "is_active": true,
+  "is_secret": false,
+  "difficulty_level": null,
+  "featured_image_url": null,
+  "reward_description": null,
+  "character_slugs": [],
+  "collection_slugs": []
+}

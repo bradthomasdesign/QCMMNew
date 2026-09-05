@@ -85,6 +85,34 @@ export default config({
       },
     }),
 
+    locations: collection({
+      label: 'Locations',
+      slugField: 'name',
+      path: 'src/content/locations/*',
+      format: { data: 'json' },
+      schema: {
+        name: fields.slug({
+          name: { label: 'Name', validation: { isRequired: true } },
+        }),
+        description: fields.text({ label: 'Description', multiline: true }),
+        latitude: fields.number({ label: 'Latitude', validation: { isRequired: true } }),
+        longitude: fields.number({ label: 'Longitude', validation: { isRequired: true } }),
+        is_active: fields.checkbox({ label: 'Active', defaultValue: true }),
+        is_secret: fields.checkbox({ label: 'Secret Location', defaultValue: false }),
+        difficulty_level: fields.number({ label: 'Difficulty Level (1–5)' }),
+        featured_image_url: fields.text({ label: 'Featured Image URL' }),
+        reward_description: fields.text({ label: 'Reward Description', multiline: true }),
+        character_slugs: fields.array(fields.text({ label: 'Character Slug' }), {
+          label: 'Characters',
+          itemLabel: (props) => props.value || 'Character',
+        }),
+        collection_slugs: fields.array(fields.text({ label: 'Collection Slug' }), {
+          label: 'Collections',
+          itemLabel: (props) => props.value || 'Collection',
+        }),
+      },
+    }),
+
     locationCollections: collection({
       label: 'Collections',
       slugField: 'name',

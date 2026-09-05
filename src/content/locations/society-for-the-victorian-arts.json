@@ -1,0 +1,13 @@
+{
+  "name": "Society for the Victorian Arts",
+  "description": "Burrough Block – #13 | 22 S Coalter St",
+  "latitude": 38.1484,
+  "longitude": -79.069,
+  "is_active": true,
+  "is_secret": false,
+  "difficulty_level": null,
+  "featured_image_url": null,
+  "reward_description": null,
+  "character_slugs": [],
+  "collection_slugs": []
+}

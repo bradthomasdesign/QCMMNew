@@ -1,0 +1,13 @@
+{
+  "name": "Dementor Dance Party",
+  "description": "Hufflepuff Block – #15 | Event feature, central downtown area",
+  "latitude": 38.1496,
+  "longitude": -79.0733,
+  "is_active": true,
+  "is_secret": false,
+  "difficulty_level": null,
+  "featured_image_url": null,
+  "reward_description": null,
+  "character_slugs": [],
+  "collection_slugs": []
+}

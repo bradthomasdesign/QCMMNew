@@ -1,0 +1,13 @@
+{
+  "name": "Character Spot",
+  "description": "Slytherin Block – #9 | Event feature, west Beverley area",
+  "latitude": 38.1496,
+  "longitude": -79.0731,
+  "is_active": true,
+  "is_secret": false,
+  "difficulty_level": null,
+  "featured_image_url": null,
+  "reward_description": null,
+  "character_slugs": [],
+  "collection_slugs": []
+}

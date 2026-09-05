@@ -1,0 +1,13 @@
+{
+  "name": "The Feast (Ticket Required)",
+  "description": "Burrough Block – #1 | Event feature, Burrough area south of Wharf",
+  "latitude": 38.1462,
+  "longitude": -79.072,
+  "is_active": true,
+  "is_secret": false,
+  "difficulty_level": null,
+  "featured_image_url": null,
+  "reward_description": null,
+  "character_slugs": [],
+  "collection_slugs": []
+}

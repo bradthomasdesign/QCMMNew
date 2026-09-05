@@ -1,0 +1,13 @@
+{
+  "name": "3D Chalk Art",
+  "description": "Ravenclaw Block – #17 | Event feature, E Beverley area",
+  "latitude": 38.1493,
+  "longitude": -79.0696,
+  "is_active": true,
+  "is_secret": false,
+  "difficulty_level": null,
+  "featured_image_url": null,
+  "reward_description": null,
+  "character_slugs": [],
+  "collection_slugs": []
+}

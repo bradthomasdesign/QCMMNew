@@ -1,0 +1,13 @@
+{
+  "name": "Accio Fun! Ravenclaw Stage",
+  "description": "Ravenclaw Block – #5 | Event stage, E Beverley / Frederick area",
+  "latitude": 38.1498,
+  "longitude": -79.0697,
+  "is_active": true,
+  "is_secret": false,
+  "difficulty_level": null,
+  "featured_image_url": null,
+  "reward_description": null,
+  "character_slugs": [],
+  "collection_slugs": []
+}

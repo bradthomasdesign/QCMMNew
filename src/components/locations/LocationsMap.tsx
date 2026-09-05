@@ -1,15 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import { createClient } from '@supabase/supabase-js';
-import { Search, MapPin, Lock, Loader2 } from 'lucide-react';
-import { getCheckedInIds, CHECKINS_KEY } from './LocalCheckInButton';
+import { Search, MapPin, Lock } from 'lucide-react';
+import { getCheckedInIds } from './LocalCheckInButton';
 
-const supabase = createClient(
-  (import.meta as any).env.PUBLIC_SUPABASE_URL,
-  (import.meta as any).env.PUBLIC_SUPABASE_ANON_KEY,
-);
-
-interface Location {
-  id: string;
+export interface LocationEntry {
+  slug: string;
   name: string;
   description: string | null;
   latitude: number;
@@ -18,45 +12,34 @@ interface Location {
   difficulty_level: number | null;
 }
 
+interface Props {
+  locations: LocationEntry[];
+}
+
 const STAUNTON_CENTER: [number, number] = [38.1488, -79.0722];
 
-export default function LocationsMap() {
+export default function LocationsMap({ locations }: Props) {
   const mapEl = useRef<HTMLDivElement>(null);
   const mapInstance = useRef<any>(null);
-  const [locations, setLocations] = useState<Location[]>([]);
   const [checkedInIds, setCheckedInIds] = useState<Set<string>>(new Set());
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState('');
-  const [selected, setSelected] = useState<Location | null>(null);
+  const [selected, setSelected] = useState<LocationEntry | null>(null);
   const markersRef = useRef<Record<string, any>>({});
   const userMarkerRef = useRef<any>(null);
   const userCircleRef = useRef<any>(null);
 
   useEffect(() => {
-    supabase
-      .from('locations')
-      .select('id, name, description, latitude, longitude, is_secret, difficulty_level')
-      .eq('is_active', true)
-      .order('name')
-      .then(({ data: locs, error: err }) => {
-        if (err) setError(err.message);
-        else setLocations(locs ?? []);
-        setCheckedInIds(getCheckedInIds());
-        setLoading(false);
-      });
-
+    setCheckedInIds(getCheckedInIds());
     const onCheckin = () => setCheckedInIds(getCheckedInIds());
     window.addEventListener('qcmm-checkin', onCheckin);
     return () => window.removeEventListener('qcmm-checkin', onCheckin);
   }, []);
 
   useEffect(() => {
-    if (loading || !mapEl.current || locations.length === 0) return;
-    if (mapInstance.current) return; // already initialized
+    if (!mapEl.current || locations.length === 0) return;
+    if (mapInstance.current) return;
 
     import('leaflet').then((L) => {
-      // Fix default icon paths
       delete (L.Icon.Default.prototype as any)._getIconUrl;
       L.Icon.Default.mergeOptions({
         iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
@@ -64,16 +47,11 @@ export default function LocationsMap() {
         shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
       });
 
-      const map = L.map(mapEl.current!, {
-        center: STAUNTON_CENTER,
-        zoom: 15,
-        zoomControl: true,
-      });
+      const map = L.map(mapEl.current!, { center: STAUNTON_CENTER, zoom: 15, zoomControl: true });
 
       L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
         subdomains: 'abcd',
-        maxZoom: 20,
         maxZoom: 19,
       }).addTo(map);
 
@@ -87,34 +65,30 @@ export default function LocationsMap() {
 
       const currentCheckins = getCheckedInIds();
       locations.forEach((loc) => {
-        const popup = L.popup({ closeButton: false, className: 'qcmm-popup' })
-          .setContent(
-            `<div style="min-width:180px;padding:2px 0">
-              <p style="font-weight:600;font-size:13px;color:#111827;margin:0 0 4px">${loc.name}</p>
-              ${loc.description ? `<p style="font-size:11px;color:#6b7280;margin:0 0 8px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${loc.description}</p>` : ''}
-              <a href="/locations/${loc.id}" style="display:inline-block;font-size:11px;font-weight:500;color:#fff;background:#f97316;padding:4px 10px;border-radius:4px;text-decoration:none">View location</a>
-            </div>`
-          );
-        const marker = L.marker([loc.latitude, loc.longitude], { icon: dot(loc.is_secret, currentCheckins.has(loc.id)) })
+        const popup = L.popup({ closeButton: false, className: 'qcmm-popup' }).setContent(
+          `<div style="min-width:180px;padding:2px 0">
+            <p style="font-weight:600;font-size:13px;color:#111827;margin:0 0 4px">${loc.name}</p>
+            ${loc.description ? `<p style="font-size:11px;color:#6b7280;margin:0 0 8px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${loc.description}</p>` : ''}
+            <a href="/locations/${loc.slug}" style="display:inline-block;font-size:11px;font-weight:500;color:#fff;background:#f97316;padding:4px 10px;border-radius:4px;text-decoration:none">View location</a>
+          </div>`
+        );
+        const marker = L.marker([loc.latitude, loc.longitude], { icon: dot(loc.is_secret, currentCheckins.has(loc.slug)) })
           .addTo(map)
           .bindPopup(popup)
           .on('click', () => { setSelected(loc); marker.openPopup(); });
-        markersRef.current[loc.id] = marker;
+        markersRef.current[loc.slug] = marker;
       });
 
-      // Update marker icons when a check-in happens on another page
       const updateMarkers = (e: Event) => {
         const { locationId } = (e as CustomEvent).detail;
         const m = markersRef.current[locationId];
-        const loc = locations.find(l => l.id === locationId);
+        const loc = locations.find(l => l.slug === locationId);
         if (m && loc) m.setIcon(dot(loc.is_secret, true));
       };
       window.addEventListener('qcmm-checkin', updateMarkers);
-      // cleanup handled by the outer return
 
       mapInstance.current = map;
 
-      // Show user's current position
       const userDot = L.divIcon({
         className: '',
         html: `<div style="width:14px;height:14px;border-radius:50%;background:#3b82f6;border:2px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.4)"></div>`,
@@ -134,7 +108,7 @@ export default function LocationsMap() {
               userCircleRef.current = L.circle([latitude, longitude], { radius: accuracy, color: '#3b82f6', fillColor: '#3b82f6', fillOpacity: 0.1, weight: 1 }).addTo(map);
             }
           },
-          () => {}, // silently ignore permission denial
+          () => {},
           { enableHighAccuracy: true, maximumAge: 10000 }
         );
         return () => {
@@ -145,18 +119,13 @@ export default function LocationsMap() {
     });
 
     return () => {
-      if (mapInstance.current) {
-        mapInstance.current.remove();
-        mapInstance.current = null;
-      }
+      if (mapInstance.current) { mapInstance.current.remove(); mapInstance.current = null; }
     };
-  }, [loading, locations]);
+  }, [locations]);
 
-  function panToLocation(loc: Location) {
+  function panToLocation(loc: LocationEntry) {
     setSelected(loc);
-    if (mapInstance.current) {
-      mapInstance.current.setView([loc.latitude, loc.longitude], 17, { animate: true });
-    }
+    if (mapInstance.current) mapInstance.current.setView([loc.latitude, loc.longitude], 17, { animate: true });
   }
 
   const filtered = locations.filter((l) =>
@@ -164,25 +133,10 @@ export default function LocationsMap() {
     (l.description ?? '').toLowerCase().includes(search.toLowerCase()),
   );
 
-  if (error) {
-    return (
-      <div className="py-12 text-center text-sm text-[var(--foreground-muted)]">
-        Unable to load locations — {error}
-      </div>
-    );
-  }
-
   return (
     <div className="flex flex-col gap-6">
-      {/* Map */}
       <div className="relative rounded-2xl overflow-hidden border border-[var(--border)] shadow-[var(--theme-shadow-md)]" style={{ height: '420px' }}>
-        {loading && (
-          <div className="absolute inset-0 z-10 flex items-center justify-center bg-[var(--background-secondary)]">
-            <Loader2 size={24} className="animate-spin text-[var(--accent)]" />
-          </div>
-        )}
         <div ref={mapEl} style={{ width: '100%', height: '100%' }} />
-        {/* Find me button */}
         <button
           onClick={() => {
             if (!mapInstance.current) return;
@@ -200,7 +154,6 @@ export default function LocationsMap() {
           <MapPin size={12} />
           Find me
         </button>
-        {/* Leaflet CSS loaded inline */}
         <style>{`
           .leaflet-container { font-family: inherit; background: var(--background-secondary); }
           .leaflet-control-attribution { font-size: 10px; }
@@ -208,7 +161,6 @@ export default function LocationsMap() {
         `}</style>
       </div>
 
-      {/* Selected location card */}
       {selected && (
         <div className="flex items-start gap-3 rounded-xl border border-[var(--accent)]/30 bg-[var(--accent)]/5 px-4 py-3">
           <MapPin size={16} className="mt-0.5 shrink-0 text-[var(--accent)]" />
@@ -222,7 +174,6 @@ export default function LocationsMap() {
         </div>
       )}
 
-      {/* Search + list */}
       <div className="flex flex-col gap-3">
         <div className="relative">
           <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--foreground-muted)]" />
@@ -237,22 +188,22 @@ export default function LocationsMap() {
 
         <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3 max-h-[400px] overflow-y-auto pr-1">
           {filtered.map((loc) => (
-            <div key={loc.id} className={[
+            <div key={loc.slug} className={[
               'flex items-start gap-3 rounded-xl border p-3 transition-all',
-              selected?.id === loc.id
+              selected?.slug === loc.slug
                 ? 'border-[var(--accent)]/40 bg-[var(--accent)]/5'
                 : 'border-[var(--border)] bg-[var(--background)]',
             ].join(' ')}>
               <button
                 onClick={() => panToLocation(loc)}
-                className={`mt-0.5 shrink-0 ${checkedInIds.has(loc.id) ? 'text-green-500' : loc.is_secret ? 'text-[var(--foreground-muted)]' : 'text-[var(--accent)]'}`}
+                className={`mt-0.5 shrink-0 ${checkedInIds.has(loc.slug) ? 'text-green-500' : loc.is_secret ? 'text-[var(--foreground-muted)]' : 'text-[var(--accent)]'}`}
                 aria-label="Pan to location on map"
               >
                 {loc.is_secret ? <Lock size={13} /> : <MapPin size={13} />}
               </button>
               <div className="min-w-0 flex-1">
                 <a
-                  href={`/locations/${loc.id}`}
+                  href={`/locations/${loc.slug}`}
                   className="block text-sm font-medium text-[var(--foreground)] leading-snug hover:text-[var(--accent)] transition-colors"
                 >
                   {loc.name}
@@ -266,7 +217,7 @@ export default function LocationsMap() {
             </div>
           ))}
 
-          {filtered.length === 0 && !loading && (
+          {filtered.length === 0 && (
             <div className="col-span-full py-8 text-center text-sm text-[var(--foreground-muted)]">
               No locations match &ldquo;{search}&rdquo;
             </div>

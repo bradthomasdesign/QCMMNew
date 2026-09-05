@@ -1,28 +1,19 @@
 ---
 import { getCollection } from 'astro:content';
-import { createClient } from '@supabase/supabase-js';
 import PageLayout from '@/layouts/PageLayout.astro';
 import { Hero } from '@/components/hero';
 import Badge from '@/components/ui/data-display/Badge/Badge.astro';
 import Card from '@/components/ui/data-display/Card/Card.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 
-const allCollections = await getCollection('locationCollections', (c) => c.data.active);
-
-// Count locations per collection at build time
-const supabase = createClient(
-  import.meta.env.PUBLIC_SUPABASE_URL,
-  import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
-);
-
-const { data: locRows } = await supabase
-  .from('locations')
-  .select('collection_slugs')
-  .eq('is_active', true);
+const [allCollections, allLocations] = await Promise.all([
+  getCollection('locationCollections', (c) => c.data.active),
+  getCollection('locations', (l) => l.data.is_active),
+]);
 
 const locationCounts: Record<string, number> = {};
-for (const loc of locRows ?? []) {
-  for (const slug of loc.collection_slugs ?? []) {
+for (const loc of allLocations) {
+  for (const slug of loc.data.collection_slugs ?? []) {
     locationCounts[slug] = (locationCounts[slug] ?? 0) + 1;
   }
 }

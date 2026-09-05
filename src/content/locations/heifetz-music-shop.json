@@ -1,0 +1,13 @@
+{
+  "name": "Heifetz Music Shop",
+  "description": "Ravenclaw Block – #20 | 11 S New St",
+  "latitude": 38.1487,
+  "longitude": -79.0705,
+  "is_active": true,
+  "is_secret": false,
+  "difficulty_level": null,
+  "featured_image_url": null,
+  "reward_description": null,
+  "character_slugs": [],
+  "collection_slugs": []
+}

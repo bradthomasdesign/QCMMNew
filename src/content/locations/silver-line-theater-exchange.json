@@ -1,0 +1,13 @@
+{
+  "name": "Silver Line Theater Exchange",
+  "description": "Burrough Block – #5 | 211 N Lewis St",
+  "latitude": 38.1514,
+  "longitude": -79.0717,
+  "is_active": true,
+  "is_secret": false,
+  "difficulty_level": null,
+  "featured_image_url": null,
+  "reward_description": null,
+  "character_slugs": [],
+  "collection_slugs": []
+}

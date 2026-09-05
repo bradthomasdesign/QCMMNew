@@ -1,0 +1,13 @@
+{
+  "name": "MBU Shakespeare Masters Program",
+  "description": "Hufflepuff Block – #21 | 101 E Frederick St (Mary Baldwin University)",
+  "latitude": 38.1501,
+  "longitude": -79.0707,
+  "is_active": true,
+  "is_secret": false,
+  "difficulty_level": null,
+  "featured_image_url": null,
+  "reward_description": null,
+  "character_slugs": [],
+  "collection_slugs": []
+}

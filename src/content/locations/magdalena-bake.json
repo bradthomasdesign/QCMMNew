@@ -1,0 +1,13 @@
+{
+  "name": "Magdalena Bake",
+  "description": "Burrough Block – #8 | 208 N Central Ave",
+  "latitude": 38.1511,
+  "longitude": -79.0726,
+  "is_active": true,
+  "is_secret": false,
+  "difficulty_level": null,
+  "featured_image_url": null,
+  "reward_description": null,
+  "character_slugs": [],
+  "collection_slugs": []
+}

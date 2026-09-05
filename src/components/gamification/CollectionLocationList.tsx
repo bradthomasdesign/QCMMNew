@@ -1,14 +1,9 @@
 import { useEffect, useState } from 'react';
-import { createClient } from '@supabase/supabase-js';
 import { CheckCircle2, Circle, MapPin } from 'lucide-react';
-
-const supabase = createClient(
-  (import.meta as any).env.PUBLIC_SUPABASE_URL,
-  (import.meta as any).env.PUBLIC_SUPABASE_ANON_KEY,
-);
+import { getCheckedInIds } from '@/components/locations/LocalCheckInButton';
 
 interface Location {
-  id: string;
+  slug: string;
   name: string;
   description: string | null;
   difficulty_level: number | null;
@@ -23,40 +18,27 @@ const difficultyLabel: Record<number, string> = {
 };
 
 export default function CollectionLocationList({ locations }: Props) {
-  const [pinnedIds, setPinnedIds] = useState<Set<string>>(new Set());
-  const [authed, setAuthed] = useState(false);
-  const [loaded, setLoaded] = useState(false);
+  const [checkedInIds, setCheckedInIds] = useState<Set<string>>(new Set());
 
   useEffect(() => {
-    if (locations.length === 0) { setLoaded(true); return; }
-    supabase.auth.getSession().then(async ({ data }) => {
-      const userId = data.session?.user.id ?? null;
-      setAuthed(!!userId);
-
-      if (userId) {
-        const { data: pins } = await supabase
-          .from('pins')
-          .select('location_id')
-          .eq('user_id', userId)
-          .in('location_id', locations.map((l) => l.id));
-        setPinnedIds(new Set((pins ?? []).map((p: any) => p.location_id)));
-      }
-      setLoaded(true);
-    });
+    setCheckedInIds(getCheckedInIds());
+    const onCheckin = () => setCheckedInIds(getCheckedInIds());
+    window.addEventListener('qcmm-checkin', onCheckin);
+    return () => window.removeEventListener('qcmm-checkin', onCheckin);
   }, []);
 
-  const checkedCount = pinnedIds.size;
+  const checkedCount = locations.filter((l) => checkedInIds.has(l.slug)).length;
   const total = locations.length;
 
   return (
     <div>
-      {authed && loaded && (
+      {total > 0 && (
         <div className="mb-6">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium text-[var(--foreground)]">
               {checkedCount} of {total} checked in
             </span>
-            {checkedCount === total && (
+            {checkedCount === total && checkedCount > 0 && (
               <span className="text-xs font-semibold text-[var(--accent)] flex items-center gap-1">
                 <CheckCircle2 size={12} /> Complete!
               </span>
@@ -73,23 +55,18 @@ export default function CollectionLocationList({ locations }: Props) {
 
       <ol className="flex flex-col gap-3">
         {locations.map((loc, i) => {
-          const pinned = pinnedIds.has(loc.id);
+          const pinned = checkedInIds.has(loc.slug);
           return (
-            <li key={loc.id}>
+            <li key={loc.slug}>
               <a
-                href={`/locations/${loc.id}`}
+                href={`/locations/${loc.slug}`}
                 className="flex items-start gap-4 rounded-xl border border-[var(--border)] bg-[var(--background)] p-4 hover:border-[var(--accent)] transition-colors group"
               >
                 <div className="shrink-0 mt-0.5">
-                  {authed && loaded ? (
-                    pinned
-                      ? <CheckCircle2 size={18} className="text-[var(--accent)]" />
-                      : <Circle size={18} className="text-[var(--foreground-muted)]" />
-                  ) : (
-                    <span className="flex h-[18px] w-[18px] items-center justify-center rounded-full border border-[var(--border)] text-xs font-semibold text-[var(--foreground-muted)]">
-                      {i + 1}
-                    </span>
-                  )}
+                  {pinned
+                    ? <CheckCircle2 size={18} className="text-[var(--accent)]" />
+                    : <span className="flex h-[18px] w-[18px] items-center justify-center rounded-full border border-[var(--border)] text-xs font-semibold text-[var(--foreground-muted)]">{i + 1}</span>
+                  }
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="font-semibold text-[var(--foreground)] group-hover:text-[var(--accent)] transition-colors">
@@ -112,12 +89,6 @@ export default function CollectionLocationList({ locations }: Props) {
           );
         })}
       </ol>
-
-      {!authed && loaded && (
-        <p className="mt-4 text-sm text-[var(--foreground-muted)] text-center">
-          <a href="/auth" className="text-[var(--accent)] hover:underline">Sign in</a> to track your progress.
-        </p>
-      )}
     </div>
   );
 }

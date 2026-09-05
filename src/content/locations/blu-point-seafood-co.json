@@ -1,0 +1,13 @@
+{
+  "name": "BLU Point Seafood Co.",
+  "description": "Slytherin Block – #6 | 123 W Beverley St",
+  "latitude": 38.1493,
+  "longitude": -79.0736,
+  "is_active": true,
+  "is_secret": false,
+  "difficulty_level": null,
+  "featured_image_url": null,
+  "reward_description": null,
+  "character_slugs": [],
+  "collection_slugs": []
+}

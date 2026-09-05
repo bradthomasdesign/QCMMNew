@@ -1,27 +1,16 @@
 ---
 import { getCollection } from 'astro:content';
-import { createClient } from '@supabase/supabase-js';
 import PageLayout from '@/layouts/PageLayout.astro';
 import Badge from '@/components/ui/data-display/Badge/Badge.astro';
 import Card from '@/components/ui/data-display/Card/Card.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
-import Button from '@/components/ui/form/Button/Button.astro';
 import MiniMap from '@/components/locations/MiniMap';
 import LocalCheckInButton from '@/components/locations/LocalCheckInButton';
 import CollectionProgressTag from '@/components/gamification/CollectionProgressTag';
 
 export async function getStaticPaths() {
-  const supabase = createClient(
-    import.meta.env.PUBLIC_SUPABASE_URL,
-    import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
-  );
-
-  const [{ data: locations }, allCollections, allCharacters] = await Promise.all([
-    supabase
-      .from('locations')
-      .select('id, name, description, latitude, longitude, is_secret, difficulty_level, featured_image_url, reward_description, state, country, collection_slugs, character_slugs')
-      .eq('is_active', true)
-      .order('name'),
+  const [allLocations, allCollections, allCharacters] = await Promise.all([
+    getCollection('locations', (l) => l.data.is_active),
     getCollection('locationCollections', (c) => c.data.active),
     getCollection('characters', (c) => c.data.active),
   ]);
@@ -29,18 +18,27 @@ export async function getStaticPaths() {
   const collectionMap = new Map(allCollections.map((c) => [c.id, c.data]));
   const characterMap = new Map(allCharacters.map((c) => [c.id, c.data]));
 
-  return (locations ?? []).map((loc) => {
-    const collections = (loc.collection_slugs ?? [])
-      .map((slug: string) => ({ slug, ...collectionMap.get(slug) }))
+  // Pre-compute which location slugs belong to each collection
+  const locationsByCollection = new Map<string, string[]>();
+  for (const loc of allLocations) {
+    for (const colSlug of loc.data.collection_slugs ?? []) {
+      if (!locationsByCollection.has(colSlug)) locationsByCollection.set(colSlug, []);
+      locationsByCollection.get(colSlug)!.push(loc.id);
+    }
+  }
+
+  return allLocations.map((loc) => {
+    const collections = (loc.data.collection_slugs ?? [])
+      .map((slug) => ({ slug, locationSlugs: locationsByCollection.get(slug) ?? [], ...collectionMap.get(slug) }))
       .filter((c: any) => c.name);
 
-    const characters = (loc.character_slugs ?? [])
-      .map((slug: string) => ({ slug, ...characterMap.get(slug) }))
+    const characters = (loc.data.character_slugs ?? [])
+      .map((slug) => ({ slug, ...characterMap.get(slug) }))
       .filter((c: any) => c.name);
 
     return {
-      params: { id: loc.id },
-      props: { location: loc, collections, characters },
+      params: { slug: loc.id },
+      props: { location: { slug: loc.id, ...loc.data }, collections, characters },
     };
   });
 }
@@ -66,15 +64,13 @@ function difficultyColor(level: number | null) {
 
 const appleMapsUrl = `https://maps.apple.com/?daddr=${location.latitude},${location.longitude}&dirflg=d`;
 const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${location.latitude},${location.longitude}`;
-const difficulty = difficultyLabel(location.difficulty_level);
-const locationLine = [location.state, location.country].filter(Boolean).join(', ');
+const difficulty = difficultyLabel(location.difficulty_level ?? null);
 ---
 
 <PageLayout
   title={`${location.name} — QCMM`}
   description={location.description ?? `A QCMM pin location in downtown Staunton, VA — ${location.name}.`}
 >
-  <!-- Back nav -->
   <div class="border-b border-border bg-background-secondary">
     <div class="mx-auto max-w-4xl px-6 py-3">
       <a href="/locations" class="inline-flex items-center gap-1.5 text-sm text-foreground-muted hover:text-foreground transition-colors">
@@ -84,7 +80,6 @@ const locationLine = [location.state, location.country].filter(Boolean).join(', 
     </div>
   </div>
 
-  <!-- Location image — fixed on desktop, scroll on mobile (iOS Safari doesn't support background-attachment:fixed) -->
   {(location.featured_image_url || true) && (
     <div class="location-hero-image w-full h-[360px] sm:h-[520px]" style={`--loc-img: url('${location.featured_image_url ?? '/staunton-downtown.jpg'}')`} />
   )}
@@ -94,13 +89,10 @@ const locationLine = [location.state, location.country].filter(Boolean).join(', 
       background-color: var(--color-background-secondary);
     }
     @media (max-width: 767px) {
-      .location-hero-image {
-        background-attachment: scroll;
-      }
+      .location-hero-image { background-attachment: scroll; }
     }
   </style>
 
-  <!-- Hero -->
   <section class="relative z-10 bg-background py-12 border-b border-border">
     <div class="mx-auto max-w-4xl px-6">
       <div class="flex flex-col gap-4">
@@ -110,7 +102,7 @@ const locationLine = [location.state, location.country].filter(Boolean).join(', 
             {location.is_secret ? 'Secret Location' : 'Pin Location'}
           </Badge>
           {difficulty && (
-            <span class={`rounded-full px-3 py-1 text-xs font-semibold ${difficultyColor(location.difficulty_level)}`}>
+            <span class={`rounded-full px-3 py-1 text-xs font-semibold ${difficultyColor(location.difficulty_level ?? null)}`}>
               {difficulty}
             </span>
           )}
@@ -150,11 +142,8 @@ const locationLine = [location.state, location.country].filter(Boolean).join(', 
     </div>
   </section>
 
-  <!-- Map + details -->
   <section class="relative z-10 py-10 bg-background-secondary border-b border-border">
     <div class="mx-auto max-w-4xl px-6 grid gap-6 md:grid-cols-5">
-
-      <!-- Interactive mini-map -->
       <div class="md:col-span-3">
         <div class="rounded-2xl overflow-hidden border border-border shadow-sm" style="height: 280px;">
           <MiniMap lat={location.latitude} lng={location.longitude} name={location.name} client:load />
@@ -164,7 +153,6 @@ const locationLine = [location.state, location.country].filter(Boolean).join(', 
         </p>
       </div>
 
-      <!-- Details sidebar -->
       <div class="md:col-span-2 flex flex-col gap-3">
         <Card padding="sm">
           <h2 class="text-xs font-semibold text-foreground-muted uppercase tracking-wide mb-3">Location Details</h2>
@@ -186,7 +174,6 @@ const locationLine = [location.state, location.country].filter(Boolean).join(', 
               </div>
             )}
           </dl>
-          <!-- SUPPRESSED for festival: Last check-in stats -->
         </Card>
 
         {location.reward_description && (
@@ -201,7 +188,7 @@ const locationLine = [location.state, location.country].filter(Boolean).join(', 
           </Card>
         )}
 
-        <LocalCheckInButton locationId={location.id} locationName={location.name} client:load />
+        <LocalCheckInButton locationId={location.slug} locationName={location.name} client:load />
 
         {collections.length > 0 && (
           <Card padding="sm">
@@ -211,6 +198,7 @@ const locationLine = [location.state, location.country].filter(Boolean).join(', 
                 <CollectionProgressTag
                   collectionSlug={col.slug}
                   collectionName={col.name}
+                  locationSlugs={col.locationSlugs}
                   client:load
                 />
               ))}
@@ -221,7 +209,6 @@ const locationLine = [location.state, location.country].filter(Boolean).join(', 
     </div>
   </section>
 
-  <!-- Character sightings -->
   {characters.length > 0 && (
     <section class="relative z-10 py-10 bg-background border-b border-border">
       <div class="mx-auto max-w-4xl px-6">
@@ -259,8 +246,6 @@ const locationLine = [location.state, location.country].filter(Boolean).join(', 
       </div>
     </section>
   )}
-
-  <!-- SUPPRESSED for festival: Discussion / Comments section -->
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 </PageLayout>

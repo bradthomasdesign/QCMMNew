@@ -1,6 +1,5 @@
 ---
 import { getCollection } from 'astro:content';
-import { createClient } from '@supabase/supabase-js';
 import PageLayout from '@/layouts/PageLayout.astro';
 import Badge from '@/components/ui/data-display/Badge/Badge.astro';
 import Card from '@/components/ui/data-display/Card/Card.astro';
@@ -8,28 +7,27 @@ import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import CollectionLocationList from '@/components/gamification/CollectionLocationList';
 
 export async function getStaticPaths() {
-  const collections = await getCollection('locationCollections', (c) => c.data.active);
+  const [collections, allLocations] = await Promise.all([
+    getCollection('locationCollections', (c) => c.data.active),
+    getCollection('locations', (l) => l.data.is_active),
+  ]);
 
-  const supabase = createClient(
-    import.meta.env.PUBLIC_SUPABASE_URL,
-    import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
-  );
+  return collections.map((col) => {
+    const locations = allLocations
+      .filter((l) => (l.data.collection_slugs ?? []).includes(col.id))
+      .map((l) => ({
+        slug: l.id,
+        name: l.data.name,
+        description: l.data.description ?? null,
+        difficulty_level: l.data.difficulty_level ?? null,
+      }))
+      .sort((a, b) => a.name.localeCompare(b.name));
 
-  return Promise.all(
-    collections.map(async (col) => {
-      const { data: locations } = await supabase
-        .from('locations')
-        .select('id, name, description, difficulty_level')
-        .contains('collection_slugs', [col.id])
-        .eq('is_active', true)
-        .order('name');
-
-      return {
-        params: { slug: col.id },
-        props: { collection: col, locations: locations ?? [] },
-      };
-    })
-  );
+    return {
+      params: { slug: col.id },
+      props: { collection: col, locations },
+    };
+  });
 }
 
 const { collection, locations } = Astro.props;
@@ -40,7 +38,6 @@ const total = locations.length;
   title={`${collection.data.name} — Collections — QCMM`}
   description={collection.data.description}
 >
-  <!-- Back nav -->
   <div class="border-b border-border bg-background-secondary">
     <div class="mx-auto max-w-4xl px-6 py-3">
       <a href="/collections" class="inline-flex items-center gap-1.5 text-sm text-foreground-muted hover:text-foreground transition-colors">
@@ -50,11 +47,10 @@ const total = locations.length;
     </div>
   </div>
 
-  <!-- Header -->
   <section class="bg-background py-12 border-b border-border">
     <div class="mx-auto max-w-4xl px-6">
       <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-8">
-        {collection.data.badgeImage && (
+        {collection.data.badgeImage ? (
           <img
             src={(collection.data.badgeImage as any).src}
             alt={`${collection.data.name} badge`}
@@ -62,8 +58,7 @@ const total = locations.length;
             height={80}
             class="rounded-2xl object-contain shrink-0"
           />
-        )}
-        {!collection.data.badgeImage && (
+        ) : (
           <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
             <Icon name="layers" size="lg" />
           </div>
@@ -88,7 +83,6 @@ const total = locations.length;
     </div>
   </section>
 
-  <!-- Location list -->
   <section class="py-10 bg-background-secondary border-b border-border">
     <div class="mx-auto max-w-4xl px-6">
       <h2 class="text-sm font-semibold text-foreground-muted uppercase tracking-wide mb-5">Locations</h2>

@@ -1,0 +1,13 @@
+{
+  "name": "Jazzercise Staunton",
+  "description": "Burrough Block – #6 | 213 N Lewis St",
+  "latitude": 38.1516,
+  "longitude": -79.0717,
+  "is_active": true,
+  "is_secret": false,
+  "difficulty_level": null,
+  "featured_image_url": null,
+  "reward_description": null,
+  "character_slugs": [],
+  "collection_slugs": []
+}
