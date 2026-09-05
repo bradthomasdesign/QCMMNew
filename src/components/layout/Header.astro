@@ -205,7 +205,7 @@ const buttonId = `${menuId}-button`;
                 isFloating ? 'hdr-logo-text' : (isInvert ? 'text-brand-600 dark:text-foreground lg:text-on-invert' : 'text-brand-600 dark:text-foreground')
               )}
             >
-              {logoText || siteConfig.name}
+              {logoText ? logoText : <><span>QCMM</span><span class="text-brand-500">.app</span></>}
             </span>
           </a>
         ))
