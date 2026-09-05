@@ -2,7 +2,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 
 export const badgeVariants = cva(
   [
-    'inline-flex self-start items-center font-medium border',
+    'inline-flex items-center font-medium border',
     'transition-colors',
     '[&>svg]:shrink-0 [&>svg]:h-3 [&>svg]:w-3',
   ],
