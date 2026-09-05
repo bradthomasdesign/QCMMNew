@@ -80,8 +80,8 @@ const difficulty = difficultyLabel(location.difficulty_level ?? null);
     </div>
   </div>
 
-  {(location.featured_image_url || true) && (
-    <div class="location-hero-image w-full h-[360px] sm:h-[520px]" style={`--loc-img: url('${location.featured_image_url ?? '/staunton-downtown.jpg'}')`} />
+  {(location.featured_image || true) && (
+    <div class="location-hero-image w-full h-[360px] sm:h-[520px]" style={`--loc-img: url('${location.featured_image ?? '/staunton-downtown.jpg'}')`} />
   )}
   <style>
     .location-hero-image {

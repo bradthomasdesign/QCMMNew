@@ -137,7 +137,7 @@ const locations = defineCollection({
     is_active: z.boolean().default(true),
     is_secret: z.boolean().default(false),
     difficulty_level: z.number().nullable().optional(),
-    featured_image_url: z.string().nullable().optional(),
+    featured_image: z.string().nullable().optional(),
     reward_description: z.string().nullable().optional(),
     character_slugs: z.array(z.string()).default([]),
     collection_slugs: z.array(z.string()).default([]),

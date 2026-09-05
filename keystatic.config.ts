@@ -100,7 +100,11 @@ export default config({
         is_active: fields.checkbox({ label: 'Active', defaultValue: true }),
         is_secret: fields.checkbox({ label: 'Secret Location', defaultValue: false }),
         difficulty_level: fields.number({ label: 'Difficulty Level (1–5)' }),
-        featured_image_url: fields.text({ label: 'Featured Image URL' }),
+        featured_image: fields.image({
+          label: 'Featured Image',
+          directory: 'public/images/locations',
+          publicPath: '/images/locations/',
+        }),
         reward_description: fields.text({ label: 'Reward Description', multiline: true }),
         character_slugs: fields.array(fields.text({ label: 'Character Slug' }), {
           label: 'Characters',
