@@ -23,9 +23,9 @@ export default function MiniMap({ lat, lng, name }: Props) {
         dragging: true,
       });
 
-      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Tiles &copy; <a href="https://www.esri.com/">Esri</a>',
-        maxZoom: 16,
+      L.tileLayer('https://tiles.openfreemap.org/styles/positron/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://openfreemap.org">OpenFreeMap</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 20,
       }).addTo(map);
 
       L.divIcon({
