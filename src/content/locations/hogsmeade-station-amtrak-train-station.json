@@ -1,8 +1,8 @@
 {
   "name": "Hogsmeade Station (Amtrak Train Station)",
   "description": "Wharf Block – #21 | 1 Middlebrook Ave",
-  "latitude": 38.1476,
-  "longitude": -79.0717,
+  "latitude": 38.147899,
+  "longitude": -79.072551,
   "is_active": true,
   "is_secret": false,
   "difficulty_level": null,

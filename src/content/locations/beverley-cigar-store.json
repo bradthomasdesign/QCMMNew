@@ -1,8 +1,8 @@
 {
   "name": "Beverley Cigar Store",
   "description": "Gryffindor Block – #9 | 2 E Beverley St",
-  "latitude": 38.1492,
-  "longitude": -79.0724,
+  "latitude": 38.149402,
+  "longitude": -79.072473,
   "is_active": true,
   "is_secret": false,
   "difficulty_level": null,

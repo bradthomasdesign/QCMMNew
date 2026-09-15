@@ -1,8 +1,8 @@
 {
   "name": "Frederick House",
   "description": "Gryffindor Block – #1 | 28 N New St",
-  "latitude": 38.1499,
-  "longitude": -79.0712,
+  "latitude": 38.150739,
+  "longitude": -79.071824,
   "is_active": true,
   "is_secret": false,
   "difficulty_level": null,
