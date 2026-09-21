@@ -1,8 +1,8 @@
 {
-  "name": "Ovid & Lane",
-  "description": "20 E Beverley St",
-  "latitude": 38.14943,
-  "longitude": -79.072275,
+  "name": "Mothwood",
+  "description": "109 S Lewis St",
+  "latitude": 38.14770,
+  "longitude": -79.07450,
   "is_active": true,
   "is_secret": false,
   "difficulty_level": null,
