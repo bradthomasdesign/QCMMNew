@@ -1,8 +1,8 @@
 {
   "name": "Sweet Addie's",
   "description": "132 W Beverley St",
-  "latitude": 38.1492,
-  "longitude": -79.0754,
+  "latitude": 38.1492615,
+  "longitude": -79.0745631,
   "is_active": true,
   "is_secret": false,
   "difficulty_level": null,

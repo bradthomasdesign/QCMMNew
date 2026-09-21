@@ -1,8 +1,8 @@
 {
   "name": "South Horizon",
   "description": "9 N New St",
-  "latitude": 38.150018,
-  "longitude": -79.0716,
+  "latitude": 38.1499228,
+  "longitude": -79.0715042,
   "is_active": true,
   "is_secret": false,
   "difficulty_level": null,

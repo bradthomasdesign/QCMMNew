@@ -1,8 +1,8 @@
 {
   "name": "Mothwood",
   "description": "109 S Lewis St",
-  "latitude": 38.1477,
-  "longitude": -79.0745,
+  "latitude": 38.1479832,
+  "longitude": -79.0743388,
   "is_active": true,
   "is_secret": false,
   "difficulty_level": null,
