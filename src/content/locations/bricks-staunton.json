@@ -1,0 +1,13 @@
+{
+  "name": "Bricks Staunton",
+  "description": "111 N Augusta St",
+  "latitude": 38.15066,
+  "longitude": -79.072713,
+  "is_active": true,
+  "is_secret": false,
+  "difficulty_level": null,
+  "featured_image": null,
+  "reward_description": null,
+  "character_slugs": [],
+  "collection_slugs": []
+}

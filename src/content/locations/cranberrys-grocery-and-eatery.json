@@ -1,0 +1,13 @@
+{
+  "name": "Cranberry's Grocery and Eatery",
+  "description": "7 S New St",
+  "latitude": 38.149412,
+  "longitude": -79.071415,
+  "is_active": true,
+  "is_secret": false,
+  "difficulty_level": null,
+  "featured_image": null,
+  "reward_description": null,
+  "character_slugs": [],
+  "collection_slugs": []
+}

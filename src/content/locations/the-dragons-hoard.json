@@ -1,0 +1,13 @@
+{
+  "name": "The Dragon's Hoard",
+  "description": "17 E Johnson St",
+  "latitude": 38.14869,
+  "longitude": -79.071701,
+  "is_active": true,
+  "is_secret": false,
+  "difficulty_level": null,
+  "featured_image": null,
+  "reward_description": null,
+  "character_slugs": [],
+  "collection_slugs": []
+}
