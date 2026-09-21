@@ -137,6 +137,17 @@ const difficulty = difficultyLabel(location.difficulty_level ?? null);
             <Icon name="map" size="sm" />
             Google Maps
           </a>
+          {location.sched_url && (
+            <a
+              href={location.sched_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium text-foreground hover:border-brand-500 hover:text-brand-500 transition-colors"
+            >
+              <Icon name="calendar" size="sm" />
+              Schedule
+            </a>
+          )}
         </div>
       </div>
     </div>
