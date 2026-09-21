@@ -141,6 +141,7 @@ const locations = defineCollection({
     reward_description: z.string().nullable().optional(),
     character_slugs: z.array(z.string()).default([]),
     collection_slugs: z.array(z.string()).default([]),
+    sched_url: z.string().url().nullable().optional(),
   }),
 });
 
