@@ -1,8 +1,8 @@
 {
   "name": "Staunton Olive Oil Company",
   "description": "126 W Beverley St",
-  "latitude": 38.149203,
-  "longitude": -79.0743293,
+  "latitude": 38.149195,
+  "longitude": -79.074264,
   "is_active": true,
   "is_secret": false,
   "difficulty_level": null,

@@ -1,8 +1,8 @@
 {
   "name": "QCMM Information Booth",
   "description": "Gryffindor Block – #8 | Event feature, central Beverley near New St",
-  "latitude": 38.1493,
-  "longitude": -79.072,
+  "latitude": 38.149568,
+  "longitude": -79.072366,
   "is_active": true,
   "is_secret": false,
   "difficulty_level": null,

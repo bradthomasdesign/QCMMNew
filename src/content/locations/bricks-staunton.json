@@ -1,8 +1,8 @@
 {
   "name": "Bricks Staunton",
   "description": "111 N Augusta St",
-  "latitude": 38.15066,
-  "longitude": -79.072713,
+  "latitude": 38.1509427,
+  "longitude": -79.0726203,
   "is_active": true,
   "is_secret": false,
   "difficulty_level": null,

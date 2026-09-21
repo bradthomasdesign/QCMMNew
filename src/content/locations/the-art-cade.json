@@ -1,8 +1,8 @@
 {
   "name": "The Art-Cade",
   "description": "103 W Beverley St",
-  "latitude": 38.1496,
-  "longitude": -79.0739,
+  "latitude": 38.1495992,
+  "longitude": -79.073888,
   "is_active": true,
   "is_secret": false,
   "difficulty_level": null,

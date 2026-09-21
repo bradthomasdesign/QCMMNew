@@ -1,8 +1,8 @@
 {
   "name": "Cranberry's Grocery and Eatery",
   "description": "7 S New St",
-  "latitude": 38.149412,
-  "longitude": -79.071415,
+  "latitude": 38.149393,
+  "longitude": -79.071369,
   "is_active": true,
   "is_secret": false,
   "difficulty_level": null,

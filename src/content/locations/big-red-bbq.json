@@ -1,8 +1,8 @@
 {
   "name": "Big Red BBQ",
   "description": "Burrough Block – #10 | 108 N Central Ave",
-  "latitude": 38.150735,
-  "longitude": -79.074044,
+  "latitude": 38.1507406,
+  "longitude": -79.0740481,
   "is_active": true,
   "is_secret": false,
   "difficulty_level": null,

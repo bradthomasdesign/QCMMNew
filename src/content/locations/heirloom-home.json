@@ -1,8 +1,8 @@
 {
   "name": "Heirloom Home",
   "description": "101 E Beverley St",
-  "latitude": 38.14965,
-  "longitude": -79.0714,
+  "latitude": 38.1497642,
+  "longitude": -79.0714331,
   "is_active": true,
   "is_secret": false,
   "difficulty_level": null,

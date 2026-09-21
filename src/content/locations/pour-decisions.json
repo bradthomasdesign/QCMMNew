@@ -1,8 +1,8 @@
 {
   "name": "Pour Decisions",
   "description": "18 E Johnson St",
-  "latitude": 38.14866,
-  "longitude": -79.07164,
+  "latitude": 38.1484765,
+  "longitude": -79.0717223,
   "is_active": true,
   "is_secret": false,
   "difficulty_level": null,

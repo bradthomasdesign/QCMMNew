@@ -1,8 +1,8 @@
 {
   "name": "Byers Street Bistro",
   "description": "Wharf Block – #10 | 18 Byers St",
-  "latitude": 38.147587,
-  "longitude": -79.073252,
+  "latitude": 38.1476167,
+  "longitude": -79.0731139,
   "is_active": true,
   "is_secret": false,
   "difficulty_level": null,

@@ -1,8 +1,8 @@
 {
   "name": "The Green Room",
   "description": "Slytherin Block – #8 | 130 W Beverley St",
-  "latitude": 38.1493,
-  "longitude": -79.0745,
+  "latitude": 38.1492957,
+  "longitude": -79.0744866,
   "is_active": true,
   "is_secret": false,
   "difficulty_level": null,

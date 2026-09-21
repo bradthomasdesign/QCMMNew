@@ -1,8 +1,8 @@
 {
   "name": "Domino's Pizza",
-  "description": "Wharf Block – #17 | 283 N Central Ave",
-  "latitude": 38.154075,
-  "longitude": -79.073657,
+  "description": "Wharf Block – #17 | 2 W Johnson St (Wharf Parking Lot)",
+  "latitude": 38.1482345,
+  "longitude": -79.073436,
   "is_active": true,
   "is_secret": false,
   "difficulty_level": null,

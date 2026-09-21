@@ -1,8 +1,8 @@
 {
   "name": "Lichen or Knot",
   "description": "1 E Beverley St",
-  "latitude": 38.149561,
-  "longitude": -79.072555,
+  "latitude": 38.1496733,
+  "longitude": -79.0725159,
   "is_active": true,
   "is_secret": false,
   "difficulty_level": null,

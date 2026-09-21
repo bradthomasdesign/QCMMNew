@@ -1,8 +1,8 @@
 {
   "name": "Visulite Cinemas",
   "description": "12 N Augusta St",
-  "latitude": 38.14955,
-  "longitude": -79.072641,
+  "latitude": 38.1498866,
+  "longitude": -79.0727732,
   "is_active": true,
   "is_secret": false,
   "difficulty_level": null,

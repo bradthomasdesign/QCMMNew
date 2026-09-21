@@ -1,8 +1,8 @@
 {
   "name": "Darling Pear",
   "description": "107 E Beverley St",
-  "latitude": 38.149768,
-  "longitude": -79.071323,
+  "latitude": 38.1496763,
+  "longitude": -79.0713269,
   "is_active": true,
   "is_secret": false,
   "difficulty_level": null,

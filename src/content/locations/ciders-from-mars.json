@@ -1,8 +1,8 @@
 {
   "name": "Ciders From Mars",
-  "description": "Wharf Block – #3 | 121 S Lewis St",
-  "latitude": 38.147503,
-  "longitude": -79.074228,
+  "description": "Wharf Block – #3 | 113 W Beverley St",
+  "latitude": 38.1495644,
+  "longitude": -79.0742516,
   "is_active": true,
   "is_secret": false,
   "difficulty_level": null,
@@ -10,7 +10,7 @@
   "reward_description": null,
   "character_slugs": [],
   "collection_slugs": [
-    "wharf-train-landes-park"
+    "slytherin-block"
   ],
   "sched_url": "https://qcmm2026.sched.com/venue/Ciders+From+Mars"
 }
