@@ -1,0 +1,16 @@
+{
+  "name": "Characters!",
+  "description": "Ravenclaw Block | 35 S New St",
+  "latitude": 38.1490404,
+  "longitude": -79.0713597,
+  "is_active": true,
+  "is_secret": false,
+  "difficulty_level": null,
+  "featured_image": null,
+  "reward_description": null,
+  "character_slugs": [],
+  "collection_slugs": [
+    "ravenclaw-block"
+  ],
+  "sched_url": "https://qcmm2026.sched.com/venue/35+S.+New+Street"
+}

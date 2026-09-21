@@ -1,0 +1,16 @@
+{
+  "name": "FUNdraising (Charms and Ducks)",
+  "description": "Hufflepuff Block | Event feature, central downtown area",
+  "latitude": 38.148788,
+  "longitude": -79.07251,
+  "is_active": true,
+  "is_secret": false,
+  "difficulty_level": null,
+  "featured_image": null,
+  "reward_description": null,
+  "character_slugs": [],
+  "collection_slugs": [
+    "hufflepuff-block"
+  ],
+  "sched_url": null
+}

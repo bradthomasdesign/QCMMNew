@@ -1,0 +1,16 @@
+{
+  "name": "Selfie Spot",
+  "description": "Hufflepuff Block | 17 W Beverley St",
+  "latitude": 38.1496269,
+  "longitude": -79.0733286,
+  "is_active": true,
+  "is_secret": false,
+  "difficulty_level": null,
+  "featured_image": null,
+  "reward_description": null,
+  "character_slugs": [],
+  "collection_slugs": [
+    "hufflepuff-block"
+  ],
+  "sched_url": null
+}

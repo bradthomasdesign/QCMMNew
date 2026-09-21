@@ -1,0 +1,16 @@
+{
+  "name": "Swoope Volunteer Fire Department",
+  "description": "Hufflepuff Block | 38.149585, -79.073713",
+  "latitude": 38.149585,
+  "longitude": -79.073713,
+  "is_active": true,
+  "is_secret": false,
+  "difficulty_level": null,
+  "featured_image": null,
+  "reward_description": null,
+  "character_slugs": [],
+  "collection_slugs": [
+    "hufflepuff-block"
+  ],
+  "sched_url": null
+}

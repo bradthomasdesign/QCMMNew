@@ -1,0 +1,16 @@
+{
+  "name": "SAAC Garden/Mevluda Tahirovic Memorial Garden",
+  "description": "Gryffindor Block | 1 Barristers Row",
+  "latitude": 38.14909,
+  "longitude": -79.072389,
+  "is_active": true,
+  "is_secret": false,
+  "difficulty_level": null,
+  "featured_image": null,
+  "reward_description": null,
+  "character_slugs": [],
+  "collection_slugs": [
+    "gryffindor-block"
+  ],
+  "sched_url": "https://qcmm2026.sched.com/venue/Mevluda+Tahirovic+Memorial+Garden"
+}

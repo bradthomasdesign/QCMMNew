@@ -1,0 +1,16 @@
+{
+  "name": "Firebolt 5k at Gypsy Hill Park",
+  "description": "Burrough Block | 600 Churchville Avenue",
+  "latitude": 38.160252,
+  "longitude": -79.079048,
+  "is_active": true,
+  "is_secret": false,
+  "difficulty_level": null,
+  "featured_image": null,
+  "reward_description": null,
+  "character_slugs": [],
+  "collection_slugs": [
+    "the-burrough"
+  ],
+  "sched_url": "https://qcmm2026.sched.com/venue/Gypsy+Hill+Park+Bandstand"
+}

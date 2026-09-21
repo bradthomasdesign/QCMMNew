@@ -1,0 +1,16 @@
+{
+  "name": "Valley View Portraits QCMM Student IDs!",
+  "description": "Gryffindor Block | in front of 20 S New St",
+  "latitude": 38.1489535,
+  "longitude": -79.0716734,
+  "is_active": true,
+  "is_secret": false,
+  "difficulty_level": null,
+  "featured_image": null,
+  "reward_description": null,
+  "character_slugs": [],
+  "collection_slugs": [
+    "gryffindor-block"
+  ],
+  "sched_url": null
+}

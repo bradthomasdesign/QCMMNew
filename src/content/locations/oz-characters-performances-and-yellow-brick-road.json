@@ -1,0 +1,16 @@
+{
+  "name": "Oz Characters, Performances, and Yellow Brick Road",
+  "description": "Oz Block | 2 W Johnson St",
+  "latitude": 38.1482345,
+  "longitude": -79.073436,
+  "is_active": true,
+  "is_secret": false,
+  "difficulty_level": null,
+  "featured_image": null,
+  "reward_description": null,
+  "character_slugs": [],
+  "collection_slugs": [
+    "oz-land"
+  ],
+  "sched_url": "https://qcmm2026.sched.com/venue/Oz+%28The+Staunton+Wharf%29"
+}
