@@ -9,6 +9,8 @@
   "featured_image": null,
   "reward_description": null,
   "character_slugs": [],
-  "collection_slugs": [],
+  "collection_slugs": [
+    "hufflepuff-block"
+  ],
   "sched_url": "https://qcmm2026.sched.com/venue/Corner+of+Beverley+St.+%26+Augusta+St."
 }

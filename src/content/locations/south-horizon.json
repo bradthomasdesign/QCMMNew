@@ -2,12 +2,14 @@
   "name": "South Horizon",
   "description": "9 N New St",
   "latitude": 38.150018,
-  "longitude": -79.071600,
+  "longitude": -79.0716,
   "is_active": true,
   "is_secret": false,
   "difficulty_level": null,
   "featured_image": null,
   "reward_description": null,
   "character_slugs": [],
-  "collection_slugs": []
+  "collection_slugs": [
+    "ravenclaw-block"
+  ]
 }

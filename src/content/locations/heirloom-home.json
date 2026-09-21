@@ -2,12 +2,14 @@
   "name": "Heirloom Home",
   "description": "101 E Beverley St",
   "latitude": 38.14965,
-  "longitude": -79.071400,
+  "longitude": -79.0714,
   "is_active": true,
   "is_secret": false,
   "difficulty_level": null,
   "featured_image": null,
   "reward_description": null,
   "character_slugs": [],
-  "collection_slugs": []
+  "collection_slugs": [
+    "ravenclaw-block"
+  ]
 }

@@ -9,6 +9,8 @@
   "featured_image": null,
   "reward_description": null,
   "character_slugs": [],
-  "collection_slugs": [],
+  "collection_slugs": [
+    "wharf-train-landes-park"
+  ],
   "sched_url": "https://qcmm2026.sched.com/venue/Virginia+is+for+Lovers+Stage+at+Sunspots+Pavilion"
 }
