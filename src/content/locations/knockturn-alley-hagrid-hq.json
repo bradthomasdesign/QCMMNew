@@ -1,8 +1,8 @@
 {
-  "name": "Knockturn Alley + Hagrid HQ",
+  "name": "Knockturn Alley",
   "description": "Hufflepuff Block – #3 | Event feature, W Beverley/Johnson area",
-  "latitude": 38.1488,
-  "longitude": -79.0738,
+  "latitude": 38.1495057,
+  "longitude": -79.0726112,
   "is_active": true,
   "is_secret": false,
   "difficulty_level": null,

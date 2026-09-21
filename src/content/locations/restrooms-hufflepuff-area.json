@@ -1,8 +1,8 @@
 {
-  "name": "Restrooms (Hufflepuff area)",
+  "name": "Bathrooms",
   "description": "Hufflepuff Block – #24 | W Beverley / Johnson area",
-  "latitude": 38.149,
-  "longitude": -79.0738,
+  "latitude": 38.1482345,
+  "longitude": -79.073436,
   "is_active": true,
   "is_secret": false,
   "difficulty_level": null,
