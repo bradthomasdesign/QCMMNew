@@ -9,6 +9,8 @@
   "featured_image": null,
   "reward_description": null,
   "character_slugs": [],
-  "collection_slugs": [],
+  "collection_slugs": [
+    "the-burrough"
+  ],
   "sched_url": "https://qcmm2026.sched.com/venue/Woodrow+Wilson+Presidential+Library"
 }
