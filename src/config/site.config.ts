@@ -124,7 +124,7 @@ const siteConfig: SiteConfig = {
   description:
     'Discover Staunton, VA through a location-based adventure. Check in at local landmarks, earn XP, explore local lore, and connect with your community.',
   url: SITE_URL || 'https://qcmm.app',
-  ogImage: '/og-default.svg',
+  ogImage: '/og-image.jpg',
   author: 'QCMM Team',
   email: 'hello@qcmm.app',
   address: {
