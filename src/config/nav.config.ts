@@ -29,7 +29,8 @@ export const navItems: NavItem[] = [
   { label: 'Locations', href: '/locations', order: 1 },
   { label: 'Collections', href: '/collections', order: 2 },
   { label: 'Characters', href: '/characters', order: 3 },
-  { label: 'About', href: '/about', order: 4 },
+  { label: 'Schedule', href: '/schedule', order: 4 },
+  { label: 'About', href: '/about', order: 5 },
   // SUPPRESSED for festival: { label: 'Community', href: '/community', order: 5 },
   // SUPPRESSED for festival: { label: 'Members', href: '/members', order: 6 },
 ];
@@ -38,9 +39,10 @@ export const footerNavItems: NavItem[] = [
   { label: 'Locations', href: '/locations', order: 1 },
   { label: 'Collections', href: '/collections', order: 2 },
   { label: 'Characters', href: '/characters', order: 3 },
-  { label: 'About', href: '/about', order: 4 },
-  { label: 'Official Queen City Mischief & Magic Site', href: 'https://queencitymagic.com/', order: 5, external: true },
-  { label: 'Stauntonian.com', href: 'https://stauntonian.com', order: 6, external: true },
+  { label: 'Schedule', href: '/schedule', order: 4 },
+  { label: 'About', href: '/about', order: 5 },
+  { label: 'Official Queen City Mischief & Magic Site', href: 'https://queencitymagic.com/', order: 6, external: true },
+  { label: 'Stauntonian.com', href: 'https://stauntonian.com', order: 7, external: true },
 ];
 
 export const legalLinks: LegalLink[] = [

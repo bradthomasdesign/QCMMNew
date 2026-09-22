@@ -1,0 +1,181 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import { Hero } from '@/components/hero';
+import Badge from '@/components/ui/data-display/Badge/Badge.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import Card from '@/components/ui/data-display/Card/Card.astro';
+
+import fridayEvents from '../content/schedule/friday.json';
+import saturdayEvents from '../content/schedule/saturday.json';
+import sundayEvents from '../content/schedule/sunday.json';
+
+type ScheduleEvent = {
+  time: string;
+  title: string;
+  venue: string;
+  description: string;
+  sched_url: string;
+};
+
+type DayData = {
+  id: string;
+  label: string;
+  date: string;
+  events: ScheduleEvent[];
+};
+
+const days: DayData[] = [
+  { id: 'friday',   label: 'Friday',   date: 'September 25', events: fridayEvents as ScheduleEvent[] },
+  { id: 'saturday', label: 'Saturday', date: 'September 26', events: saturdayEvents as ScheduleEvent[] },
+  { id: 'sunday',   label: 'Sunday',   date: 'September 27', events: sundayEvents as ScheduleEvent[] },
+];
+
+// Group events within a day by time slot
+function groupByTime(events: ScheduleEvent[]) {
+  const groups: Map<string, ScheduleEvent[]> = new Map();
+  for (const ev of events) {
+    const slot = groups.get(ev.time) ?? [];
+    slot.push(ev);
+    groups.set(ev.time, slot);
+  }
+  return groups;
+}
+---
+
+<PageLayout
+  title="Schedule — Queen City Mischief & Magic 2026"
+  description="Full schedule for Queen City Mischief & Magic 2026. Three days of magic in downtown Staunton, Virginia — September 25–27, 2026."
+  bgImage="/staunton.jpg"
+>
+  <Hero layout="centered" size="sm" class="isolate" bgImage="/staunton.jpg">
+    <Badge slot="badge" variant="brand" pill>
+      <Icon name="calendar" size="sm" />
+      Schedule
+    </Badge>
+    <h1 slot="title">
+      <span class="text-foreground [-webkit-text-fill-color:currentColor]">What's</span><br />
+      <span class="text-brand-500 [-webkit-text-fill-color:var(--color-brand-500)]">Happening</span>
+    </h1>
+    <p slot="description">
+      Three days of magic in downtown Staunton — September 25–27, 2026.
+    </p>
+  </Hero>
+
+  <section class="relative z-10 py-10 bg-background border-t border-border" id="schedule-section">
+    <div class="mx-auto max-w-4xl px-6">
+
+      <!-- Day tabs -->
+      <div class="flex gap-2 mb-8 border-b border-border" id="schedule-tabs" role="tablist">
+        {days.map((day, i) => (
+          <button
+            role="tab"
+            aria-selected={i === 1 ? 'true' : 'false'}
+            aria-controls={`panel-${day.id}`}
+            data-tab={day.id}
+            class:list={[
+              'schedule-tab px-4 py-3 text-sm font-semibold border-b-2 -mb-px transition-colors',
+              i === 1
+                ? 'border-brand-500 text-brand-500'
+                : 'border-transparent text-foreground-muted hover:text-foreground hover:border-border',
+            ]}
+          >
+            <span class="hidden sm:inline">{day.label}, </span>{day.date}
+          </button>
+        ))}
+      </div>
+
+      <!-- Day panels -->
+      {days.map((day, i) => {
+        const grouped = groupByTime(day.events);
+        return (
+          <div
+            id={`panel-${day.id}`}
+            role="tabpanel"
+            aria-labelledby={`tab-${day.id}`}
+            class:list={['schedule-panel', i !== 1 && 'hidden']}
+          >
+            {Array.from(grouped.entries()).map(([time, events]) => (
+              <div class="mb-8">
+                <div class="flex items-center gap-3 mb-3 sticky top-[var(--nav-height,60px)] bg-background py-2 z-10">
+                  <span class="text-sm font-bold text-brand-500 tabular-nums whitespace-nowrap">{time}</span>
+                  <div class="flex-1 h-px bg-border"></div>
+                </div>
+                <div class="flex flex-col gap-3">
+                  {events.map((ev) => (
+                    <div class="schedule-event-card bg-background-secondary rounded-xl border border-border p-4 transition-all duration-200 hover:border-brand-500/40 hover:shadow-sm cursor-pointer group"
+                         data-expanded="false">
+                      <div class="flex items-start gap-3">
+                        <div class="flex-1 min-w-0">
+                          <p class="font-semibold text-foreground text-sm leading-snug group-hover:text-brand-500 transition-colors">
+                            {ev.title}
+                          </p>
+                          {ev.venue && (
+                            <p class="text-xs text-foreground-muted mt-0.5 flex items-center gap-1">
+                              <svg class="w-3 h-3 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                              {ev.venue}
+                            </p>
+                          )}
+                        </div>
+                        <svg class="expand-chevron w-4 h-4 text-foreground-muted shrink-0 mt-0.5 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                      </div>
+                      <div class="expand-body hidden mt-3 pt-3 border-t border-border">
+                        {ev.description && (
+                          <p class="text-sm text-foreground-muted leading-relaxed mb-3">{ev.description}</p>
+                        )}
+                        <a
+                          href={ev.sched_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="inline-flex items-center gap-1.5 text-xs text-foreground-muted hover:text-brand-500 transition-colors"
+                          onclick="event.stopPropagation()"
+                        >
+                          <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                          View on Sched
+                        </a>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        );
+      })}
+    </div>
+  </section>
+</PageLayout>
+
+<script>
+  // Tab switching
+  const tabs = document.querySelectorAll<HTMLButtonElement>('.schedule-tab');
+  const panels = document.querySelectorAll<HTMLDivElement>('.schedule-panel');
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.tab;
+      tabs.forEach((t) => {
+        const active = t.dataset.tab === target;
+        t.setAttribute('aria-selected', active ? 'true' : 'false');
+        t.classList.toggle('border-brand-500', active);
+        t.classList.toggle('text-brand-500', active);
+        t.classList.toggle('border-transparent', !active);
+        t.classList.toggle('text-foreground-muted', !active);
+      });
+      panels.forEach((p) => {
+        p.classList.toggle('hidden', !p.id.endsWith(target!));
+      });
+    });
+  });
+
+  // Expand/collapse event cards
+  document.querySelectorAll<HTMLDivElement>('.schedule-event-card').forEach((card) => {
+    card.addEventListener('click', () => {
+      const expanded = card.dataset.expanded === 'true';
+      card.dataset.expanded = expanded ? 'false' : 'true';
+      card.querySelector<HTMLDivElement>('.expand-body')?.classList.toggle('hidden', expanded);
+      card.querySelector<SVGElement>('.expand-chevron')?.classList.toggle('rotate-180', !expanded);
+    });
+  });
+</script>
