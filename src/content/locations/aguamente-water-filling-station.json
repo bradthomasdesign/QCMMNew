@@ -1,6 +1,6 @@
 {
   "name": "WATER FILL!",
-  "description": "Wharf Block – #2 | Event feature, Wharf/Landes Park area",
+  "description": "Event feature, Wharf/Landes Park area",
   "latitude": 38.149334,
   "longitude": -79.071518,
   "is_active": true,
@@ -10,6 +10,6 @@
   "reward_description": null,
   "character_slugs": [],
   "collection_slugs": [
-    "oz-land"
+    "ravenclaw-block"
   ]
 }

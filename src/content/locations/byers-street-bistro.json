@@ -1,8 +1,8 @@
 {
   "name": "Byers Street Bistro",
-  "description": "Wharf Block – #10 | 18 Byers St",
-  "latitude": 38.1476144,
-  "longitude": -79.0732635,
+  "description": "18 Byers St",
+  "latitude": 38.1475873,
+  "longitude": -79.073252,
   "is_active": true,
   "is_secret": false,
   "difficulty_level": null,
@@ -11,5 +11,6 @@
   "character_slugs": [],
   "collection_slugs": [
     "oz-land"
-  ]
+  ],
+  "address": "18 Byers St, Staunton, VA 24401"
 }

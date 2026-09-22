@@ -1,6 +1,6 @@
 {
   "name": "Bathrooms",
-  "description": "Hufflepuff Block – #24 | W Beverley / Johnson area",
+  "description": "W Beverley / Johnson area",
   "latitude": 38.1482345,
   "longitude": -79.073436,
   "is_active": true,
@@ -10,6 +10,6 @@
   "reward_description": null,
   "character_slugs": [],
   "collection_slugs": [
-    "hufflepuff-block"
+    "oz-land"
   ]
 }

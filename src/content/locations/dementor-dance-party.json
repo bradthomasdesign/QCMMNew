@@ -1,6 +1,6 @@
 {
   "name": "Dementor Dance Party",
-  "description": "Hufflepuff Block – #15 | Event feature, central downtown area",
+  "description": "Event feature, central downtown area",
   "latitude": 38.1472512,
   "longitude": -79.0738964,
   "is_active": true,
@@ -10,7 +10,7 @@
   "reward_description": null,
   "character_slugs": [],
   "collection_slugs": [
-    "hufflepuff-block"
+    "oz-land"
   ],
   "sched_url": "https://qcmm2026.sched.com/event/2WS2x/dementor-dance-party"
 }

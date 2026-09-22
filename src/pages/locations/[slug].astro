@@ -62,8 +62,11 @@ function difficultyColor(level: number | null) {
   return colors[level] ?? 'text-foreground-muted bg-background-secondary';
 }
 
-const appleMapsUrl = `https://maps.apple.com/?daddr=${location.latitude},${location.longitude}&dirflg=d`;
-const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${location.latitude},${location.longitude}`;
+const mapsDestination = (location as any).address
+  ? encodeURIComponent((location as any).address)
+  : `${location.latitude},${location.longitude}`;
+const appleMapsUrl = `https://maps.apple.com/?daddr=${mapsDestination}&dirflg=d`;
+const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${mapsDestination}`;
 const difficulty = difficultyLabel(location.difficulty_level ?? null);
 ---
 

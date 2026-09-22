@@ -1,6 +1,6 @@
 {
   "name": "Silver Line Theater Exchange",
-  "description": "Burrough Block – #5 | 211 N Lewis St",
+  "description": "211 N Lewis St",
   "latitude": 38.1518104,
   "longitude": -79.0745281,
   "is_active": true,
@@ -12,5 +12,6 @@
   "collection_slugs": [
     "the-burrough"
   ],
-  "sched_url": "https://qcmm2026.sched.com/venue/Silver+Line+Theatre+Exchange"
+  "sched_url": "https://qcmm2026.sched.com/venue/Silver+Line+Theatre+Exchange",
+  "address": "211 N Lewis St, Staunton, VA 24401"
 }

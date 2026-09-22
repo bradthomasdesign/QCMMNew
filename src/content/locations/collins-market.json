@@ -1,6 +1,6 @@
 {
   "name": "Collins Market",
-  "description": "Hufflepuff Block – #9 | 29 W Beverley St",
+  "description": "29 W Beverley St",
   "latitude": 38.1495062,
   "longitude": -79.0735889,
   "is_active": true,
@@ -11,5 +11,6 @@
   "character_slugs": [],
   "collection_slugs": [
     "hufflepuff-block"
-  ]
+  ],
+  "address": "29 W Beverley St, Staunton, VA 24401"
 }

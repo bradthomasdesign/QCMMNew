@@ -1,6 +1,6 @@
 {
   "name": "Queen City Music Studios",
-  "description": "Hufflepuff Block – #12 | 16 W Beverley St (2nd floor)",
+  "description": "16 W Beverley St (2nd floor)",
   "latitude": 38.1492893,
   "longitude": -79.073157,
   "is_active": true,
@@ -10,6 +10,7 @@
   "reward_description": null,
   "character_slugs": [],
   "collection_slugs": [
-    "hufflepuff-block"
+    "hufflepuff-block",
+    "gryffindor-block"
   ]
 }

@@ -1,6 +1,6 @@
 {
   "name": "Baja Bean & Bat Wings",
-  "description": "Hufflepuff Block – #2 | 9 W Beverley St (Augusta St side entrance)",
+  "description": "6 N Augusta St",
   "latitude": 38.149644,
   "longitude": -79.0727536,
   "is_active": true,
@@ -11,5 +11,6 @@
   "character_slugs": [],
   "collection_slugs": [
     "hufflepuff-block"
-  ]
+  ],
+  "address": "6 N Augusta St, Staunton, VA 24401"
 }

@@ -1,6 +1,6 @@
 {
   "name": "Quidditch",
-  "description": "Hufflepuff Block – #19 | Event feature, W Beverley / Frederick area",
+  "description": "Event feature, W Beverley / Frederick area",
   "latitude": 38.1472512,
   "longitude": -79.0738964,
   "is_active": true,
@@ -10,6 +10,7 @@
   "reward_description": null,
   "character_slugs": [],
   "collection_slugs": [
-    "hufflepuff-block"
-  ]
+    "oz-land"
+  ],
+  "sched_url": "https://qcmm2026.sched.com/venue/Virginia+is+for+Lovers+Stage+at+Sunspots+Pavilion"
 }

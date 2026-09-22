@@ -1,6 +1,6 @@
 {
-  "name": "Rest Area—Woodrow Park",
-  "description": "Burrough Block – #2 | Event feature, Burrough area",
+  "name": "Rest Area\u2014Woodrow Park",
+  "description": "Event feature, Burrough area",
   "latitude": 38.1462,
   "longitude": -79.0722,
   "is_active": true,
@@ -10,6 +10,6 @@
   "reward_description": null,
   "character_slugs": [],
   "collection_slugs": [
-    "the-burrough"
+    "oz-land"
   ]
 }
