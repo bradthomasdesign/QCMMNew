@@ -31,7 +31,9 @@ const astroI18nOptions = i18nEnabled
 
 export default defineConfig({
   output: 'static',
-  adapter: isNetlify ? netlify() : vercel(),
+  adapter: isNetlify ? netlify() : vercel({
+    webAnalytics: { enabled: true },
+  }),
   site: process.env.SITE_URL || 'https://qcmm.app',
   ...(astroI18nOptions ? { i18n: astroI18nOptions } : {}),
 
