@@ -1,8 +1,8 @@
 {
-  "name": "Queen City Music Studios",
-  "description": "16 W Beverley St (2nd floor)",
-  "latitude": 38.1492893,
-  "longitude": -79.073157,
+  "name": "Queen City Music Studios Stage",
+  "description": "Intersection of New St & Augusta St",
+  "latitude": 38.1496,
+  "longitude": -79.0725,
   "is_active": true,
   "is_secret": false,
   "difficulty_level": null,
@@ -10,6 +10,6 @@
   "reward_description": null,
   "character_slugs": [],
   "collection_slugs": [
-    "hufflepuff-block"
+    "gryffindor-block"
   ]
 }
