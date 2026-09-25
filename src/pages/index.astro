@@ -12,21 +12,18 @@ import Icon from '@/components/ui/primitives/Icon/Icon.astro';
   image="/og-default.svg"
   includeOrgSchema={true}
 >
-  <!-- Hero with video background -->
+  <!-- Hero with image background -->
   <section
     class="hero-dark-gradient relative overflow-hidden min-h-[100dvh] pt-[calc(var(--space-page-top)_+_var(--space-16))] pb-[var(--space-section-xl)]"
   >
-    <!-- Video background -->
-    <video
-      autoplay
-      muted
-      loop
-      playsinline
+    <!-- Background image (downtown Staunton) -->
+    <img
+      src="/images/staunton-hero.jpg"
+      alt=""
       aria-hidden="true"
+      fetchpriority="high"
       class="hero-video absolute inset-0 w-full h-full object-cover"
-    >
-      <source src="/video/hero.mp4" type="video/mp4" />
-    </video>
+    />
 
     <!-- Theme-aware overlay -->
     <div class="hero-video-overlay absolute inset-0" aria-hidden="true"></div>
@@ -256,12 +253,12 @@ import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 </LandingLayout>
 
 <style>
-  /* Video sits behind everything in the hero stacking context */
+  /* Background image sits behind everything in the hero stacking context */
   .hero-video {
     z-index: 0;
   }
 
-  /* Neutral dark overlay — dims the video without adding a colour cast */
+  /* Neutral dark overlay — dims the image without adding a colour cast */
   .hero-video-overlay {
     z-index: 1;
     background: linear-gradient(
