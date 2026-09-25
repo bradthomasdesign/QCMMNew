@@ -49,5 +49,10 @@
   "Former Staunton Mall": { "maps_url": "https://www.google.com/maps/search/?api=1&query=90+Lee+Jackson+Hwy,+Staunton,+VA+24401" },
   "Leadership Hall at Mary Baldwin University": { "maps_url": "https://www.google.com/maps/search/?api=1&query=101+E+Frederick+St,+Staunton,+VA+24401" },
   "Parking Area at the Corner of Augusta St. & Johnson St.": { "maps_url": "https://www.google.com/maps/search/?api=1&query=2+W+Johnson+St,+Staunton,+VA+24401" },
-  "The Frenchmen": { "slug": "depot-grille" }
+  "The Frenchmen": { "slug": "depot-grille" },
+  "Heirloom Home": { "slug": "heirloom-home" },
+  "The Art-Cade": { "slug": "the-art-cade" },
+  "The Green Room": { "slug": "the-green-room" },
+  "South Horizon Gifts": { "slug": "south-horizon" },
+  "S. Augusta Street": { "maps_url": "https://www.google.com/maps/search/?api=1&query=S+Augusta+St,+Staunton,+VA+24401" }
 }

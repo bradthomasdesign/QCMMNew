@@ -7,6 +7,34 @@
     "sched_url": "https://qcmm2026.sched.com/event/2XTII/sears-hill-bridge-and-woodrow-park-overlook"
   },
   {
+    "time": "12:00pm",
+    "title": "Devil's Snare Photo Op",
+    "venue": "The Green Room",
+    "description": "Are you brave enough to face the Devil's Snare? Check out our indoor photo op, show us your best escape pose, and see if you can survive the vines! Don't forget to relax with a bite to eat and a house-made butter brew (spiked or otherwise) in our limited souvenir mugs!",
+    "sched_url": ""
+  },
+  {
+    "time": "5:00pm",
+    "title": "Magical Reset: Acu-Wellness",
+    "venue": "Legacy of the Rose Center for Healing and Enlightenment",
+    "description": "Meet and Greet with Psychic Mediums Ashley Hallman, Founder of Legacy of the Rose Center for Healing and Enlightenment and Reverend Meg \"The Happy Medium\". Explore Legacy of the Rose, learn more about their work, and get a first look at everything planned for the weekend.",
+    "sched_url": ""
+  },
+  {
+    "time": "5:00pm",
+    "title": "Mischief Before Midnight: A Magical Art-Cade Pre-Party",
+    "venue": "The Art-Cade",
+    "description": "Start the magic a day early at The Art-Cade! Enjoy 90 minutes of unlimited arcade play while taking on the mysterious Arcane Quest—featuring crystals, magical trials, hidden clues, an Oracle, strange creatures and surprises. Costumes encouraged. $15 • Limited to 30 guests per session • All are welcome here.",
+    "sched_url": ""
+  },
+  {
+    "time": "6:45pm",
+    "title": "Mischief Before Midnight: A Magical Art-Cade Pre-Party",
+    "venue": "The Art-Cade",
+    "description": "Start the magic a day early at The Art-Cade! Enjoy 90 minutes of unlimited arcade play while taking on the mysterious Arcane Quest—featuring crystals, magical trials, hidden clues, an Oracle, strange creatures and surprises. Costumes encouraged. $15 • Limited to 30 guests per session • All are welcome here.",
+    "sched_url": ""
+  },
+  {
     "time": "7:00pm",
     "title": "Ghosts of Staunton's Spirits of the Spotts-Coffman House",
     "venue": "Spotts-Coffman House at The Society for Victorian Arts and Culture",
@@ -47,5 +75,12 @@
     "venue": "New Street Parking Garage (corner by stoplight)",
     "description": "75 Minute Walking Ghost Tour through town featuring some of Staunton's most haunted locations. Admission $13-$15 / Tickets can be purchased online or from our booth / start up location on S. New Street",
     "sched_url": "https://qcmm2026.sched.com/event/2WDgC/ghosts-of-stauntons-queen-city-ghost-tour"
+  },
+  {
+    "time": "8:30pm",
+    "title": "Mischief Before Midnight: A Magical Art-Cade Pre-Party",
+    "venue": "The Art-Cade",
+    "description": "Start the magic a day early at The Art-Cade! Enjoy 90 minutes of unlimited arcade play while taking on the mysterious Arcane Quest—featuring crystals, magical trials, hidden clues, an Oracle, strange creatures and surprises. Costumes encouraged. $15 • Limited to 30 guests per session • All are welcome here.",
+    "sched_url": ""
   }
 ]
